@@ -1,0 +1,44 @@
+body
+{
+    background-color: #ffaaaa;
+}
+h1 
+{ 
+    color:black;
+    font-family: sans-serif;
+    border-bottom: 1px solid #000000;
+}
+blockquote 
+{ 
+    background-color: #aaaaff;
+    padding: 1rem;
+}
+
+img 
+{
+    max-width: 50%;
+    height: auto;
+}
+
+header
+{
+    background-color: #ff6666;
+}
+
+main
+{
+    background-color: #3333ff;
+}
+
+h2
+{
+    color: #00ffff;
+}
+footer h2
+{
+    color: #000000;
+}
+footer
+{
+    background-color: #ff6666;
+}
