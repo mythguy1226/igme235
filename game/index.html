@@ -4,19 +4,7 @@
         <meta charset="UTF-8">
         <title>Dig Dug Exercise</title>
 
-        <style>
-            h1 
-            { 
-                color:red;
-                font-family: sans-serif;
-                border-bottom: 1px solid blue;
-            }
-            blockquote 
-            { 
-                background-color: lightgray;
-                padding: 1rem;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
 
         <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
@@ -35,9 +23,11 @@
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
+
+        <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@300&display=swap" rel="stylesheet"> 
     </head>
 
-    <body style="background-color: #ffe8a8;">
+    <body>
         <header>
             <img src="images/dig-dug.svg" alt="Title" width="800" height="200">
             <h1>Dig Dug</h1>
@@ -47,7 +37,7 @@
         <main>
             <h2>Publishing Info</h2>
                 
-            <blockquote>
+            <blockquote id="publish">
                 <ul>
                     <li>Published by: Atari, Inc.</li>
                     <li>Developed by: Namco Limited</li>
@@ -56,7 +46,7 @@
             </blockquote>
 
             <hr>
-            <img src="images/fygar_inflate.gif" alt="Dig Dug Image">
+            <img class="side" src="images/fygar_inflate.gif" alt="Dig Dug Image">
             <hr>
 
             <h2>Description</h2>

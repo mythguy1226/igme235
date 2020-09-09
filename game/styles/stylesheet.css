@@ -1,0 +1,61 @@
+h1 
+{ 
+    color:red;
+    font-family: 'Grandstander', cursive;
+    border-bottom: 1px solid blue;
+}
+
+blockquote#publish
+{ 
+    background-color: #DE6800;
+}
+
+blockquote
+{ 
+    background-color: lightgray;
+}
+
+body
+{
+    background-color: #B82100;
+}
+
+h2
+{
+    color: green;
+    font-family: 'Grandstander', cursive;
+}
+
+p
+{
+    margin-left: 100px;
+    font-family: Arial, sans-serif;
+}
+
+img.side 
+{
+    float:right; 
+    margin: 0 12px;
+}
+
+img
+{
+    border-color: #3C91E6;
+    border-width: 5px;
+    border-style: solid;
+}
+
+a
+{
+    color: #970000;
+}
+
+main, header, footer
+{
+    border: 3px solid #3C91E6;
+    margin: 0 auto;
+    width: 80vw;
+    padding: 1rem;
+    background-color: #EDFF86;
+}
+
