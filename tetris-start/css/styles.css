@@ -2,9 +2,28 @@
 h2
 {
     border-bottom: 1px solid red;
+    clear: both;
 }
 
 figure img
 {
     float: right;
+    width: 40%;
+    margin: 25px;
+}
+
+#tetlist div
+{
+    float: left;
+    width: 25%;
+    border: 3px solid #00ffff;
+}
+
+footer
+{
+    clear: both;
+    position: fixed;
+    top: 1vh;
+    right: 1vw;
+    z-index: -5;
 }
