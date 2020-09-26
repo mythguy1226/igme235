@@ -1,0 +1,162 @@
+/* Styles for Page */
+h1
+{
+    font-family: retro_computerregular;
+    font-size: 40px;
+}
+.grid
+{
+    display: grid;
+    grid-template-rows: 75px repeat(3, 1fr) 300px;
+    grid-template-columns: 1fr;
+}
+
+header
+{
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    grid-row: 1/2;
+    grid-column: 1/2;
+    background-color: #686868;
+    color: #ffffff;
+}
+
+#axe
+{
+    width: 50px;
+    height: auto;
+    color: #ffffff;
+    margin-top: 20px;
+}
+
+header p
+{
+    font-family: retro_computerregular; 
+    font-size: 14px;
+}
+
+#axewrap
+{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-right: 50px;
+}
+
+.tree
+{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    grid-row: 2/3;
+    grid-column: 1/2;
+    background-color: #35363D;
+    padding: 50px 100px;
+
+}
+
+#treewrap
+{
+    display: flex;
+    flex-direction: column;
+    background-color: #686868;
+    margin: 10px;
+    padding: 25px;
+}
+
+.tree img
+{
+    width: auto;
+    height: auto;
+    background-image: linear-gradient(135deg,#E8FDF5, #244D3E);
+    margin: 10px;
+    border: solid 5px #ffffff;
+}
+
+h2
+{
+    font-family: retro_computerregular;
+    color: #ffffff;
+}
+
+p
+{
+    font-family: dogicaregular;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.valley
+{
+    grid-row: 3/4;
+    grid-column: 1/2;
+    background-image: url("../images/valley.jpg");
+}
+
+.items
+{
+    grid-row: 4/5;
+    grid-column: 1/2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: center;
+    background-color: #35363D;
+}
+
+.items p
+{
+    background-color: #686868;
+    padding:  35px 15px;
+}
+
+.itemimg
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: space-between;
+    border: solid 7px #ffffff;
+    width: 300px;
+    height: 300px;
+    background-color: #324E44;
+    margin: 5px;
+}
+
+.itemimg img
+{
+    width: 200px;
+    height: auto;
+}
+
+h3
+{
+    font-family: retro_computerregular;
+    color: #ffffff;
+}
+
+footer
+{
+    grid-row: 5/6;
+    grid-column: 1/2;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: solid 8px #ffffff;
+    background-image: url("../images/trees.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+footer p
+{
+    font-size: 34px;
+    font-family: retro_computerregular;
+}
+
+#footerright
+{
+    text-align: right;
+}
