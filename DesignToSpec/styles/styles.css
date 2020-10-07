@@ -93,6 +93,7 @@ p
     grid-row: 3/4;
     grid-column: 1/2;
     background-image: url("../images/valley.jpg");
+    background-size: cover;
 }
 
 .items
