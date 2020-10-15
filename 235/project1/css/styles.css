@@ -1,7 +1,7 @@
 /* Styles for Portfolio Page */
 body
 {
-    background-color: #000000;
+    background-color: #001121;
 }
 .wrapper
 {
@@ -14,16 +14,16 @@ body
 {
     display: grid;
     width: 90%;
-    grid-template-rows: 65vw 30vw 230vw 45vw;
+    grid-template-rows: 65vw 30vw 235vw 45vw;
     grid-template-columns: 1fr;
     padding: 3rem;
 }
-#navigation
+nav
 {
     border-bottom: solid 10px #3D52D5;
     width: 100%;
 }
-#navigation ul
+nav ul
 {
     list-style: none;
     margin: 0;
@@ -32,49 +32,49 @@ body
     flex-wrap: wrap;
     justify-content: center;
 }
-#navigation li a
+nav li a
 {
     display: block;
     background: #00A8E8;
     padding: 1rem;
-    color: #000000;
+    color: #001121;
     text-decoration: none;
     text-align: center;
     font-family: 'Secular One', sans-serif;
-    font-size: 20px;
+    font-size: 2vw;
     transition: 1s ease;
 }
 
-#navigation li
+nav li
 {
     width: 25%;
 }
 
-#navigation a:hover 
+nav a:hover 
 {
-	background: #000000;
-    color: #00ffff;
+	background: #001121;
+    color: #00c9c6;
     transform:scale(1.1);
 }
 h1
 {
     font-family: 'Secular One', sans-serif;
     font-size: 4vw;
-    color: #00ffff;
+    color: #00c9c6;
     text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 h2
 {
     font-family: 'Secular One', sans-serif;
-    color: #00ffff;
+    color: #00c9c6;
     text-align: center;
     font-size: 2.5vw;
     text-shadow: 3px -3px 0 #000000, 1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000;
 }
 
-#header
+header
 {
-    color: #00ffff;
+    color: #00c9c6;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -82,24 +82,24 @@ h2
     grid-row: 1/2;
     grid-column: 1/2;
     background-color: #706563;
-    border-bottom: 15px solid #000000;
+    border-bottom: 15px solid #001121;
 }
-#header img
+header img
 {
     border-radius: 60%;
     width: 25%;
     height: auto;
-    border: solid 10px #00ffff;
+    border: solid 10px #00c9c6;
 }
 
 #aboutme
 {
-    color: #00ffff;
+    color: #00c9c6;
     text-align: center;
     grid-row: 2/3;
     grid-column: 1/2;
-    border-top: 15px solid #000000;
-    border-bottom: 15px solid #000000;
+    border-top: 15px solid #001121;
+    border-bottom: 15px solid #001121;
     background-color: #706563;
 }
 hr
@@ -108,11 +108,11 @@ hr
 }
 p
 {
-    color: #000000;
-    background-color: #00ffff;
+    color: #001121;
+    background-color: #00c9c6;
     text-align: center;
-    padding: 1vw;
-    font-size: 2.5vw
+    padding: 2vw 20vw;
+    font-size: 1.5vw
 }
 
 #gallery
@@ -120,8 +120,8 @@ p
     text-align: center;
     grid-row: 3/4;
     grid-column: 1/2;
-    border-top: 15px solid #000000;
-    border-bottom: 15px solid #000000;
+    border-top: 15px solid #001121;
+    border-bottom: 15px solid #001121;
     background-color: #706563;
 }
 
@@ -137,7 +137,7 @@ p
     text-align: center;
     grid-row: 4/5;
     grid-column: 1/2;
-    border-top: 15px solid #000000;
+    border-top: 15px solid #001121;
     background-color: #706563;
 }
 
@@ -157,13 +157,26 @@ p
 #gallery a:hover 
 {
 	background: #00A8E8;
-    color: #000000;
+    color: #001121;
     transform:scale(1.1);
 }
 
-#contactme
+footer
 {
     border-top: solid 10px #3D52D5;
     width: 100%;
     background-color: #706563;
+}
+
+@media (max-width: 550px) 
+{
+	p
+    {
+        color: #001121;
+        background-color: #00c9c6;
+        text-align: center;
+        padding: 2vw 10vw;
+        font-size: 1.5vw
+    }
+    
 }
