@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Web Apps-4-HW</title>
+	<style>
+		body{border:1px solid gray;}
+	</style>
+</head>
+<body>
+<h1>My Favorites</h1>
+<h2>My Favorite Colors</h2>
+
+<ol id="colorsList">
+	
+</ol>
+
+<h2>My Favorite Foods</h2>
+
+<ol id="foodsList">
+	
+</ol>
+
+<h2>My Favorite Links</h2>
+
+<ol id="linksList">
+	
+</ol>
+
+<script>
+"use strict";
+let colors = ["red","green","blue","purple","pink"];
+
+let colorList = document.querySelector("ol");
+// For() loop to append the colors elements to the list
+for(let i = 0; i < colors.length; i++)
+{
+    let color = document.createElement('li');
+    color.innerHTML = colors[i];
+    colorList.appendChild(color);
+}
+let foods = []; // add some foods
+foods.push("tacos");
+foods.push("pasta");
+foods.push("butter chicken");
+foods.push("cusa");
+
+// For of loops used to append to foods list
+for(const element of foods)
+{
+    let food = document.createElement('li');
+    food.innerHTML = element;
+    document.querySelectorAll("ol")[1].appendChild(food);
+}
+
+// Optional - can you figure out how to pull both the key AND the value
+// from the `links` object literal?
+let links = {
+		"RIT": "http://www.rit.edu",
+		"RWAG" : "https://www.facebook.com/RWAGclub",
+		"New Media Club" : "http://newmediaclub.cias.rit.edu"
+	}
+// For in Loop used to append to links list
+for(const property in links)
+{
+    console.log(links.property);
+    let link = document.createElement('li');
+    link.innerHTML = links[property];
+    document.querySelectorAll("ol")[2].appendChild(link);
+}
+
+</script>
+</body>
+</html>
