@@ -176,7 +176,8 @@ footer
         background-color: #00c9c6;
         text-align: center;
         padding: 2vw 10vw;
-        font-size: 1.5vw
+        font-size: 1.5vw;
+        overflow: scroll;
     }
     
 }
