@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Web Apps-4-HW</title>
+	<style>
+		body{border:1px solid gray;}
+	</style>
+</head>
+<body>
+<h1>My Favorites</h1>
+<h2>My Favorite Colors</h2>
+
+<ol id="colorsList">
+	
+</ol>
+
+<h2>My Favorite Foods</h2>
+
+<ol id="foodsList">
+	
+</ol>
+
+<h2>My Favorite Links</h2>
+
+<ol id="linksList">
+	
+</ol>
+
+<script>
+"use strict";
+let colors = ["red","green","blue","purple","pink"];
+
+// Function that takes in an array and a list element to
+// insert a list in the HTML so it shows when page is loaded
+function createList(listElement, array = ["puppydogs", "butterflies", "lollipops"]) // Has a default array for when left empty
+{
+    for(let i = 0; i < array.length; i++)
+    {
+        let element = document.createElement('li');
+        element.innerHTML = array[i];
+        listElement.appendChild(element);
+    }
+}
+
+// Point to color list and use function to insert the colors into that list
+let colorList = document.querySelector("ol");
+createList(colorList, colors);
+
+let foods = []; // add some foods
+let foodsList = document.querySelectorAll("ol")[1]
+foods.push("tacos");
+foods.push("pasta");
+foods.push("butter chicken");
+foods.push("cusa");
+
+// Point to food list and use function to insert the foods into that list
+createList(foodsList, foods);
+
+
+// Optional - can you figure out how to pull both the key AND the value
+// from the `links` object literal?
+let links = {
+		"RIT": "http://www.rit.edu",
+		"RWAG" : "https://www.facebook.com/RWAGclub",
+		"New Media Club" : "http://newmediaclub.cias.rit.edu"
+	}
+
+// For in Loop used to append to links list
+for(const property in links)
+{
+    console.log(links.property);
+    let link = document.createElement('li');
+    link.innerHTML = links[property];
+    document.querySelectorAll("ol")[2].appendChild(link);
+}
+
+</script>
+</body>
+</html>
