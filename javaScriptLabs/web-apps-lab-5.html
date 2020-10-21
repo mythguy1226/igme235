@@ -38,12 +38,15 @@
 </div>
 
 <script>
-/* Write your code here! */
+    // Declare needed variables
     let answer = document.getElementById("info");
     let radios = document.getElementsByName("colorGroup");
     let color = "";
     let legend = document.querySelector("legend");
 
+    // For each radio in the list of radios
+    // add an event listener and change color
+    // variable upon switching to the specific radio
     for(let i = 0; i < radios.length; i++)
     {
         radios[i].onchange = function(e) {
@@ -65,8 +68,12 @@
         }
     }
 
+    // Get the button
     let button = document.getElementById("colorButton");
 
+    // Upon clicking the button change the color
+    // of the legend to whatever is selected and
+    // print it as the user's final choice
     button.onclick = function(e){
         switch(color)
         {
