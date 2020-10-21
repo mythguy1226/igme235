@@ -1,0 +1,50 @@
+body
+{
+    background-color: #6666ff;
+}
+
+.wrapper
+{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ2PWbTZ3jArSfVutpHvdu4441fBWJLYocuvg&usqp=CAU");
+    background-size: cover;
+    width: 40%;
+    height: 50vw;
+}
+#phraseArea
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+p
+{
+    color: #ffff55;
+    font-size: 2vw;
+    text-align: center;
+    padding: 5vw;
+}
+h1
+{
+    color: #ffff55;
+    text-align: center;
+}
+button
+{
+    background-color: #ffff00;
+    color: #000000;
+    font-size: 2vw;
+    border: solid 0.5vw #000000;
+    width: 12vw;
+    height: 7vw;
+    transition: 0.2s ease;
+}
+
+button:hover
+{
+    background-color: #ffff66;
+    transform:scale(1.1);
+}

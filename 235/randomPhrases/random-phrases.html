@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Phrases</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="phraseArea">
+        <div class="wrapper">
+            <h1>The Amazing Quotes of Spider-man</h1>
+            <p>Phrase</p>
+            <button>Next Quote</button>
+        </div>
+    </div>
+</body>
+<script>
+    let phrases = ["No man can win every battle, but no man should fall without a struggle.", 
+                    "With Great Power, Comes Great Responsibility",
+                   "We save as many as we can to make up for the ones we couldn't. That's all we do.",
+                   "Ah, man, when Wolverine grows his face back, he's really gonna be pretty upset.",
+                   "Your Friendly Neighborhood Spider-Man"]
+    let phrase = document.querySelector('p');
+
+    phrase.innerHTML = phrases[Math.floor(Math.random() * phrases.length)];
+
+    let button = document.querySelector('button');
+    button.onclick = function(e)
+    {
+        phrase.innerHTML = phrases[Math.floor(Math.random() * phrases.length)];
+    }
+</script>
+</html>
