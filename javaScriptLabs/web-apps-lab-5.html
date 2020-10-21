@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Web Apps-6</title>
+	<style>
+		body{
+			font-family:sans-serif;
+		}
+		#colorform{
+			background-color:#dfecdf;
+			color: #111;
+			padding:1em;width:400px;
+		}
+		#colorform p#info{
+			background-color:white;
+			color: black;
+			width:300px;
+			height:100px;
+			padding:.5em;
+		}
+		
+		#colorform legend{ 
+			font-weight:bold;
+			font-size:1.2em;
+		}
+	</style>
+</head>
+<body>
+
+<div id="colorform">
+	<legend>Choose your favorite color!</legend>
+	<p><input type="radio" name="colorGroup" id="colorGroupRed" value="red" /> Red</p>
+	<p><input type="radio" name="colorGroup" id="colorGroupGreen" value="green" /> Green</p>
+	<p><input type="radio" name="colorGroup" id="colorGroupBlue" value="blue" /> Blue</p>
+	<p><button id="colorButton" type="button">Submit</button></p>
+	<p id="info"></p>
+</div>
+
+<script>
+/* Write your code here! */
+    let answer = document.getElementById("info");
+    let radios = document.getElementsByName("colorGroup");
+    let color = "";
+    let legend = document.querySelector("legend");
+
+    for(let i = 0; i < radios.length; i++)
+    {
+        radios[i].onchange = function(e) {
+            switch(e.target.value)
+            {
+                case "red": 
+                    answer.innerHTML = "You have selected \"Red\"";
+                    color = "red";
+                    break;
+                case "green": 
+                    answer.innerHTML = "You have selected \"Green\"";
+                    color = "green";
+                    break;
+                case "blue": 
+                    answer.innerHTML = "You have selected \"Blue\"";
+                    color = "blue";
+                    break;
+            }
+        }
+    }
+
+    let button = document.getElementById("colorButton");
+
+    button.onclick = function(e){
+        switch(color)
+        {
+            case "red": 
+                answer.innerHTML = "Your FINAL CHOICE is \"Red\"";
+                legend.style.color = "red";
+                break;
+            case "green": 
+                answer.innerHTML= "Your FINAL CHOICE is \"Green\"";
+                legend.style.color = "green";
+                break;
+            case "blue": 
+                answer.innerHTML = "Your FINAL CHOICE is \"Blue\"";
+                legend.style.color = "blue";
+                break;
+        }
+    }
+</script>
+
+</body>
+</html>
