@@ -68,13 +68,7 @@ let newerYearsOnly = cars.map(
         }
     }
 );
-newerYearsOnly.filter(function(year)
-{
-    if(Number.isInteger(year))
-    {
-        return year;
-    }
-});
+newerYearsOnly = newerYearsOnly.filter(year => Number.isInteger(year));
 console.log(newerYearsOnly);
 
 debugger;
