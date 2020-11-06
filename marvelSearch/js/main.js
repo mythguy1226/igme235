@@ -9,18 +9,16 @@ function searchButtonClicked(){
     console.log("searchButtonClicked() called");
     
     // 1
-    const GIPHY_URL = "http://gateway.marvel.com/v1/public/comics?ts=1&";
+    const GIPHY_URL = "http://gateway.marvel.com/v1/public/characters?";
 
     // 2
     // Public API key from here: https://developers/giphy.com/docs/
     // If this one no longer works, get your own (it's free!)
-    let PUBLIC_KEY = "rdr89579399828";
-    let PRIVATE_KEY = "922c047747188bba6c85999593cdbc9128da7441";
+    let API_KEY = "fedefa1198cc7584d18711f16800dd54";
     let HASH = "00eb4328a410ac808295621f8ff3986a";
 
     // 3 - Build up our URL string
     let url = GIPHY_URL;
-    url += "api_key=" + PUBLIC_KEY;
 
     // 4 - parse the user entered term we wish to search
     let term = document.querySelector("#searchterm").value;
@@ -36,11 +34,10 @@ function searchButtonClicked(){
     if(term.length < 1) return;
 
     // 8 - append the search term to the URL - the parameter name is 'q'
+    url += "name=" + term;
+    url += "&apikey=" + API_KEY;
     url += "&hash=" + HASH;
-
-    // 9 - grab the user chosen search 'limit' from the <select> and append it to the URL
-    let limit = document.querySelector("#limit").value;
-    //url += "&limit=" + limit;
+    url += "&ts=1";
 
     // 10 - update the UI
     document.querySelector("#status").innerHTML = "<b>Searching for '" + displayTerm + "'</b>";
@@ -49,7 +46,7 @@ function searchButtonClicked(){
     console.log(url);
 
     // 12 Request Data!
-    //getData(url);
+    getData(url);
 }
 
 function getData(url)
@@ -87,37 +84,31 @@ function dataLoaded(e)
     }
 
     // 9 - start building an HTML string we will display to the user
-    let results = obj.data;
-    console.log("results.length =" + results.length);
-    let bigString = "<p><i>Here are " + results.length + " results for '" + displayTerm + "'</i></p>";
+    let result = obj.data;
+    console.log(result);
+    let charData = result['results'][0];
+    console.log(charData.name);
+    let smallURL = charData.thumbnail.path + ".jpg";
+    //console.log("results.length =" + results.length);
+    let bigString = "<p><i>Here are the results for '" + displayTerm + "'</i></p>";
 
-    // 10 - loop through the array of results
-    for(let i = 0; i < results.length; i++)
-    {
-        let result = results[i];
 
-        // 11 - get the URL to the GIF
-        let smallURL = result.images.fixed_width_small.url;
-        if(!smallURL) smallURL = "images/no-image-found.jpg";
+    // 11 - get the URL to the GIF
+    
+    
+    // 13 - Build a <div> to hold each result
+    // ES6 String Templating
+    let line = `<div class='result'><img src='${smallURL}' title='${result.id}' /> </div>`;
+    
+    // 15 - add the <div> to 'bigString' and loop
+    bigString += line;
 
-        // 12 get the URL to the GIPHY page
-        let url = result.url;
+    // 16 - all done building the HTML - show it to the user!
+    document.querySelector("#content").innerHTML = bigString;
 
-        // 13 - Build a <div> to hold each result
-        // ES6 String Templating
-        let line = `<div class='result'><img src='${smallURL}' title='${result.id}' />`;
-        line += `<span><a target='_blank' href='${url}'> View on Giphy</a></span>`;
-        line += `<p>Rating: ${result.rating.toUpperCase()}</p></div>`;
-        
-        // 15 - add the <div> to 'bigString' and loop
-        bigString += line;
-
-        // 16 - all done building the HTML - show it to the user!
-        document.querySelector("#content").innerHTML = bigString;
-
-        // 17 - update the status
-        document.querySelector("#status").innerHTML = "<b>Success!</b>";
-    }
+    // 17 - update the status
+    document.querySelector("#status").innerHTML = "<b>Success!</b>";
+    
 }
 
 function dataError(e)
