@@ -3,13 +3,15 @@
 }
 
  header{
-     background: url(../images/cats.jpg);
-     height:195px;
+     background: url(../images/marvel_banner.jpg);
+     background-size: cover;
+     height:300px;
  }
  
  header h1{
      margin:0;
-     color:#000000;
+     color:#ffff00;
+     text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
      text-align:center;
      font-size:100px;
      padding-top: 35px;
@@ -20,13 +22,15 @@
      height:32px;
      display: flex;
      justify-content: center;
+     grid-row: 3/4;
+     grid-column: 1/2;
  }
  
  .result {
-    position: relative;
-    height: 175px;
-    width: 100px;
-    float:left;
+    height: 15%;
+    width: 15%;
+    display: flex;
+    justify-content: center;
     border:1px solid gray;
     padding:5px;
     margin-left:10px;
@@ -34,12 +38,7 @@
 }
 
 .result img {
-    position: absolute;
-    left: 5px;
-    bottom: 5px;
-    display:block;
-    height: 175px;
-    width: 100px;
+    display: block;
 }
 
 .result span{
@@ -97,11 +96,29 @@ button:focus {outline:0;}
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    grid-row: 3/4;
+    grid-column: 1/2;
+}
+
+#thumbnail
+{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    grid-row: 3/4;
+    grid-column: 2/3;
+}
+#thumbnail img
+{
+    width: 100%;
+    height: auto;
 }
 
 h2
 {
     text-align: center;
+    grid-row: 3/4;
+    grid-column: 1/2;
 }
 
 .inputs
@@ -111,7 +128,9 @@ h2
     align-items: center;
     border-radius: 25px;
     border: solid black 1px;
-    background-color: #dddddd;
+    background-color: #ff6666;
+    grid-row: 2/3;
+    grid-column: 1/3;
 }
 
 #limit
@@ -122,4 +141,11 @@ h2
 #searchterm
 {
     background-color: #75efff;
+}
+
+.grid
+{
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 }

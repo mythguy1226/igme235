@@ -9,7 +9,7 @@ function searchButtonClicked(){
     console.log("searchButtonClicked() called");
     
     // 1
-    const GIPHY_URL = "http://gateway.marvel.com/v1/public/characters?";
+    const GIPHY_URL = "https://gateway.marvel.com/v1/public/characters?";
 
     // 2
     // Public API key from here: https://developers/giphy.com/docs/
@@ -91,20 +91,21 @@ function dataLoaded(e)
     let smallURL = charData.thumbnail.path + ".jpg";
     //console.log("results.length =" + results.length);
     let bigString = "<p><i>Here are the results for '" + displayTerm + "'</i></p>";
-
+    let thumbNailString = `<div><img src='${smallURL}' title='${result.id}' /> </div>`
 
     // 11 - get the URL to the GIF
     
     
     // 13 - Build a <div> to hold each result
     // ES6 String Templating
-    let line = `<div class='result'><img src='${smallURL}' title='${result.id}' /> </div>`;
+    let line = `<div><p>Description: ${charData.description}</p></div>`;
     
     // 15 - add the <div> to 'bigString' and loop
     bigString += line;
 
     // 16 - all done building the HTML - show it to the user!
     document.querySelector("#content").innerHTML = bigString;
+    document.querySelector("#thumbnail").innerHTML = thumbNailString;
 
     // 17 - update the status
     document.querySelector("#status").innerHTML = "<b>Success!</b>";
