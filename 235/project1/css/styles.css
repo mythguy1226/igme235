@@ -14,7 +14,7 @@ body
 {
     display: grid;
     width: 90%;
-    grid-template-rows: 65vw 40vw 235vw 45vw;
+    grid-template-rows: 65vw 40vw 275vw 45vw;
     grid-template-columns: 1fr;
     padding: 3rem;
 }
@@ -35,13 +35,13 @@ nav ul
 nav li a
 {
     display: block;
-    background: #00A8E8;
+    background: #00c9c7;
     padding: 1rem;
     color: #001121;
     text-decoration: none;
     text-align: center;
     font-family: 'Secular One', sans-serif;
-    font-size: 2vw;
+    font-size: 2rem;
     transition: 1s ease;
 }
 
@@ -69,7 +69,7 @@ h2
     color: #00c9c6;
     text-align: center;
     font-size: 2.5vw;
-    text-shadow: 3px -3px 0 #000000, 1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 header
@@ -86,10 +86,9 @@ header
 }
 header img
 {
-    border-radius: 60%;
     width: 25%;
     height: auto;
-    border: solid 10px #00c9c6;
+    border: solid 0.5rem #00c9c6;
 }
 
 #aboutme
@@ -112,7 +111,9 @@ p
     background-color: #00c9c6;
     text-align: center;
     padding: 2vw 20vw;
-    font-size: 1.5vw
+    font-size: 1.5vw;
+    font-family: 'Fjalla One', sans-serif;
+    overflow: scroll;
 }
 
 #gallery
@@ -152,6 +153,7 @@ p
     font-family: 'Secular One', sans-serif;
     font-size: 20px;
     transition: 1s ease;
+    margin-bottom: 10vw;
 }
 
 #gallery a:hover 
@@ -175,9 +177,19 @@ footer
         color: #001121;
         background-color: #00c9c6;
         text-align: center;
-        padding: 2vw 10vw;
+        padding: 10px 20px;
         font-size: 1.5vw;
-        overflow: scroll;
     }
-    
+    nav li a
+    {
+        display: block;
+        background: #00c9c7;
+        padding: 1rem;
+        color: #001121;
+        text-decoration: none;
+        text-align: center;
+        font-family: 'Secular One', sans-serif;
+        font-size: 1rem;
+        transition: 1s ease;
+    }
 }
