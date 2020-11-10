@@ -40,7 +40,7 @@ function searchButtonClicked(){
     url += "&ts=1";
 
     // 10 - update the UI
-    document.querySelector("#status").innerHTML = "<b>Searching for '" + displayTerm + "'</b>";
+    //document.querySelector("#status").innerHTML = `<iframe src="https://giphy.com/embed/9rjHo7vXhB9F5by3Wg" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/digitaldjtips-stan-lee-amazing-spider-man-library-dj-9rjHo7vXhB9F5by3Wg">via GIPHY</a></p>`;
 
     // 11 - see what the URL looks like
     console.log(url);
