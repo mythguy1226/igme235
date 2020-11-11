@@ -2,6 +2,11 @@
     font-family:verdana,tahoma,sans-serif;
 }
 
+body
+{
+    background-color: #6666ff;
+}
+
  header{
      background: url(../images/marvel_banner.jpg);
      background-size: cover;
@@ -15,6 +20,7 @@
      text-align:center;
      font-size:100px;
      padding-top: 35px;
+     font-family: "Staatliches";
  }
  
  #status{
@@ -94,28 +100,43 @@ button:focus {outline:0;}
 
 #content
 {
+    background-color: #aaaaff;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
     grid-row: 2/3;
     grid-column: 1/2;
+    overflow: scroll;
+    border-radius: 25px;
+    border: solid black 2px;
+}
+#comics
+{
+    grid-row: 2/3;
+    grid-column: 1/2;
+    overflow: scroll;
+}
+#events
+{
+    grid-row: 2/3;
+    grid-column: 1/2;
+    overflow: scroll;
 }
 
 #thumbnail
 {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    align-items: center;
     grid-row: 2/3;
     grid-column: 2/3;
 }
 #thumbnail img
 {
+    display: block;
     width: 60%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 35px;
     border: solid black 2px;
 }
@@ -155,6 +176,6 @@ button:focus {outline:0;}
 .grid
 {
     display: grid;
-    grid-template-rows: 20rem 20rem;
+    grid-template-rows: 20rem 35rem;
     grid-template-columns: repeat(2, 1fr);
 }

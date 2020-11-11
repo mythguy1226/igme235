@@ -87,29 +87,90 @@ function dataLoaded(e)
     let result = obj.data;
     console.log(result);
     let charData = result['results'][0];
-    console.log(charData.name);
-    let smallURL = charData.thumbnail.path + ".jpg";
-    //console.log("results.length =" + results.length);
-    let bigString = "<p><i>Here are the results for '" + displayTerm + "'</i></p>";
-    let thumbNailString = `<div><img src='${smallURL}' title='${result.id}' /> </div>`
 
-    // 11 - get the URL to the GIF
-    
-    
-    // 13 - Build a <div> to hold each result
-    // ES6 String Templating
-    let line = `<div><p>Description: ${charData.description}</p></div>`;
-    
-    // 15 - add the <div> to 'bigString' and loop
-    bigString += line;
+    if(charData == null)
+    {
+        let bigString = "<p><i>Could not find a result for \"" + displayTerm + "\"</i></p>";
 
-    // 16 - all done building the HTML - show it to the user!
-    document.querySelector("#content").innerHTML = bigString;
-    document.querySelector("#thumbnail").innerHTML = thumbNailString;
+        document.querySelector("#content").innerHTML = bigString;
+        document.querySelector("#thumbnail").innerHTML = "";
+    }
+    else
+    {
+        if(!document.querySelector("#searchbybeginswith").checked)
+        {
+            console.log(charData.name);
+            let smallURL = charData.thumbnail.path + ".jpg";
+            
+            let bigString = "<p><i>Here are the results for \"" + displayTerm + "\"</i></p>";
+            let thumbNailString = `<div><img src='${smallURL}' title='${result.id}' /> </div>`
 
-    // 17 - update the status
-    document.querySelector("#status").innerHTML = "<b>Success!</b>";
-    
+            // 11 - get the URL to the GIF
+            
+            
+            // 13 - Build a <div> to hold each result
+            // ES6 String Templating
+            if(charData.description != "")
+            {
+                let line = `<div><p>Description: ${charData.description}</p></div>`;
+                bigString += line;
+            }
+            else
+            {
+                let line = `<div><p>Description: None</p></div>`;
+                bigString += line;
+            }
+
+            // 16 - all done building the HTML - show it to the user!
+            document.querySelector("#content").innerHTML = bigString;
+            document.querySelector("#thumbnail").innerHTML = thumbNailString;
+
+            // 17 - update the status
+            document.querySelector("#status").innerHTML = "<b>Success!</b>";
+
+            // Add any comics the character was in
+            if(document.querySelector("#comicsfilter").checked)
+            {
+                let comics = charData['comics']['items'];
+                console.log(comics);
+                let bigString = `<p><i>Here is a list of comics for "${displayTerm}"</i></p><br><div id="comics">`;
+                for(let i = 0; i < comics.length; i++)
+                {
+                    let comic = comics[i]['name'];
+
+
+                    let line = `<p>${comic}</p>`;
+                    
+                    bigString += line;
+
+                }
+                bigString += "</div>";
+
+                document.querySelector("#content").innerHTML += bigString;
+            }
+
+            // Add any events the character was in
+            if(document.querySelector("#eventsfilter").checked)
+            {
+                let events = charData['events']['items'];
+                console.log(events);
+                let bigString = `<br><p><i>Here is a list of events for "${displayTerm}"</i></p><br><div id="events">`;
+                for(let i = 0; i < events.length; i++)
+                {
+                    let event = events[i]['name'];
+
+
+                    let line = `<p>${event}</p>`;
+
+                    bigString += line;
+
+                }
+                bigString += "</div>";
+
+                document.querySelector("#content").innerHTML += bigString;
+            }
+        }
+    }
 }
 
 function dataError(e)
