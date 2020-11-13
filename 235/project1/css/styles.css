@@ -13,7 +13,7 @@ body
 .grid
 {
     display: grid;
-    width: 90%;
+    width: 70%;
     grid-template-rows: 65vw 40vw 275vw 45vw;
     grid-template-columns: 1fr;
     padding: 3rem;
@@ -191,5 +191,9 @@ footer
         font-family: 'Secular One', sans-serif;
         font-size: 1rem;
         transition: 1s ease;
+    }
+    .grid
+    {
+        width: 90%;
     }
 }

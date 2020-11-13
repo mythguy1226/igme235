@@ -46,6 +46,7 @@ function searchButtonClicked(){
         url += "&apikey=" + API_KEY;
         url += "&hash=" + HASH;
         url += "&ts=1";
+        url += "&limit=50";
     }
 
     // 11 - see what the URL looks like
