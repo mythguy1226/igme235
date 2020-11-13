@@ -1,5 +1,27 @@
 // 1
-window.onload = (e) => {document.querySelector("#search").onclick = searchButtonClicked};
+window.onload = (e) => 
+{
+    // Fields needed for getting local storage
+    let search = document.querySelector("#searchterm");
+    const prefix = "rdr8959-"; 
+    const nameKey = prefix + "name"
+    const storedName = localStorage.getItem(nameKey);
+
+    // Change the field to the stored value or if there isnt any, make a default
+    if (storedName)
+    {
+        search.value = storedName;
+    }
+    else
+    {
+        search.value = "spider-man"; // default
+    }
+    // Function called when input bar is changed
+    search.onchange = e=>{ localStorage.setItem(nameKey, e.target.value); };
+
+    // Function called when search button is clicked
+    document.querySelector("#search").onclick = searchButtonClicked
+};
 	
 // 2
 let displayTerm = "";
@@ -30,8 +52,11 @@ function searchButtonClicked(){
     term = encodeURIComponent(term);
 
     // 7 - if there's no term to search then bail out of the function (return does this)
-    if(term.length < 1) return;
-
+    if(term.length < 1) 
+    {
+        document.querySelector("#content").innerHTML = "<b>No results found, please enter a search term!</b>";
+        return;
+    }
     // Call for different URLs based on the different search types
     if(!document.querySelector("#searchbybeginswith").checked)
     {
@@ -46,7 +71,8 @@ function searchButtonClicked(){
         url += "&apikey=" + API_KEY;
         url += "&hash=" + HASH;
         url += "&ts=1";
-        url += "&limit=50";
+        let limit = document.querySelector("#limit").value;
+        url += "&limit=" + limit;
     }
 
     // 11 - see what the URL looks like
@@ -225,6 +251,12 @@ function dataLoaded(e)
                 displayTerm = term;
 
                 term = term.trim();
+
+                // Update Local storage and the input bar
+                const prefix = "rdr8959-"; 
+                const nameKey = prefix + "name"
+                document.querySelector("#searchterm").value = term;
+                localStorage.setItem(nameKey, term);
                 
                 term = encodeURIComponent(term);
 

@@ -3,8 +3,11 @@
 <head>
 	<meta charset="utf-8" />
 	 <title>Marvel Character Searcher</title>
-	 <link rel="stylesheet" type="text/css" href="styles/main.css">
 	 <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet"> 
+	 <link rel="preconnect" href="https://fonts.gstatic.com">
+	 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet"> 
+	 <link href="https://fonts.googleapis.com/css2?family=Goldman&display=swap" rel="stylesheet"> 
+	 <link rel="stylesheet" type="text/css" href="styles/main.css"> 
 	 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	 <script src="js/main.js"></script>
 </head>
@@ -15,7 +18,14 @@
 <div class="grid">
 	<div class= "inputs">
 		<div class="widgets">
-			<input id="searchterm" type="text" size="30" maxlength="30" autofocus value="spider-man" />
+			<input id="searchterm" type="text" size="30" maxlength="30"/>
+			<p>Limit</p>
+			<select id="limit">
+				<option value="5">5</option>
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+			</select>
 			<p>Show Comics</p>
 			<input id="comicsfilter" type="checkbox"/>
 			<p>Show Events</p>
