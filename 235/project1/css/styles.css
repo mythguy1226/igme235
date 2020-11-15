@@ -178,7 +178,7 @@ footer
         background-color: #00c9c6;
         text-align: center;
         padding: 10px 20px;
-        font-size: 1.5vw;
+        font-size: 3vw;
     }
     nav li a
     {
@@ -194,6 +194,9 @@ footer
     }
     .grid
     {
-        width: 90%;
+        width: 100%;
+        grid-template-rows: 65vw 60vw 275vw 45vw;
+        grid-template-columns: 1fr;
+        padding: 1rem;
     }
 }
