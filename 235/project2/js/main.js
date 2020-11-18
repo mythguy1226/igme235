@@ -23,35 +23,30 @@ window.onload = (e) =>
     document.querySelector("#search").onclick = searchButtonClicked
 };
 	
-// 2
 let displayTerm = "";
 
-// 3
+// Function when the search button is clicked
 function searchButtonClicked(){
-    console.log("searchButtonClicked() called");
-    
-    // 1
     const MARVEL_URL = "https://gateway.marvel.com/v1/public/characters?";
 
-    // 2
     // Public API key from here: https://developer.marvel.com/docs/
     let API_KEY = "fedefa1198cc7584d18711f16800dd54";
     let HASH = "00eb4328a410ac808295621f8ff3986a";
 
-    // 3 - Build up our URL string
+    // Build up our URL string
     let url = MARVEL_URL;
 
-    // 4 - parse the user entered term we wish to search
+    // parse the user entered term we wish to search
     let term = document.querySelector("#searchterm").value;
     displayTerm = term;
 
-    // 5 - get rid of any leading and trailing spaces
+    // get rid of any leading and trailing spaces
     term = term.trim();
     
-    // 6 - encode spaces and special characters
+    // encode spaces and special characters
     term = encodeURIComponent(term);
 
-    // 7 - if there's no term to search then bail out of the function (return does this)
+    // if there's no term to search then bail out of the function (return does this)
     if(term.length < 1) 
     {
         document.querySelector("#content").innerHTML = "<b>No results found, please enter a search term!</b>";
@@ -75,13 +70,12 @@ function searchButtonClicked(){
         url += "&limit=" + limit;
     }
 
-    // 11 - see what the URL looks like
-    console.log(url);
 
-    // 12 Request Data!
+    // Request Data!
     getData(url);
 }
 
+// Function for getting data
 function getData(url)
 {
     // 1 - Create a new XHR Object
@@ -100,16 +94,13 @@ function getData(url)
 // Callback functions
 function dataLoaded(e)
 {
-    // 5 - event.target is the xhr object
+    // event.target is the xhr object
     let xhr = e.target;
 
-    // 6 - xhr.responseText is the JSON file we just downloaded
-    console.log(xhr.responseText);
-
-    // 7 - turn the text into a parsable Javascript Object
+    // turn the text into a parsable Javascript Object
     let obj = JSON.parse(xhr.responseText);
 
-    // 8 - if there are no results, print the message and return
+    // if there are no results, print the message and return
     if(!obj.data || obj.data.length == 0)
     {
         document.querySelector("#status").innerHTML = "<b>No results found for '" + displayTerm + "'</b>";
@@ -118,7 +109,6 @@ function dataLoaded(e)
 
     // Get the character data
     let result = obj.data;
-    console.log(result);
     let charData = result['results'][0];
 
     // If the character cannot be found show this
@@ -134,7 +124,6 @@ function dataLoaded(e)
         // If looking for a specific character
         if(!document.querySelector("#searchbybeginswith").checked)
         {
-            console.log(charData.name);
             let smallURL = charData.thumbnail.path + ".jpg";
             
             let bigString = "<p><i>Here are the results for \"" + displayTerm + "\"</i></p>";
@@ -163,7 +152,6 @@ function dataLoaded(e)
             if(document.querySelector("#comicsfilter").checked)
             {
                 let comics = charData['comics']['items'];
-                console.log(comics);
                 let bigString = `<p><i>Here is a list of comics for "${displayTerm}"</i></p><br><div id="comics">`;
                 for(let i = 0; i < comics.length; i++)
                 {
@@ -184,7 +172,6 @@ function dataLoaded(e)
             if(document.querySelector("#eventsfilter").checked)
             {
                 let events = charData['events']['items'];
-                console.log(events);
                 let bigString = `<br><p><i>Here is a list of events for "${displayTerm}"</i></p><br><div id="events">`;
                 for(let i = 0; i < events.length; i++)
                 {
@@ -205,22 +192,21 @@ function dataLoaded(e)
         else
         {
             let chars = result['results'];
-                console.log(chars);
                 
-                let bigString = `<br><p><i>Here is a list of characters under the search "${displayTerm}"</i></p><br><div id="chars">`;
-                for(let i = 0; i < chars.length; i++)
-                {
-                    let char = chars[i]['name'];
+            let bigString = `<br><p><i>Here is a list of characters under the search "${displayTerm}"</i></p><br><div id="chars">`;
+            for(let i = 0; i < chars.length; i++)
+            {
+                let char = chars[i]['name'];
 
 
-                    let line = `<button>${char}</button>`;
+                let line = `<button>${char}</button>`;
 
-                    bigString += line;
+                bigString += line;
 
-                }
-                bigString += "</div>";
+            }
+            bigString += "</div>";
 
-                document.querySelector("#content").innerHTML = bigString;
+            document.querySelector("#content").innerHTML = bigString;
                 
         }
     }
@@ -246,7 +232,6 @@ function dataLoaded(e)
                 let url = MARVEL_URL;
 
                 let term = buttons[i].innerHTML;
-                console.log(term);
                 
                 displayTerm = term;
 
@@ -277,8 +262,6 @@ function dataLoaded(e)
                     url += "&hash=" + HASH;
                     url += "&ts=1";
                 }
-
-                console.log(url);
 
                 getData(url);
                 

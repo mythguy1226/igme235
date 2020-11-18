@@ -15,38 +15,39 @@
 <header>
 	<h1>Marvel Character Searcher</h1>
 </header>
-<div class="grid">
-	<div class= "inputs">
-		<div class="widgets">
-			<input id="searchterm" type="text" size="30" maxlength="30"/>
-			<p>Limit</p>
-			<select id="limit">
-				<option value="5">5</option>
-				<option value="10" selected>10</option>
-				<option value="25">25</option>
-				<option value="50">50</option>
-			</select>
-			<p>Show Comics</p>
-			<input id="comicsfilter" type="checkbox"/>
-			<p>Show Events</p>
-			<input id="eventsfilter" type="checkbox"/>
-			<p>Search by what name starts with</p>
-			<input id="searchbybeginswith" type="checkbox"/>
-		</div>
+<main>
+	<section class="grid">
+		<section class= "inputs">
+			<section class="widgets">
+				<input id="searchterm" type="text" size="30" maxlength="30"/>
+				<p>Limit</p>
+				<select id="limit">
+					<option value="5">5</option>
+					<option value="10" selected>10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+				</select>
+				<p>Show Comics</p>
+				<input id="comicsfilter" type="checkbox"/>
+				<p>Show Events</p>
+				<input id="eventsfilter" type="checkbox"/>
+				<p>Search by what name starts with</p>
+				<input id="searchbybeginswith" type="checkbox"/>
+			</section>
 
-		<div class="widgets">
-			<button type="button" id="search" class="green">Find Character!</button>
-		</div>
-	</div>
-	<div id="status">Ready to Search!</div>
-	<div id="gif"></div>
-	<div id="content">
+			<section class="widgets">
+				<button type="button" id="search" class="green">Find Character!</button>
+			</section>
+		</section>
+		<section id="status">Ready to Search!</section>
+		<section id="gif"></section>
+		<section id="content">
 
-	</div>
-	<div id="thumbnail">
-		
-	</div>
-</div>
-
+		</section>
+		<section id="thumbnail">
+			
+		</section>
+	</section>
+</main>
 </body>
 </html>

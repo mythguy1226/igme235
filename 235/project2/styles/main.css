@@ -75,9 +75,7 @@ button{
 }
 
 button.green{
-    border-color: #75efff;
-      background: #75efff;
-      background: linear-gradient(top, #75efff 0%,#39a5db 100%);
+    background: #75efff;
 }
 
 button:hover{
