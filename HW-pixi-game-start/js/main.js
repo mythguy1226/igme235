@@ -369,16 +369,25 @@ function end()
 
 function fireBullet(e)
 {
-    // let rect = app.view.getBoundingClientRect();
-    // let mouseX = e.client - rect.x;
-    // let mouseY = e.client - rect.Y;
-    // console.log(`${mouseX},${mouseY}`);
     if(paused) return;
     if(score < 5)
     {
         let b = new Bullet(0xFFFFFF, ship.x, ship.y);
         bullets.push(b);
         gameScene.addChild(b);
+        shootSound.play();
+    }
+    else if(score >= 5 && score < 200)
+    {
+        let b = new Bullet(0xFFFFFF, ship.x, ship.y);
+        bullets.push(b);
+        gameScene.addChild(b);
+        let lB = new Bullet(0xFFFFFF, ship.x + 10, ship.y);
+        bullets.push(lB);
+        gameScene.addChild(lB);
+        let rB = new Bullet(0xFFFFFF, ship.x - 10, ship.y);
+        bullets.push(rB);
+        gameScene.addChild(rB);
         shootSound.play();
     }
     else
@@ -392,6 +401,12 @@ function fireBullet(e)
         let rB = new Bullet(0xFFFFFF, ship.x - 10, ship.y);
         bullets.push(rB);
         gameScene.addChild(rB);
+        let lB2 = new Bullet(0xFFFFFF, ship.x + 20, ship.y);
+        bullets.push(lB2);
+        gameScene.addChild(lB2);
+        let rB2 = new Bullet(0xFFFFFF, ship.x - 20, ship.y);
+        bullets.push(rB2);
+        gameScene.addChild(rB2);
         shootSound.play();
     }
 }
