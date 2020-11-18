@@ -1,0 +1,15 @@
+/* Basic Rules so documentation looks presentable */
+img
+{
+    width: 40%;
+    height: auto;
+}
+body
+{
+    text-align: center;
+}
+p
+{
+    padding: 1vw 20vw;
+    font-size: 1.5vw;
+}

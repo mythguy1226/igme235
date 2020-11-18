@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/docstyles.css">
+    <title>Documentation</title>
+</head>
+<body>
+    <h1>Project 2 Documentation</h1>
+    <h2>Process</h2>
+    <p>
+        I started off this project by first testing the Marvel API
+        to make sure I can get the information needed to make the web app work. 
+        Once that was working I started to make the base of my layout using CSS grid and 
+        flexbox. My goal was to try to keep the content somewhat compact so the user wouldnt 
+        have to do too much scrolling throughout the page. Once I had the layout set up I began to 
+        add more styles to make the page look nice with it's base function which was searching for 
+        a character directly. Once that was all working, I moved on to add the 3 different filters which 
+        included comics that character debuted in and events the character was a part of. After those were
+        complete I began to work on my last control which would search for any characters that start with the 
+        term specified in the search bar. A list of buttons are then shown and the number of characters shown at a time
+        can be changed with the limit dropdown. Clicking on one of the buttons would give the information on the selected
+        character with selected filters having an effect on what information is shown. Lastly, I implemented use of local
+        storage to save the user's last searched character. This will work with both direct searches and general searches.
+        After everything was functional I just did some polishing to my CSS so that it looks a bit nicer overall.<br>
+        Below is the original design for my webpage layout. <br>
+        But as you can see I made some edits to the design since then.
+    </p>
+    <img src="images/Project2InterfaceSketch.png">
+    <h2>Sources</h2>
+    <p>
+        Marvel Banner: <a href="https://www.kaggle.com/dannielr/marvel-superheroes">https://www.kaggle.com/dannielr/marvel-superheroes</a> <br>
+        Stan Lee GIF: <a href="https://giphy.com/gifs/digitaldjtips-stan-lee-amazing-spider-man-library-dj-9rjHo7vXhB9F5by3Wg">https://giphy.com/gifs/digitaldjtips-stan-lee-amazing-spider-man-library-dj-9rjHo7vXhB9F5by3Wg</a> <br>
+        Marvel API Documentation: <a href="https://developer.marvel.com/docs">https://developer.marvel.com/docs</a> <br>
+        Anton Font: <a href="https://fonts.google.com/specimen/Anton?query=anton">https://fonts.google.com/specimen/Anton?query=anton</a> <br>
+        Goldman Font: <a href="https://fonts.google.com/specimen/Goldman">https://fonts.google.com/specimen/Goldman</a> <br>
+        Staatlitches Font: <a href="https://fonts.google.com/specimen/Staatliches?query=staat">https://fonts.google.com/specimen/Staatliches?query=staat</a> <br>
+    </p>
+
+    <h2>Requirements</h2>
+    <p>
+        I feel I have met all requirements for this project for both functionality and design.<br>
+        Local storage is used to save the user's last searched term and stores the last character that
+        was searched.<br>
+        There are a minimum of 3 controls used which include, search bar, search button, limit dropdwon, 
+        comics filter, events filter, and the search by begins with filter.<br>
+        My extra control is the begins with filter and it will take a list of all characters that begin with
+        the term the user puts in the search bar and then display buttons for them to select a character to
+        search for.<br>
+        The code is also error free and commented<br>
+        I feel the design is pleasing to look at and it doesnt resemble the GIPHY's UI design at all. <br>
+        All widgets are labeled so there shouldnt be any question as to what control does what in this web app<br>
+        User errors are also handled effectively, if the user types in a character that doesnt exist and the begins with
+        filter is turned off then it will say "not found", and when the user doesnt put anything in the search bar a message
+        pops up in the content area to tell the user to put something in the search bar. <br>
+        The webpage is fairly responsive, it should work well on most screen sizes and definitely works well on the
+        dimensions specified (1024x768). I also changed the grid layout on smaller screens so it looks better on
+        mobile devices.<br>
+        HTML and CSS is valid, however I found some warnings due to me not having a header right after my section tags. I was 
+        originally using divs but assumed you wanted sections because they are semantic tags.<br>
+
+    </p>
+</body>
+</html>
