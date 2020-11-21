@@ -1,0 +1,48 @@
+main
+{
+    background-color: #dddddd;
+    width: 80%;
+    margin: 1rem;
+    color: #06240c;
+}
+
+body
+{
+    background-color: #004d11;
+}
+
+.wrapper
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header
+{
+    text-align: center;
+    color: #8affa3;
+}
+
+p
+{
+    font-size: 25px;
+}
+
+h2
+{
+    font-size: 30px;
+}
+
+h1
+{
+    font-size: 45px;
+}
+img
+{
+    width: 49%;
+}
+.screenshots
+{
+    display: flex;
+    justify-content: space-evenly;
+}
