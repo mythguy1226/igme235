@@ -32,6 +32,7 @@ let startScene;
 let gameScene,human,scoreLabel,lifeLabel,waveLabel,abilityLabel,zombieCountLabel,shootSound,hitSound,fireballSound;
 let gameOverScene,gameOverScoreLabel,gameOverWaveLabel;
 let pauseMenu,bioElectricBlastUpgrade,heatWaveUpgrade,heatWaveBuy,forcePushUpgrade,forcePushBuy,fireBallUpgrade,fireBallBuy,freezeUpgrade,freezeBuy,acidShotUpgrade,acidShotBuy;
+let instructionScene,instructions,controlsMovement,controlsButtons,controlsPause,controlsSpell;
 let cashLabel;
 
 let paused = true;
@@ -58,6 +59,10 @@ let healthFactor = 10;
 
 // Initial Spell effects
 let knockBack = 50;
+let burnTime = 2;
+let acidTime = 5;
+let freezeTime = 2;
+
 // Initial Spell Damages
 let bioElectricBlastDamage = 20;
 let heatWaveDamage = 10;
@@ -449,6 +454,7 @@ function startGame()
 {
     startScene.visible = false;
     gameOverScene.visible = false;
+    instructionScene.visible = false;
     gameScene.visible = true;
     pauseMenu.visible = false;
     paused = false;
@@ -770,7 +776,7 @@ function gameLoop()
                     case "heatwave":
                         z.health -= heatWaveDamage;
                         z.onFire = true;
-                        z.burnTimer = 2;
+                        z.burnTimer = burnTime;
                         break;
                     // Medium Damage with Knockback
                     case "forcepush":
@@ -796,19 +802,19 @@ function gameLoop()
                     case "fireball":
                         z.health -= fireBallDamage;
                         z.onFire = true;
-                        z.burnTimer = 2;
+                        z.burnTimer = burnTime;
                         break;
                     // Medium Damage with Freeze Effect
                     case "freeze":
                         z.health -= freezeDamage;
                         z.onIce = true;
-                        z.freezeTimer = 2;
+                        z.freezeTimer = freezeTime;
                         break;
                     // Medium Damage with Long Burn Effect
                     case "acidshot":
                         z.health -= acidShotDamage;
                         z.onAcid = true;
-                        z.acidTimer = 5;
+                        z.acidTimer = acidTime;
                         break;
                 }
                 
@@ -1021,7 +1027,12 @@ function setup() {
     pauseMenu = new PIXI.Container();
     pauseMenu.visible = false;
     stage.addChild(pauseMenu);
-	
+
+    // Create Instructions Scene
+    instructionScene = new PIXI.Container();
+    instructionScene.visible = false;
+    stage.addChild(instructionScene);
+
     // #4 - Create labels for all scenes
     createLabelsAndButtons();
 
@@ -1110,16 +1121,16 @@ function createLabelsAndButtons()
     startScene.addChild(startLabel2);
 
     // 1C - make the start game button
-    let startButton = new PIXI.Text("Begin the Carnage");
-    startButton.style = buttonStyle;
-    startButton.x = 100;
-    startButton.y = sceneHeight - 120;
-    startButton.interactive = true;
-    startButton.buttonMode = true;
-    startButton.on("pointerup", startGame); // startGame is a function reference
-    startButton.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
-    startButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
-    startScene.addChild(startButton);
+    let instructionButton = new PIXI.Text("Begin the Carnage");
+    instructionButton.style = buttonStyle;
+    instructionButton.x = 100;
+    instructionButton.y = sceneHeight - 120;
+    instructionButton.interactive = true;
+    instructionButton.buttonMode = true;
+    instructionButton.on("pointerup", giveInstructions);
+    instructionButton.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    instructionButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    startScene.addChild(instructionButton);
 
     // 2 - set up 'gameScene'
     let textStyle = new PIXI.TextStyle({
@@ -1244,6 +1255,82 @@ function createLabelsAndButtons()
     gameOverWaveLabel.x = 100;
     gameOverWaveLabel.y = sceneHeight/2 + 60;
     gameOverScene.addChild(gameOverWaveLabel);
+
+    // Set up the Instructions Scene
+    instructions = new PIXI.Text("Objective: The point of the game is to\n"
+                               + "survive as long as possible in the zombie\n"
+                               + "apocalypse. Buy and Upgrade Abilities to aid\n"
+                               + "in facing endless waves of the undead");
+    instructions.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: "Futura",
+        stroke: 0x00aa00,
+        strokeThickness: 3
+    });
+    instructions.x = 100;
+    instructions.y = 40;
+    instructionScene.addChild(instructions);
+
+    controlsMovement = new PIXI.Text("Movement Controls: WASD");
+    controlsMovement.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: "Futura",
+        stroke: 0x00aa00,
+        strokeThickness: 3
+    });
+    controlsMovement.x = 100;
+    controlsMovement.y = 220;
+    instructionScene.addChild(controlsMovement);
+
+    controlsButtons= new PIXI.Text("Button Controls: Mouse");
+    controlsButtons.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: "Futura",
+        stroke: 0x00aa00,
+        strokeThickness: 3
+    });
+    controlsButtons.x = 100;
+    controlsButtons.y = 280;
+    instructionScene.addChild(controlsButtons);
+
+    controlsPause = new PIXI.Text("Controls to Pause: P");
+    controlsPause.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: "Futura",
+        stroke: 0x00aa00,
+        strokeThickness: 3
+    });
+    controlsPause.x = 100;
+    controlsPause.y = 340;
+    instructionScene.addChild(controlsPause);
+
+    controlsSpell= new PIXI.Text("Activate Spell: Space");
+    controlsSpell.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: "Futura",
+        stroke: 0x00aa00,
+        strokeThickness: 3
+    });
+    controlsSpell.x = 100;
+    controlsSpell.y = 400;
+    instructionScene.addChild(controlsSpell);
+
+    // 1C - make the start game button
+    let startButton = new PIXI.Text("Start Game");
+    startButton.style = buttonStyle;
+    startButton.x = 200;
+    startButton.y = sceneHeight - 120;
+    startButton.interactive = true;
+    startButton.buttonMode = true;
+    startButton.on("pointerup", startGame); // startGame is a function reference
+    startButton.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    startButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    instructionScene.addChild(startButton);
 
     // Set up the Pause menu
     // Resume Button
@@ -1508,30 +1595,36 @@ function createLabelsAndButtons()
 // Function for Upgrades
 function upgradeAbility(ability)
 {
+    // Logic for upgrading certain abilities
+    // All abilities max out at level 10
     switch(ability)
     {
         case "bioelectricblast":
+            // Increases damage 
             if(score >= bioElectricBlastCost * bioElectricBlastLevel && bioElectricBlastLevel != 10)
             {
                 score -= bioElectricBlastCost * bioElectricBlastLevel;
                 bioElectricBlastLevel++;
-                bioElectricBlastDamage += 10;
+                bioElectricBlastDamage += 15;
                 bioElectricBlastUpgrade.text = `Bio-Electric Blast $${bioElectricBlastCost * bioElectricBlastLevel}`;
             }
             break;
         case "heatwave":
+            // Increases Damage and burn timer
             if(unlockedSpells.includes("heatwave"))
             {
                 if(score >= heatWaveCost * heatWaveLevel && heatWaveLevel != 10)
                 {
                     score -= heatWaveCost * heatWaveLevel;
                     heatWaveLevel++;
-                    heatWaveDamage += 10;
+                    heatWaveDamage += 5;
+                    burnTime++;
                     heatWaveUpgrade.text = `Heat Wave $${heatWaveCost * heatWaveLevel}`;
                 }
             }
             break;
         case "forcepush":
+            // Increases Damage and Knockback Distance
             if(unlockedSpells.includes("forcepush"))
             {
                 if(score >= forcePushCost * forcePushLevel && forcePushLevel != 10)
@@ -1545,6 +1638,7 @@ function upgradeAbility(ability)
             }
             break;
         case "fireball":
+            // Increases Damage
             if(unlockedSpells.includes("fireball"))
             {
                 if(score >= fireBallCost * fireBallLevel && fireBallLevel != 10)
@@ -1557,6 +1651,7 @@ function upgradeAbility(ability)
             }
             break;
         case "freeze":
+            // Increases Damage and Freeze Timer
             if(unlockedSpells.includes("freeze"))
             {
                 if(score >= freezeCost * freezeLevel && freezeLevel != 10)
@@ -1564,11 +1659,13 @@ function upgradeAbility(ability)
                     score -= freezeCost * freezeLevel;
                     freezeLevel++;
                     freezeDamage += 10;
+                    freezeTime++;
                     freezeUpgrade.text = `Freeze $${freezeCost * freezeLevel}`;
                 }
             }
             break;
         case "acidshot":
+            // Increases Damage and Acid Timer
             if(unlockedSpells.includes("acidshot"))
             {
                 if(score >= acidShotCost * acidShotLevel && acidShotLevel != 10)
@@ -1576,6 +1673,7 @@ function upgradeAbility(ability)
                     score -= acidShotCost * acidShotLevel;
                     acidShotLevel++;
                     acidShotDamage += 10;
+                    acidTime++;
                     facidShotUpgrade.text = `Acid Shot $${acidShotCost * acidShotLevel}`;
                 }
             }
@@ -1588,10 +1686,11 @@ function upgradeAbility(ability)
 // Function for Buying new Abilities
 function buyAbility(ability)
 {
+    // Logic for buying certain abilities
     switch(ability)
     {
         case "heatwave":
-            if(score >= 1000)
+            if(score >= 1000 && !unlockedSpells.includes("heatwave"))
             {
                 score-= 1000;
                 unlockedSpells.push("heatwave");
@@ -1599,7 +1698,7 @@ function buyAbility(ability)
             }
             break;
         case "forcepush":
-            if(score >= 1500)
+            if(score >= 1500 && !unlockedSpells.includes("forcepush"))
             {
                 score-= 1500;
                 unlockedSpells.push("forcepush");
@@ -1607,7 +1706,7 @@ function buyAbility(ability)
             }
             break;
         case "fireball":
-            if(score >= 3500)
+            if(score >= 3500 && !unlockedSpells.includes("fireball"))
             {
                 score-= 3500;
                 unlockedSpells.push("fireball");
@@ -1615,7 +1714,7 @@ function buyAbility(ability)
             }
             break;
         case "freeze":
-            if(score >= 2500)
+            if(score >= 2500 && !unlockedSpells.includes("freeze"))
             {
                 score-= 2500;
                 unlockedSpells.push("freeze");
@@ -1623,7 +1722,7 @@ function buyAbility(ability)
             }
             break;
         case "acidshot":
-            if(score >= 3000)
+            if(score >= 3000 && !unlockedSpells.includes("acidshot"))
             {
                 score-= 3000;
                 unlockedSpells.push("acidshot");
@@ -1643,6 +1742,16 @@ function resumeGame()
     pauseMenu.visible = false;
     gameOverScene.visible = false;
     paused = false;
+}
+
+// Function for giving instructions before game
+function giveInstructions()
+{
+    startScene.visible = false;
+    instructionScene.visible = true;
+    gameScene.visible = false;
+    pauseMenu.visible = false;
+    gameOverScene.visible = false;
 }
 // Function for increasing score
 function increaseScoreBy(value)
