@@ -1,4 +1,12 @@
 body
 {
     text-align: center;
+    background-color: #004d11;
+}
+
+h1
+{
+    text-align: center;
+    color: #8affa3;
+    font-size: 45px;
 }

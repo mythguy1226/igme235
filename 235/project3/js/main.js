@@ -6,6 +6,7 @@ const app = new PIXI.Application({
     height: 600
 });
 document.body.appendChild(app.view);
+app.view.style.border = "5px solid #8affa3";
 
 // constants
 const sceneWidth = app.view.width;
@@ -29,7 +30,7 @@ let stage;
 // game variables
 let startScene;
 let gameScene,human,scoreLabel,lifeLabel,waveLabel,abilityLabel,zombieCountLabel,shootSound,hitSound,fireballSound;
-let gameOverScene,gameOverScoreLabel;
+let gameOverScene,gameOverScoreLabel,gameOverWaveLabel;
 let pauseMenu,bioElectricBlastUpgrade,heatWaveUpgrade,heatWaveBuy,forcePushUpgrade,forcePushBuy,fireBallUpgrade,fireBallBuy,freezeUpgrade,freezeBuy,acidShotUpgrade,acidShotBuy;
 let cashLabel;
 
@@ -55,6 +56,8 @@ let zombieSpeed = 4;
 let zombieCount = 1;
 let healthFactor = 10;
 
+// Initial Spell effects
+let knockBack = 50;
 // Initial Spell Damages
 let bioElectricBlastDamage = 20;
 let heatWaveDamage = 10;
@@ -65,9 +68,19 @@ let acidShotDamage = 35;
 
 // Upgrade Cost Multipliers
 let bioElectricBlastCost = 500;
+let heatWaveCost = 500;
+let forcePushCost = 500;
+let fireBallCost = 500;
+let freezeCost = 500;
+let acidShot = 500;
 
 // Keep track of upgrades (max 10)
 let bioElectricBlastLevel = 1;
+let heatWaveLevel = 1;
+let forcePushLevel = 1;
+let fireBallLevel = 1;
+let freezeLevel = 1;
+let acidShotLevel = 1;
 
 function keysDown(e)
 {
@@ -431,6 +444,7 @@ function createSpell(x, y)
     spell.play();
 }
 
+// Reset required fields and begin the game
 function startGame()
 {
     startScene.visible = false;
@@ -454,8 +468,38 @@ function startGame()
     unlockedSpells = ["bioelectricblast"];
     abilityLabel.text = "Bio-Electric Blast";
     abilityLabel.style.stroke = 0x00aaaa;
+
+    // Reset Ability variables
+    bioElectricBlastLevel = 1;
+    heatWaveLevel = 1;
+    forcePushLevel = 1;
+    fireBallLevel = 1;
+    freezeLevel = 1;
+    acidShotLevel = 1;
+    bioElectricBlastDamage = 20;
+    heatWaveDamage = 10;
+    forcePushDamage = 20;
+    fireBallDamage = 50;
+    freezeDamage = 40;
+    acidShotDamage = 35;
+    knockBack = 50;
+
+    // Reset Upgrade labels
+    bioElectricBlastUpgrade.text = "Bio-Electric Blast $500";
+    heatWaveUpgrade.text = "Heat Wave $500";
+    forcePushUpgrade.text = "Force Push $500";
+    fireBallUpgrade.text = "Fireball $500";
+    freezeUpgrade.text = "Freeze $500";
+    acidShotUpgrade.text = "Acid Shot $500";
+    heatWaveUpgrade.style.stroke = 0xaaaaaa;
+    forcePushUpgrade.style.stroke = 0xaaaaaa;
+    fireBallUpgrade.style.stroke = 0xaaaaaa;
+    freezeUpgrade.style.stroke = 0xaaaaaa;
+    acidShotUpgrade.style.stroke = 0xaaaaaa;
+    acidShotUpgrade.style.stroke = 0xaaaaaa;
 }
 
+// Go back to start screen
 function restartGame()
 {
     startScene.visible = true;
@@ -464,6 +508,7 @@ function restartGame()
     pauseMenu.visible = false;
 }
 
+// Update function
 function gameLoop()
 {
     if (paused) return;
@@ -732,19 +777,19 @@ function gameLoop()
                         z.health -= forcePushDamage;
                         if(direction == "north")
                         {
-                            z.y -= 50;
+                            z.y -= knockBack;
                         }
                         if(direction == "south")
                         {
-                            z.y += 50;
+                            z.y += knockBack;
                         }
                         if(direction == "east")
                         {
-                            z.x += 50;
+                            z.x += knockBack;
                         }
                         if(direction == "west")
                         {
-                            z.x -= 50;
+                            z.x -= knockBack;
                         }
                         break;
                     // High Damage with Short Burn Effect
@@ -762,8 +807,8 @@ function gameLoop()
                     // Medium Damage with Long Burn Effect
                     case "acidshot":
                         z.health -= acidShotDamage;
-                        z.onFire = true;
-                        z.burnTimer = 5;
+                        z.onAcid = true;
+                        z.acidTimer = 5;
                         break;
                 }
                 
@@ -800,10 +845,12 @@ function gameLoop()
             {
                 z.burnTimer -= (1/app.ticker.FPS);
                 z.health -= 0.2;
+                z.tint = 0xFF6600;
             }
             else
             {
                 z.onFire = false;
+                z.tint = 0xFFFFFF;
             }
         }
         // If the zombie is frozen then slow their movement temporarily
@@ -813,11 +860,29 @@ function gameLoop()
             {
                 z.freezeTimer -= (1/app.ticker.FPS);
                 zombieSpeed = 1;
+                z.tint = 0x00FFFF;
             }
             else
             {
                 z.onIce = false;
                 zombieSpeed = 4;
+                z.tint = 0xFFFFFF;
+            }
+        }
+
+        // If the zombie is on acid melt them until the acid wears off
+        if(z.onAcid)
+        {
+            if(z.acidTimer > 0)
+            {
+                z.acidTimer -= (1/app.ticker.FPS);
+                z.health -= 0.5;
+                z.tint = 0x00FF00;
+            }
+            else
+            {
+                z.onAcid = false;
+                z.tint = 0xFFFFFF;
             }
         }
     }
@@ -1003,6 +1068,7 @@ function end()
     gameScene.visible = false;
 
     gameOverScoreLabel.text = `Your final score: ${score}`;
+    gameOverWaveLabel.text = `You survived to wave: ${wave}`;
 }
 
 function createLabelsAndButtons()
@@ -1129,23 +1195,23 @@ function createLabelsAndButtons()
 
     // 3 - set up `gameOverScene`
     // 3A - make game over text
-    let gameOverText = new PIXI.Text("Game Over!\n        :-O");
+    let gameOverText = new PIXI.Text("Game Over");
     textStyle = new PIXI.TextStyle({
-        fill: 0xFFFFFF,
+        fill: 0xaaffaa,
         fontSize: 64,
         fontFamily: "Futura",
-        stroke: 0xFF0000,
+        stroke: 0x00ff00,
         strokeThickness: 6
     });
     gameOverText.style = textStyle;
-    gameOverText.x = 100;
+    gameOverText.x = 150;
     gameOverText.y = sceneHeight/2 - 160;
     gameOverScene.addChild(gameOverText);
 
     // 3B - make "play again?" button
     let playAgainButton = new PIXI.Text("Play Again?");
     playAgainButton.style = buttonStyle;
-    playAgainButton.x = 150;
+    playAgainButton.x = 170;
     playAgainButton.y = sceneHeight - 100;
     playAgainButton.interactive = true;
     playAgainButton.buttonMode = true;
@@ -1154,18 +1220,30 @@ function createLabelsAndButtons()
     playAgainButton.on('pointerout',e=>e.currentTarget.alpha = 1.0); // ditto
     gameOverScene.addChild(playAgainButton);
 
-    // 3C - make game over score label
+    // make game over score label
     gameOverScoreLabel = new PIXI.Text();
     gameOverScoreLabel.style = new PIXI.TextStyle({
-        fill: 0xFFFFFF,
+        fill: 0xaaffaa,
         fontSize: 40,
         fontFamily: "Futura",
-        stroke: 0xFF0000,
+        stroke: 0x00ff00,
         strokeThickness: 6
     });
-    gameOverScoreLabel.x = 120;
-    gameOverScoreLabel.y = sceneHeight/2 + 40;
+    gameOverScoreLabel.x = 100;
+    gameOverScoreLabel.y = sceneHeight/2 + 20;
     gameOverScene.addChild(gameOverScoreLabel);
+
+    gameOverWaveLabel = new PIXI.Text();
+    gameOverWaveLabel.style = new PIXI.TextStyle({
+        fill: 0xaaffaa,
+        fontSize: 40,
+        fontFamily: "Futura",
+        stroke: 0x00ff00,
+        strokeThickness: 6
+    });
+    gameOverWaveLabel.x = 100;
+    gameOverWaveLabel.y = sceneHeight/2 + 60;
+    gameOverScene.addChild(gameOverWaveLabel);
 
     // Set up the Pause menu
     // Resume Button
@@ -1187,6 +1265,7 @@ function createLabelsAndButtons()
     resumeButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     pauseMenu.addChild(resumeButton);
 
+    // Upgrade Abilities Label
     let upgradeLabel = new PIXI.Text("Upgrades:");
     upgradeLabel.style = new PIXI.TextStyle({
         fill: 0xaaaaff,
@@ -1199,6 +1278,7 @@ function createLabelsAndButtons()
     upgradeLabel.y = 100;
     pauseMenu.addChild(upgradeLabel);
 
+    // Buy Abilities Label
     let buyLabel = new PIXI.Text("Buy Abilities:");
     buyLabel.style = new PIXI.TextStyle({
         fill: 0xffffff,
@@ -1211,6 +1291,7 @@ function createLabelsAndButtons()
     buyLabel.y = 100;
     pauseMenu.addChild(buyLabel);
 
+    // Cash Tracker
     cashLabel = new PIXI.Text(`Available Cash: ${score}`);
     cashLabel.style = new PIXI.TextStyle({
         fill: 0xffffff,
@@ -1223,10 +1304,12 @@ function createLabelsAndButtons()
     cashLabel.y = 20;
     pauseMenu.addChild(cashLabel);
 
+    // ***Buttons for Upgrading Abilities***
+    // Bio-Electric Blast Upgrade
     bioElectricBlastUpgrade = new PIXI.Text("Bio-Electric Blast $500");
     bioElectricBlastUpgrade.style = new PIXI.TextStyle({
         fill: 0xffffff,
-        fontSize: 15,
+        fontSize: 25,
         fontFamily: 'Futura',
         stroke: 0x00aaaa,
         strokeThickness: 6
@@ -1240,10 +1323,102 @@ function createLabelsAndButtons()
     bioElectricBlastUpgrade.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     pauseMenu.addChild(bioElectricBlastUpgrade);
 
+    // Heat Wave Upgrade
+    heatWaveUpgrade = new PIXI.Text("Heat Wave $500");
+    heatWaveUpgrade.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: 'Futura',
+        stroke: 0xaaaaaa,
+        strokeThickness: 6
+    });
+    heatWaveUpgrade.x = 50;
+    heatWaveUpgrade.y = 170;
+    heatWaveUpgrade.interactive = true;
+    heatWaveUpgrade.buttonMode = true;
+    heatWaveUpgrade.on("pointerup", e => upgradeAbility("heatwave"));
+    heatWaveUpgrade.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    heatWaveUpgrade.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(heatWaveUpgrade);
+
+    // Force Push Upgrade
+    forcePushUpgrade = new PIXI.Text("Force Push $500");
+    forcePushUpgrade.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: 'Futura',
+        stroke: 0xaaaaaa,
+        strokeThickness: 6
+    });
+    forcePushUpgrade.x = 50;
+    forcePushUpgrade.y = 200;
+    forcePushUpgrade.interactive = true;
+    forcePushUpgrade.buttonMode = true;
+    forcePushUpgrade.on("pointerup", e => upgradeAbility("forcepush"));
+    forcePushUpgrade.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    forcePushUpgrade.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(forcePushUpgrade);
+
+    // Fireball Upgrade
+    fireBallUpgrade = new PIXI.Text("Fireball $500");
+    fireBallUpgrade.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: 'Futura',
+        stroke: 0xaaaaaa,
+        strokeThickness: 6
+    });
+    fireBallUpgrade.x = 50;
+    fireBallUpgrade.y = 230;
+    fireBallUpgrade.interactive = true;
+    fireBallUpgrade.buttonMode = true;
+    fireBallUpgrade.on("pointerup", e => upgradeAbility("fireball"));
+    fireBallUpgrade.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    fireBallUpgrade.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(fireBallUpgrade);
+
+    // Freeze Upgrade
+    freezeUpgrade = new PIXI.Text("Freeze $500");
+    freezeUpgrade.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: 'Futura',
+        stroke: 0xaaaaaa,
+        strokeThickness: 6
+    });
+    freezeUpgrade.x = 50;
+    freezeUpgrade.y = 260;
+    freezeUpgrade.interactive = true;
+    freezeUpgrade.buttonMode = true;
+    freezeUpgrade.on("pointerup", e => upgradeAbility("freeze"));
+    freezeUpgrade.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    freezeUpgrade.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(freezeUpgrade);
+
+    // Acid Shot Upgrade
+    acidShotUpgrade = new PIXI.Text("Acid Shot $500");
+    acidShotUpgrade.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: 'Futura',
+        stroke: 0xaaaaaa,
+        strokeThickness: 6
+    });
+    acidShotUpgrade.x = 50;
+    acidShotUpgrade.y = 290;
+    acidShotUpgrade.interactive = true;
+    acidShotUpgrade.buttonMode = true;
+    acidShotUpgrade.on("pointerup", e => upgradeAbility("acidshot"));
+    acidShotUpgrade.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    acidShotUpgrade.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(acidShotUpgrade);
+
+    // ***Buttons for Buying Abilities***
+    // Heat Wave Buy
     heatWaveBuy = new PIXI.Text("Heat Wave $1000");
     heatWaveBuy.style = new PIXI.TextStyle({
         fill: 0xffffff,
-        fontSize: 15,
+        fontSize: 25,
         fontFamily: 'Futura',
         stroke: 0xff6600,
         strokeThickness: 6
@@ -1257,22 +1432,77 @@ function createLabelsAndButtons()
     heatWaveBuy.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     pauseMenu.addChild(heatWaveBuy);
 
+    // Force Push Buy
     forcePushBuy = new PIXI.Text("Force Push $1500");
     forcePushBuy.style = new PIXI.TextStyle({
         fill: 0xffffff,
-        fontSize: 15,
+        fontSize: 25,
         fontFamily: 'Futura',
         stroke: 0x555555,
         strokeThickness: 6
     });
     forcePushBuy.x = 350;
-    forcePushBuy.y = 160;
+    forcePushBuy.y = 170;
     forcePushBuy.interactive = true;
     forcePushBuy.buttonMode = true;
     forcePushBuy.on("pointerup", e => buyAbility("forcepush"));
     forcePushBuy.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
     forcePushBuy.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     pauseMenu.addChild(forcePushBuy);
+
+    // Fireball Buy
+    fireBallBuy = new PIXI.Text("Fireball $3500");
+    fireBallBuy.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: 'Futura',
+        stroke: 0xff3300,
+        strokeThickness: 6
+    });
+    fireBallBuy.x = 350;
+    fireBallBuy.y = 200;
+    fireBallBuy.interactive = true;
+    fireBallBuy.buttonMode = true;
+    fireBallBuy.on("pointerup", e => buyAbility("fireball"));
+    fireBallBuy.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    fireBallBuy.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(fireBallBuy);
+
+    // Freeze Buy
+    freezeBuy = new PIXI.Text("Freeze $2500");
+    freezeBuy.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: 'Futura',
+        stroke: 0x00ffff,
+        strokeThickness: 6
+    });
+    freezeBuy.x = 350;
+    freezeBuy.y = 230;
+    freezeBuy.interactive = true;
+    freezeBuy.buttonMode = true;
+    freezeBuy.on("pointerup", e => buyAbility("freeze"));
+    freezeBuy.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    freezeBuy.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(freezeBuy);
+
+    // Acid Shot Buy
+    acidShotBuy = new PIXI.Text("Acid Shot $3000");
+    acidShotBuy.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: 'Futura',
+        stroke: 0x00ff00,
+        strokeThickness: 6
+    });
+    acidShotBuy.x = 350;
+    acidShotBuy.y = 260;
+    acidShotBuy.interactive = true;
+    acidShotBuy.buttonMode = true;
+    acidShotBuy.on("pointerup", e => buyAbility("acidshot"));
+    acidShotBuy.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    acidShotBuy.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(acidShotBuy);
 }
 
 // Function for Upgrades
@@ -1285,8 +1515,69 @@ function upgradeAbility(ability)
             {
                 score -= bioElectricBlastCost * bioElectricBlastLevel;
                 bioElectricBlastLevel++;
-                bioElectricBlastDamage += 5;
+                bioElectricBlastDamage += 10;
                 bioElectricBlastUpgrade.text = `Bio-Electric Blast $${bioElectricBlastCost * bioElectricBlastLevel}`;
+            }
+            break;
+        case "heatwave":
+            if(unlockedSpells.includes("heatwave"))
+            {
+                if(score >= heatWaveCost * heatWaveLevel && heatWaveLevel != 10)
+                {
+                    score -= heatWaveCost * heatWaveLevel;
+                    heatWaveLevel++;
+                    heatWaveDamage += 10;
+                    heatWaveUpgrade.text = `Heat Wave $${heatWaveCost * heatWaveLevel}`;
+                }
+            }
+            break;
+        case "forcepush":
+            if(unlockedSpells.includes("forcepush"))
+            {
+                if(score >= forcePushCost * forcePushLevel && forcePushLevel != 10)
+                {
+                    score -= forcePushCost * forcePushLevel;
+                    forcePushLevel++;
+                    forcePushDamage += 10;
+                    knockBack += 10;
+                    forcePushUpgrade.text = `Force Push $${forcePushCost * forcePushLevel}`;
+                }
+            }
+            break;
+        case "fireball":
+            if(unlockedSpells.includes("fireball"))
+            {
+                if(score >= fireBallCost * fireBallLevel && fireBallLevel != 10)
+                {
+                    score -= fireBallCost * fireBallLevel;
+                    fireBallLevel++;
+                    fireBallDamage += 10;
+                    fireBallUpgrade.text = `Fireball $${fireBallCost * fireBallLevel}`;
+                }
+            }
+            break;
+        case "freeze":
+            if(unlockedSpells.includes("freeze"))
+            {
+                if(score >= freezeCost * freezeLevel && freezeLevel != 10)
+                {
+                    score -= freezeCost * freezeLevel;
+                    freezeLevel++;
+                    freezeDamage += 10;
+                    freezeUpgrade.text = `Freeze $${freezeCost * freezeLevel}`;
+                }
+            }
+            break;
+        case "acidshot":
+            if(unlockedSpells.includes("acidshot"))
+            {
+                if(score >= acidShotCost * acidShotLevel && acidShotLevel != 10)
+                {
+                    score -= acidShotCost * acidShotLevel;
+                    acidShotLevel++;
+                    acidShotDamage += 10;
+                    facidShotUpgrade.text = `Acid Shot $${acidShotCost * acidShotLevel}`;
+                }
             }
             break;
     }
@@ -1304,6 +1595,7 @@ function buyAbility(ability)
             {
                 score-= 1000;
                 unlockedSpells.push("heatwave");
+                heatWaveUpgrade.style.stroke = 0xFF6600;
             }
             break;
         case "forcepush":
@@ -1311,6 +1603,31 @@ function buyAbility(ability)
             {
                 score-= 1500;
                 unlockedSpells.push("forcepush");
+                forcePushUpgrade.style.stroke = 0x555555;
+            }
+            break;
+        case "fireball":
+            if(score >= 3500)
+            {
+                score-= 3500;
+                unlockedSpells.push("fireball");
+                fireBallUpgrade.style.stroke = 0xff3300;
+            }
+            break;
+        case "freeze":
+            if(score >= 2500)
+            {
+                score-= 2500;
+                unlockedSpells.push("freeze");
+                freezeUpgrade.style.stroke = 0x00ffff
+            }
+            break;
+        case "acidshot":
+            if(score >= 3000)
+            {
+                score-= 3000;
+                unlockedSpells.push("acidshot");
+                acidShotUpgrade.style.stroke = 0x00ff00;
             }
             break;
     }
