@@ -29,11 +29,12 @@ let stage;
 
 // game variables
 let startScene;
-let gameScene,human,scoreLabel,lifeLabel,waveLabel,abilityLabel,zombieCountLabel,shootSound,hitSound,fireballSound;
+let gameScene,human,scoreLabel,lifeLabel,waveLabel,abilityLabel,zombieCountLabel;
 let gameOverScene,gameOverScoreLabel,gameOverWaveLabel;
 let pauseMenu,bioElectricBlastUpgrade,heatWaveUpgrade,heatWaveBuy,forcePushUpgrade,forcePushBuy,fireBallUpgrade,fireBallBuy,freezeUpgrade,freezeBuy,acidShotUpgrade,acidShotBuy;
 let instructionScene,instructions,controlsMovement,controlsButtons,controlsPause,controlsSpell;
 let cashLabel;
+let bioElectricBlastSound,heatWaveSound,forcePushSound,fireBallSound,freezeSound,acidShotSound;
 
 let paused = true;
 let playerSheet = {};
@@ -330,6 +331,7 @@ function createSpell(x, y)
                 spell.fwd = {x: -1, y: 0};
                 spell.textures = spellSheet.bioElectricWest;
             }
+            bioElectricBlastSound.play();
             break;
         case "heatwave":
             if(direction == "north")
@@ -352,6 +354,7 @@ function createSpell(x, y)
                 spell.fwd = {x: -1, y: 0};
                 spell.textures = spellSheet.heatWaveWest;
             }
+            heatWaveSound.play();
             break;
         case "forcepush":
             if(direction == "north")
@@ -374,6 +377,7 @@ function createSpell(x, y)
                 spell.fwd = {x: -1, y: 0};
                 spell.textures = spellSheet.forcePushWest;
             }
+            forcePushSound.play();
             break;
         case "fireball":
             if(direction == "north")
@@ -396,6 +400,7 @@ function createSpell(x, y)
                 spell.fwd = {x: -1, y: 0};
                 spell.textures = spellSheet.fireBallWest;
             }
+            fireBallSound.play();
             break;
         case "freeze":
             if(direction == "north")
@@ -418,6 +423,7 @@ function createSpell(x, y)
                 spell.fwd = {x: -1, y: 0};
                 spell.textures = spellSheet.freezeWest;
             }
+            freezeSound.play();
             break;
         case "acidshot":
             if(direction == "north")
@@ -440,6 +446,7 @@ function createSpell(x, y)
                 spell.fwd = {x: -1, y: 0};
                 spell.textures = spellSheet.acidShotWest;
             }
+            acidShotSound.play();
             break;
     }
     spell.speed = 400;
@@ -1048,20 +1055,31 @@ function setup() {
     let barrier3 = new Barrier(400, sceneHeight - 128);
     barriers.push(barrier3);
     gameScene.addChild(barrier3);
-    /*
-	// #6 - Load Sounds
-    shootSound = new Howl({
-        src: ['sounds/shoot.wav']
+    
+	// Load Sounds
+    bioElectricBlastSound = new Howl({
+        src: ['sounds/bioelectricblast.mp3']
     });
 
-    hitSound = new Howl({
-        src: ['sounds/hit.mp3']
+    heatWaveSound = new Howl({
+        src: ['sounds/heatwave.mp3']
     });
 
-    fireballSound = new Howl({
+    forcePushSound = new Howl({
+        src: ['sounds/forcepush.mp3']
+    });
+
+    fireBallSound = new Howl({
         src: ['sounds/fireball.mp3']
     });
-	*/
+    
+    freezeSound = new Howl({
+        src: ['sounds/freeze.mp3']
+    });
+
+    acidShotSound = new Howl({
+        src: ['sounds/acidshot.mp3']
+    });
 }
 
 function end()
