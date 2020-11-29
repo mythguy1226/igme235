@@ -80,7 +80,7 @@ let heatWaveCost = 500;
 let forcePushCost = 500;
 let fireBallCost = 500;
 let freezeCost = 500;
-let acidShot = 500;
+let acidShotCost = 500;
 
 // Keep track of upgrades (max 10)
 let bioElectricBlastLevel = 1;
@@ -93,7 +93,6 @@ let acidShotLevel = 1;
 function keysDown(e)
 {
     keys[e.keyCode] = true;
-    console.log(e.keyCode);
 }
 
 function keysUp(e)
@@ -794,7 +793,7 @@ function gameLoop()
         // #5A - zombies and spells
         for(let s of spells)
         {
-            if(rectsIntersect(z, s))
+            if(circlesIntersect(z, s))
             {
                 // Make different effects on zombies based on the active spell
                 switch(activeSpell)
@@ -1152,7 +1151,7 @@ function createLabelsAndButtons()
     let buttonStyle = new PIXI.TextStyle({
         fill: 0xaaFFaa,
         fontSize: 48,
-        fontFamily: "Futura",
+        fontFamily: "Zombie",
         stroke: 0x00FF00,
         strokeThickness: 6
     });
@@ -1162,8 +1161,8 @@ function createLabelsAndButtons()
     let startLabel1 = new PIXI.Text("Mutation Genesis");
     startLabel1.style = new PIXI.TextStyle({
         fill: 0xaaFFaa,
-        fontSize: 72,
-        fontFamily: 'Futura',
+        fontSize: 60,
+        fontFamily: 'Zombie',
         stroke: 0x00FF00,
         strokeThickness: 6
     });
@@ -1176,19 +1175,19 @@ function createLabelsAndButtons()
     startLabel2.style = new PIXI.TextStyle({
         fill: 0xaaFFaa,
         fontSize: 40,
-        fontFamily: 'Futura',
+        fontFamily: 'Zombie',
         fontStyle: 'italic',
         stroke: 0x00FF00,
         strokeThickness: 6
     });
-    startLabel2.x = 165;
-    startLabel2.y = 300;
+    startLabel2.x = 135;
+    startLabel2.y = 280;
     startScene.addChild(startLabel2);
 
     // 1C - make the start game button
     let instructionButton = new PIXI.Text("Begin the Carnage");
     instructionButton.style = buttonStyle;
-    instructionButton.x = 100;
+    instructionButton.x = 80;
     instructionButton.y = sceneHeight - 120;
     instructionButton.interactive = true;
     instructionButton.buttonMode = true;
@@ -1287,7 +1286,7 @@ function createLabelsAndButtons()
     // 3B - make "play again?" button
     let playAgainButton = new PIXI.Text("Play Again?");
     playAgainButton.style = buttonStyle;
-    playAgainButton.x = 170;
+    playAgainButton.x = 150;
     playAgainButton.y = sceneHeight - 100;
     playAgainButton.interactive = true;
     playAgainButton.buttonMode = true;
@@ -1388,7 +1387,7 @@ function createLabelsAndButtons()
     // 1C - make the start game button
     let startButton = new PIXI.Text("Start Game");
     startButton.style = buttonStyle;
-    startButton.x = 200;
+    startButton.x = 180;
     startButton.y = sceneHeight - 120;
     startButton.interactive = true;
     startButton.buttonMode = true;
@@ -1739,7 +1738,7 @@ function upgradeAbility(ability)
                     acidShotLevel++;
                     acidShotDamage += 10;
                     acidTime++;
-                    facidShotUpgrade.text = `Acid Shot $${acidShotCost * acidShotLevel}`;
+                    acidShotUpgrade.text = `Acid Shot $${acidShotCost * acidShotLevel}`;
                 }
             }
             break;
