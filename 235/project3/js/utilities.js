@@ -22,6 +22,21 @@
       var bb = b.getBounds();
       return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
   }
+
+  // bounding circle collision
+  function circlesIntersect(a,b)
+  {
+      let objectA = a.getBounds();
+      let objectB = b.getBounds();
+      let radiusa = objectA.width/3; // Radius seems to be a bit large for accurate collisions
+      let radiusb = objectB.width/3; // to fix this I will just decrease radius
+      let distance = Math.sqrt(Math.pow(objectB.x-objectA.x,2) + Math.pow(objectB.y-objectA.y,2));
+      if(distance < radiusa + radiusb)
+      {
+        return true;
+      }
+      return false;
+  }
   
   // these 2 helpers are used by classes.js
   function getRandomUnitVector(){

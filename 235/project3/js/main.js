@@ -35,6 +35,7 @@ let pauseMenu,bioElectricBlastUpgrade,heatWaveUpgrade,heatWaveBuy,forcePushUpgra
 let instructionScene,instructions,controlsMovement,controlsButtons,controlsPause,controlsSpell;
 let cashLabel;
 let bioElectricBlastSound,heatWaveSound,forcePushSound,fireBallSound,freezeSound,acidShotSound;
+let zombieMoan1Sound,zombieMoan2Sound,zombieMoan3Sound,zombieHurtSound,playerDeathSound;
 
 let paused = true;
 let playerSheet = {};
@@ -53,6 +54,7 @@ let score = 0;
 let unlockedSpells = ["bioelectricblast"];
 let activeSpell = "bioelectricblast";
 let cooldownTimer = 0;
+let moanTimer = 0;
 let zombieSpeed = 4;
 
 let zombieCount = 1;
@@ -532,6 +534,28 @@ function gameLoop()
         cooldownTimer -= (1/app.ticker.FPS);
     }
 
+    // Logic for playing ambient zombie sounds
+    if(moanTimer > 0)
+    {
+        moanTimer -= (1/app.ticker.FPS);
+    }
+    else
+    {
+        moanTimer = 8;
+        switch(getRandom(0, 2))
+        {
+            case 0:
+                zombieMoan1Sound.play();
+                break;
+            case 1:
+                zombieMoan2Sound.play();
+                break;
+            default:
+                zombieMoan1Sound.play();
+                break;
+        }
+    }
+
     // *** User Input *** 
     // W
     if(keys["87"])
@@ -824,11 +848,13 @@ function gameLoop()
                         z.acidTimer = acidTime;
                         break;
                 }
+                zombieHurtSound.play();
                 
                 // Kill zombie and add points
                 if(z.health <= 0)
                 {
                     gameScene.removeChild(z);
+                    zombieMoan3Sound.play();
                     z.isAlive = false;
                     increaseScoreBy(100);
                     zombieCountLabel.text = `Zombie Count: ${zombies.length}`;
@@ -841,10 +867,10 @@ function gameLoop()
             if(s.y > sceneHeight + 30) s.isAlive = false;
         }
 
-        // #5B - circles and ship
-        if(z.isAlive && rectsIntersect(z, player))
+        // Zombies and player
+        if(z.isAlive && circlesIntersect(z, player))
         {
-            decreaseLifeBy(1);
+            decreaseLifeBy(0.5);
         }
     }
 
@@ -911,6 +937,7 @@ function gameLoop()
 	// *** Is game over? ***
 	if (life <= 0){
         end();
+        playerDeathSound.play();
         return;
     }
 
@@ -1079,6 +1106,26 @@ function setup() {
 
     acidShotSound = new Howl({
         src: ['sounds/acidshot.mp3']
+    });
+
+    zombieHurtSound = new Howl({
+        src: ['sounds/zombieHurt.mp3']
+    });
+
+    zombieMoan1Sound = new Howl({
+        src: ['sounds/zombieMoan1.mp3']
+    });
+
+    zombieMoan2Sound = new Howl({
+        src: ['sounds/zombieMoan2.mp3']
+    });
+
+    zombieMoan3Sound = new Howl({
+        src: ['sounds/zombieMoan3.mp3']
+    });
+
+    playerDeathSound = new Howl({
+        src: ['sounds/playerDeath.mp3']
     });
 }
 
