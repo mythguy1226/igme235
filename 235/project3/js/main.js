@@ -36,6 +36,7 @@ let instructionScene,instructions,controlsMovement,controlsButtons,controlsPause
 let cashLabel;
 let bioElectricBlastSound,heatWaveSound,forcePushSound,fireBallSound,freezeSound,acidShotSound;
 let zombieMoan1Sound,zombieMoan2Sound,zombieMoan3Sound,zombieHurtSound,playerDeathSound;
+let screenButtonSound,shopButtonSound;
 
 let paused = true;
 let playerSheet = {};
@@ -70,7 +71,7 @@ let freezeTime = 2;
 let bioElectricBlastDamage = 20;
 let heatWaveDamage = 10;
 let forcePushDamage = 20;
-let fireBallDamage = 50;
+let fireBallDamage = 80;
 let freezeDamage = 40;
 let acidShotDamage = 35;
 
@@ -483,6 +484,8 @@ function startGame()
     abilityLabel.text = "Bio-Electric Blast";
     abilityLabel.style.stroke = 0x00aaaa;
 
+    screenButtonSound.play();
+
     // Reset Ability variables
     bioElectricBlastLevel = 1;
     heatWaveLevel = 1;
@@ -520,6 +523,7 @@ function restartGame()
     gameOverScene.visible = false;
     gameScene.visible = false;
     pauseMenu.visible = false;
+    screenButtonSound.play();
 }
 
 // Update function
@@ -1030,7 +1034,7 @@ function activateSpell(x, y)
 
 function setup() {
 	stage = app.stage;
-	// #1 - Create the `start` scene
+	// Create the `start` scene
     startScene = new PIXI.Container();
     stage.addChild(startScene);
 
@@ -1040,7 +1044,7 @@ function setup() {
     let background = new PIXI.Sprite(backgroundTexture2);
     startScene.addChild(background);
 
-    // #2 - Create the main `game` scene and make it invisible
+    // Create the main `game` scene and make it invisible
     gameScene = new PIXI.Container();
     gameScene.visible = false;
     stage.addChild(gameScene);
@@ -1051,7 +1055,7 @@ function setup() {
     let gameBackground = new PIXI.Sprite(floorTexture2);
     gameScene.addChild(gameBackground);
 
-    // #3 - Create the `gameOver` scene and make it invisible
+    // Create the `gameOver` scene and make it invisible
     gameOverScene = new PIXI.Container();
     gameOverScene.visible = false;
     stage.addChild(gameOverScene);
@@ -1066,7 +1070,7 @@ function setup() {
     instructionScene.visible = false;
     stage.addChild(instructionScene);
 
-    // #4 - Create labels for all scenes
+    // Create labels for all scenes
     createLabelsAndButtons();
 
     // Set the barriers
@@ -1125,6 +1129,14 @@ function setup() {
 
     playerDeathSound = new Howl({
         src: ['sounds/playerDeath.mp3']
+    });
+
+    screenButtonSound = new Howl({
+        src: ['sounds/screenButton.mp3']
+    });
+
+    shopButtonSound = new Howl({
+        src: ['sounds/shopButton.mp3']
     });
 }
 
@@ -1745,6 +1757,7 @@ function upgradeAbility(ability)
     }
     scoreLabel.text = `Score: ${score}`;
     cashLabel.text = `Available Cash: ${score}`;
+    shopButtonSound.play();
 }
 
 // Function for Buying new Abilities
@@ -1796,6 +1809,7 @@ function buyAbility(ability)
     }
     scoreLabel.text = `Score: ${score}`;
     cashLabel.text = `Available Cash: ${score}`;
+    shopButtonSound.play();
 }
 
 // Function for resuming the game
@@ -1806,6 +1820,7 @@ function resumeGame()
     pauseMenu.visible = false;
     gameOverScene.visible = false;
     paused = false;
+    screenButtonSound.play();
 }
 
 // Function for giving instructions before game
@@ -1816,6 +1831,7 @@ function giveInstructions()
     gameScene.visible = false;
     pauseMenu.visible = false;
     gameOverScene.visible = false;
+    screenButtonSound.play();
 }
 // Function for increasing score
 function increaseScoreBy(value)

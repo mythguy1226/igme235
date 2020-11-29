@@ -12,7 +12,7 @@ h1
 }
 @font-face {
     font-family: "Zombie";
-    src: url("../fonts/ZOMBIE.TTF");
+    src: url("../fonts/ZOMBIE.woff");
 }
 #useFont
 {
