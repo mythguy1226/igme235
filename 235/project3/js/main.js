@@ -988,7 +988,15 @@ function gameLoop()
 // Spawns the next wave
 function nextWave()
 {
-    zombieCount += 5;
+    // Stop zombie increase at this to prevent crashing
+    if(zombieCount <= 40)
+    {
+        zombieCount += 5;
+    }
+    else // To keep up the challenge increase zombie speed
+    {
+        zombieSpeed += 0.5;
+    }
     increaseWaveBy(1);
 
     // Spawn the new zombies
@@ -1398,7 +1406,7 @@ function createLabelsAndButtons()
     controlsMovement.y = 220;
     instructionScene.addChild(controlsMovement);
 
-    controlsButtons= new PIXI.Text("Switch Ability: E");
+    controlsButtons= new PIXI.Text("Switch Ability: E (Or Use Button)");
     controlsButtons.style = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 25,
@@ -1721,6 +1729,10 @@ function upgradeAbility(ability)
                 bioElectricBlastLevel++;
                 bioElectricBlastDamage += 15;
                 bioElectricBlastUpgrade.text = `Bio-Electric Blast $${bioElectricBlastCost * bioElectricBlastLevel}`;
+                if(bioElectricBlastLevel == 10)
+                {
+                    bioElectricBlastUpgrade.text = `Bio-Electric Blast MAX`;
+                }
             }
             break;
         case "heatwave":
@@ -1734,6 +1746,10 @@ function upgradeAbility(ability)
                     heatWaveDamage += 5;
                     burnTime++;
                     heatWaveUpgrade.text = `Heat Wave $${heatWaveCost * heatWaveLevel}`;
+                    if(heatWaveLevel == 10)
+                    {
+                        heatWaveUpgrade.text = `Heat Wave MAX`;
+                    }
                 }
             }
             break;
@@ -1748,6 +1764,10 @@ function upgradeAbility(ability)
                     forcePushDamage += 10;
                     knockBack += 10;
                     forcePushUpgrade.text = `Force Push $${forcePushCost * forcePushLevel}`;
+                    if(forcePushLevel == 10)
+                    {
+                        forcePushUpgrade.text = `Force Push MAX`;
+                    }
                 }
             }
             break;
@@ -1761,6 +1781,10 @@ function upgradeAbility(ability)
                     fireBallLevel++;
                     fireBallDamage += 10;
                     fireBallUpgrade.text = `Fireball $${fireBallCost * fireBallLevel}`;
+                    if(fireBallLevel == 10)
+                    {
+                        fireBallUpgrade.text = `Fireball MAX`;
+                    }
                 }
             }
             break;
@@ -1775,6 +1799,10 @@ function upgradeAbility(ability)
                     freezeDamage += 10;
                     freezeTime++;
                     freezeUpgrade.text = `Freeze $${freezeCost * freezeLevel}`;
+                    if(freezeLevel == 10)
+                    {
+                        freezeUpgrade.text = `Freeze MAX`;
+                    }
                 }
             }
             break;
@@ -1789,6 +1817,10 @@ function upgradeAbility(ability)
                     acidShotDamage += 10;
                     acidTime++;
                     acidShotUpgrade.text = `Acid Shot $${acidShotCost * acidShotLevel}`;
+                    if(acidShotLevel == 10)
+                    {
+                        acidShotUpgrade.text = `Acid Shot MAX`;
+                    }
                 }
             }
             break;
