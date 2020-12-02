@@ -14,7 +14,7 @@ body
 {
     display: grid;
     width: 70%;
-    grid-template-rows: 65vw 40vw 1fr 45vw;
+    grid-template-rows: 65vw 40vw 1fr 15vw;
     grid-template-columns: 1fr;
     padding: 3rem;
 }
@@ -141,6 +141,10 @@ p
     border-top: 15px solid #001121;
     background-color: #706563;
 }
+#resume a
+{
+    font-size: 1.5vw;
+}
 
 #gallery a
 {
@@ -195,8 +199,12 @@ footer
     .grid
     {
         width: 100%;
-        grid-template-rows: 65vw 60vw 1fr 45vw;
+        grid-template-rows: 65vw 60vw 1fr 30vw;
         grid-template-columns: 1fr;
         padding: 1rem;
+    }
+    #resume a
+    {
+        font-size: 3vw;
     }
 }
