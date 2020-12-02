@@ -27,7 +27,7 @@ window.addEventListener("keyup", keysUp);
 // aliases
 let stage;
 
-// game variables
+// Game variables
 let startScene;
 let gameScene,human,scoreLabel,lifeLabel,waveLabel,abilityLabel,zombieCountLabel;
 let gameOverScene,gameOverScoreLabel,gameOverWaveLabel;
@@ -56,6 +56,7 @@ let unlockedSpells = ["bioelectricblast"];
 let activeSpell = "bioelectricblast";
 let cooldownTimer = 0;
 let moanTimer = 0;
+let changeTimer = 0;
 let zombieSpeed = 4;
 
 let zombieCount = 1;
@@ -91,26 +92,32 @@ let fireBallLevel = 1;
 let freezeLevel = 1;
 let acidShotLevel = 1;
 
+// Function that stores keydown inputs
 function keysDown(e)
 {
     keys[e.keyCode] = true;
 }
 
+// Function that stores keyup inputs
 function keysUp(e)
 {
     keys[e.keyCode] = false;
 }
 
+// Function ran when loading is done
 function doneLoading(e)
 {
+    // Create all sprite sheets and player
     createPlayerSheet();
     createPlayer();
     createZombieSheet();
     createSpellSheet();
 
+    // Start the game loop
     app.ticker.add(gameLoop);
 }
 
+// Function that creates the different animations for player
 function createPlayerSheet()
 {
     let sheet = new PIXI.BaseTexture.from(app.loader.resources["human"].url);
@@ -166,6 +173,8 @@ function createPlayerSheet()
         new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, h * 3, w, h))
     ];
 }
+
+// Function that creates the different animations for the zombies
 function createZombieSheet()
 {
     let sheet = new PIXI.BaseTexture.from(app.loader.resources["zombie"].url);
@@ -185,6 +194,8 @@ function createZombieSheet()
         new PIXI.Texture(sheet, new PIXI.Rectangle(w * 3, 0, w, h))
     ];
 }
+
+// Function that creates the different animations for different spells
 function createSpellSheet()
 {
     let sheet = new PIXI.BaseTexture.from(app.loader.resources["spells"].url);
@@ -276,6 +287,7 @@ function createSpellSheet()
     ];
 }
 
+// Creates the player
 function createPlayer()
 {
     player = new PIXI.AnimatedSprite(playerSheet.standSouth);
@@ -288,6 +300,7 @@ function createPlayer()
     player.play();
 }
 
+// Creates a zombie
 function createZombie(x, y)
 {
     let zombie = new PIXI.AnimatedSprite(zombieSheet.standNorth);
@@ -302,6 +315,8 @@ function createZombie(x, y)
     gameScene.addChild(zombie);
     zombie.play();
 }
+
+// Creates a spell
 function createSpell(x, y)
 {
     let spell = new PIXI.AnimatedSprite(spellSheet.bioElectricNorth);
@@ -567,8 +582,8 @@ function gameLoop()
         {
             player.textures = playerSheet.walkNorth;
             player.play();
-            direction = "north";
         }
+        direction = "north";
         player.y -= speed;
     }
 
@@ -579,8 +594,8 @@ function gameLoop()
         {
             player.textures = playerSheet.walkWest;
             player.play();
-            direction = "west";
         }
+        direction = "west";
         player.x -= speed;
     }
 
@@ -591,8 +606,8 @@ function gameLoop()
         {
             player.textures = playerSheet.walkSouth;
             player.play();
-            direction = "south";
         }
+        direction = "south";
         player.y += speed;
     }
 
@@ -603,10 +618,26 @@ function gameLoop()
         {
             player.textures = playerSheet.walkEast;
             player.play();
-            direction = "east";
         }
+        direction = "east";
         player.x += speed;
     }
+
+    // Timer for switching Abilities
+    if(changeTimer > 0)
+    {
+        changeTimer -= (1/app.ticker.FPS);
+    }
+    // E 
+    if(keys["69"])
+    {
+        if(changeTimer <= 0)
+        {
+            changeTimer = 0.1;
+            changeAbility();
+        }
+    }
+    
 
     // Space
     if(keys["32"])
@@ -665,7 +696,7 @@ function gameLoop()
     }
 
     // Pause
-    if(keys["80"])
+    if(keys["81"])
     {
         startScene.visible = false;
         gameScene.visible = false;
@@ -794,6 +825,7 @@ function gameLoop()
     // *** Check for Collisions ***
     for(let z of zombies)
     {
+        z.tint = 0xffffff;
         // #5A - zombies and spells
         for(let s of spells)
         {
@@ -864,6 +896,7 @@ function gameLoop()
                 }
                 gameScene.removeChild(s);
                 s.isAlive = false;
+                z.tint = 0xff0000;
             }
 
             if(s.y < -30) s.isAlive = false;
@@ -949,6 +982,7 @@ function gameLoop()
     {
         nextWave();
     }
+
 }
 
 // Spawns the next wave
@@ -997,6 +1031,7 @@ function nextWave()
     zombieCountLabel.text = `Zombie Count: ${zombieCount}`;
 }
 
+// Activate a spell
 function activateSpell(x, y)
 {
     if(paused) return;
@@ -1032,6 +1067,7 @@ function activateSpell(x, y)
     }
 }
 
+// Initial game setup
 function setup() {
 	stage = app.stage;
 	// Create the `start` scene
@@ -1140,6 +1176,7 @@ function setup() {
     });
 }
 
+// Function for when the game ends
 function end()
 {
     paused = true;
@@ -1158,13 +1195,14 @@ function end()
     gameOverWaveLabel.text = `You survived to wave: ${wave}`;
 }
 
+// Create GUI labels and buttons
 function createLabelsAndButtons()
 {
     let buttonStyle = new PIXI.TextStyle({
-        fill: 0xaaFFaa,
+        fill: 0xffffff,
         fontSize: 48,
         fontFamily: "Zombie",
-        stroke: 0x00FF00,
+        stroke: 0x00aa00,
         strokeThickness: 6
     });
 
@@ -1172,10 +1210,10 @@ function createLabelsAndButtons()
     // 1A - make the top start label
     let startLabel1 = new PIXI.Text("Mutation Genesis");
     startLabel1.style = new PIXI.TextStyle({
-        fill: 0xaaFFaa,
+        fill: 0xffffff,
         fontSize: 60,
         fontFamily: 'Zombie',
-        stroke: 0x00FF00,
+        stroke: 0x00aa00,
         strokeThickness: 6
     });
     startLabel1.x = 30;
@@ -1185,11 +1223,11 @@ function createLabelsAndButtons()
     // 1B - make the middle start label
     let startLabel2 = new PIXI.Text("Can you Survive\nthe Apocalypse?");
     startLabel2.style = new PIXI.TextStyle({
-        fill: 0xaaFFaa,
+        fill: 0xffffff,
         fontSize: 40,
         fontFamily: 'Zombie',
         fontStyle: 'italic',
-        stroke: 0x00FF00,
+        stroke: 0x00aa00,
         strokeThickness: 6
     });
     startLabel2.x = 135;
@@ -1275,7 +1313,7 @@ function createLabelsAndButtons()
     abilityButton.y = 20;
     abilityButton.interactive = true;
     abilityButton.buttonMode = true;
-    abilityButton.on("pointerup", changeAbility); // startGame is a function reference
+    abilityButton.on("pointerup", changeAbility);
     abilityButton.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
     abilityButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     gameScene.addChild(abilityButton);
@@ -1284,10 +1322,10 @@ function createLabelsAndButtons()
     // 3A - make game over text
     let gameOverText = new PIXI.Text("Game Over");
     textStyle = new PIXI.TextStyle({
-        fill: 0xaaffaa,
+        fill: 0xffffff,
         fontSize: 64,
         fontFamily: "Futura",
-        stroke: 0x00ff00,
+        stroke: 0x00aa00,
         strokeThickness: 6
     });
     gameOverText.style = textStyle;
@@ -1302,7 +1340,7 @@ function createLabelsAndButtons()
     playAgainButton.y = sceneHeight - 100;
     playAgainButton.interactive = true;
     playAgainButton.buttonMode = true;
-    playAgainButton.on("pointerup",restartGame); // startGame is a function reference
+    playAgainButton.on("pointerup",restartGame); 
     playAgainButton.on('pointerover',e=>e.target.alpha = 0.7); // concise arrow function with no brackets
     playAgainButton.on('pointerout',e=>e.currentTarget.alpha = 1.0); // ditto
     gameOverScene.addChild(playAgainButton);
@@ -1310,10 +1348,10 @@ function createLabelsAndButtons()
     // make game over score label
     gameOverScoreLabel = new PIXI.Text();
     gameOverScoreLabel.style = new PIXI.TextStyle({
-        fill: 0xaaffaa,
+        fill: 0xffffff,
         fontSize: 40,
         fontFamily: "Futura",
-        stroke: 0x00ff00,
+        stroke: 0x00aa00,
         strokeThickness: 6
     });
     gameOverScoreLabel.x = 100;
@@ -1322,10 +1360,10 @@ function createLabelsAndButtons()
 
     gameOverWaveLabel = new PIXI.Text();
     gameOverWaveLabel.style = new PIXI.TextStyle({
-        fill: 0xaaffaa,
+        fill: 0xffffff,
         fontSize: 40,
         fontFamily: "Futura",
-        stroke: 0x00ff00,
+        stroke: 0x00aa00,
         strokeThickness: 6
     });
     gameOverWaveLabel.x = 100;
@@ -1360,7 +1398,7 @@ function createLabelsAndButtons()
     controlsMovement.y = 220;
     instructionScene.addChild(controlsMovement);
 
-    controlsButtons= new PIXI.Text("Button Controls: Mouse");
+    controlsButtons= new PIXI.Text("Switch Ability: E");
     controlsButtons.style = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 25,
@@ -1372,7 +1410,7 @@ function createLabelsAndButtons()
     controlsButtons.y = 280;
     instructionScene.addChild(controlsButtons);
 
-    controlsPause = new PIXI.Text("Controls to Pause: P");
+    controlsPause = new PIXI.Text("Controls to Pause: Q");
     controlsPause.style = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 25,
@@ -1384,7 +1422,7 @@ function createLabelsAndButtons()
     controlsPause.y = 340;
     instructionScene.addChild(controlsPause);
 
-    controlsSpell= new PIXI.Text("Activate Spell: Space");
+    controlsSpell= new PIXI.Text("Activate Ability: Space");
     controlsSpell.style = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 25,
@@ -1423,7 +1461,7 @@ function createLabelsAndButtons()
     resumeButton.y = 20;
     resumeButton.interactive = true;
     resumeButton.buttonMode = true;
-    resumeButton.on("pointerup", resumeGame); // startGame is a function reference
+    resumeButton.on("pointerup", resumeGame);
     resumeButton.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
     resumeButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     pauseMenu.addChild(resumeButton);
