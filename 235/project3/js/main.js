@@ -569,7 +569,7 @@ function gameLoop()
                 zombieMoan2Sound.play();
                 break;
             default:
-                zombieMoan1Sound.play();
+                zombieMoan2Sound.play();
                 break;
         }
     }
@@ -623,7 +623,9 @@ function gameLoop()
         player.x += speed;
     }
 
-    // Timer for switching Abilities
+    // Timer for switching Abilities using hotkey
+    // Timer is meant to give user more control rather than
+    // rapidly cycling through the list of spells
     if(changeTimer > 0)
     {
         changeTimer -= (1/app.ticker.FPS);
@@ -633,7 +635,7 @@ function gameLoop()
     {
         if(changeTimer <= 0)
         {
-            changeTimer = 0.1;
+            changeTimer = 0.5;
             changeAbility();
         }
     }
@@ -899,6 +901,7 @@ function gameLoop()
                 z.tint = 0xff0000;
             }
 
+            // Get rid of spells that go out of bounds
             if(s.y < -30) s.isAlive = false;
             if(s.y > sceneHeight + 30) s.isAlive = false;
         }
@@ -1254,7 +1257,7 @@ function createLabelsAndButtons()
     instructionButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     startScene.addChild(instructionButton);
 
-    // 2 - set up 'gameScene'
+    // set up 'gameScene'
     let textStyle = new PIXI.TextStyle({
         fill: 0xFFFFFF,
         fontSize: 18,
@@ -1379,65 +1382,43 @@ function createLabelsAndButtons()
     gameOverScene.addChild(gameOverWaveLabel);
 
     // Set up the Instructions Scene
+    let instructionsStyle = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 25,
+        fontFamily: "Futura",
+        stroke: 0x00aa00,
+        strokeThickness: 3
+    });
     instructions = new PIXI.Text("Objective: The point of the game is to\n"
                                + "survive as long as possible in the zombie\n"
                                + "apocalypse. Buy and Upgrade Abilities to aid\n"
                                + "in facing endless waves of the undead");
-    instructions.style = new PIXI.TextStyle({
-        fill: 0xffffff,
-        fontSize: 25,
-        fontFamily: "Futura",
-        stroke: 0x00aa00,
-        strokeThickness: 3
-    });
+    instructions.style = instructionsStyle;
     instructions.x = 100;
     instructions.y = 40;
     instructionScene.addChild(instructions);
 
+    // *** Labels for Controls ***
     controlsMovement = new PIXI.Text("Movement Controls: WASD");
-    controlsMovement.style = new PIXI.TextStyle({
-        fill: 0xffffff,
-        fontSize: 25,
-        fontFamily: "Futura",
-        stroke: 0x00aa00,
-        strokeThickness: 3
-    });
+    controlsMovement.style = instructionsStyle;
     controlsMovement.x = 100;
     controlsMovement.y = 220;
     instructionScene.addChild(controlsMovement);
 
     controlsButtons= new PIXI.Text("Switch Ability: E (Or Use Button)");
-    controlsButtons.style = new PIXI.TextStyle({
-        fill: 0xffffff,
-        fontSize: 25,
-        fontFamily: "Futura",
-        stroke: 0x00aa00,
-        strokeThickness: 3
-    });
+    controlsButtons.style = instructionsStyle;
     controlsButtons.x = 100;
     controlsButtons.y = 280;
     instructionScene.addChild(controlsButtons);
 
     controlsPause = new PIXI.Text("Controls to Pause: Q");
-    controlsPause.style = new PIXI.TextStyle({
-        fill: 0xffffff,
-        fontSize: 25,
-        fontFamily: "Futura",
-        stroke: 0x00aa00,
-        strokeThickness: 3
-    });
+    controlsPause.style = instructionsStyle;
     controlsPause.x = 100;
     controlsPause.y = 340;
     instructionScene.addChild(controlsPause);
 
     controlsSpell= new PIXI.Text("Activate Ability: Space");
-    controlsSpell.style = new PIXI.TextStyle({
-        fill: 0xffffff,
-        fontSize: 25,
-        fontFamily: "Futura",
-        stroke: 0x00aa00,
-        strokeThickness: 3
-    });
+    controlsSpell.style = instructionsStyle;
     controlsSpell.x = 100;
     controlsSpell.y = 400;
     instructionScene.addChild(controlsSpell);
@@ -1779,7 +1760,7 @@ function upgradeAbility(ability)
                 {
                     score -= fireBallCost * fireBallLevel;
                     fireBallLevel++;
-                    fireBallDamage += 10;
+                    fireBallDamage += 15;
                     fireBallUpgrade.text = `Fireball $${fireBallCost * fireBallLevel}`;
                     if(fireBallLevel == 10)
                     {
