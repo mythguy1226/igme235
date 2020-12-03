@@ -569,7 +569,7 @@ function gameLoop()
                 zombieMoan2Sound.play();
                 break;
             default:
-                zombieMoan2Sound.play();
+                zombieMoan1Sound.play();
                 break;
         }
     }
