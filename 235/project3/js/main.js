@@ -17,7 +17,6 @@ app.loader.add("human", "media/playerSpriteSheet.png");
 app.loader.add("zombie", "media/zombieSpriteSheet.png");
 app.loader.add("spells", "media/spellSpriteSheet.png");
 app.loader.add("barrier", "media/barrier.png");
-app.loader.onProgress.add(e => { console.log(`progress=${e.progress}`) });
 app.loader.onComplete.add(setup);
 app.loader.load(doneLoading);
 
