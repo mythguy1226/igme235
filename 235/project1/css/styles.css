@@ -14,7 +14,7 @@ body
 {
     display: grid;
     width: 70%;
-    grid-template-rows: 65vw 40vw 1fr 15vw;
+    grid-template-rows: 65vw 60vw 1fr 20vw;
     grid-template-columns: 1fr;
     padding: 3rem;
 }
@@ -110,8 +110,8 @@ p
     color: #001121;
     background-color: #00c9c6;
     text-align: center;
-    padding: 2vw 20vw;
-    font-size: 1.5vw;
+    padding: 20px 40px;
+    font-size: 24px;
     font-family: 'Fjalla One', sans-serif;
     overflow: scroll;
 }
@@ -157,7 +157,7 @@ p
     font-family: 'Secular One', sans-serif;
     font-size: 20px;
     transition: 1s ease;
-    margin-bottom: 10vw;
+    margin-bottom: 15vw;
 }
 
 #gallery a:hover 
@@ -182,7 +182,7 @@ footer
         background-color: #00c9c6;
         text-align: center;
         padding: 10px 20px;
-        font-size: 3vw;
+        font-size: 16px;
     }
     nav li a
     {
@@ -199,12 +199,23 @@ footer
     .grid
     {
         width: 100%;
-        grid-template-rows: 65vw 60vw 1fr 30vw;
+        grid-template-rows: 65vw 72vw 1fr 30vw;
         grid-template-columns: 1fr;
         padding: 1rem;
     }
     #resume a
     {
         font-size: 3vw;
+    }
+}
+@media (max-width: 1080px)
+{
+    p
+    {
+        color: #001121;
+        background-color: #00c9c6;
+        text-align: center;
+        padding: 10px 20px;
+        font-size: 16px;
     }
 }
