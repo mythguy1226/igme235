@@ -1,0 +1,221 @@
+/* Styles for Portfolio Page */
+body
+{
+    background-color: #001121;
+}
+.wrapper
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid
+{
+    display: grid;
+    width: 70%;
+    grid-template-rows: 65vw 60vw 1fr 20vw;
+    grid-template-columns: 1fr;
+    padding: 3rem;
+}
+nav
+{
+    border-bottom: solid 10px #3D52D5;
+    width: 100%;
+}
+nav ul
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+nav li a
+{
+    display: block;
+    background: #00c9c7;
+    padding: 1rem;
+    color: #001121;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Secular One', sans-serif;
+    font-size: 2rem;
+    transition: 1s ease;
+}
+
+nav li
+{
+    width: 25%;
+}
+
+nav a:hover 
+{
+	background: #001121;
+    color: #00c9c6;
+    transform:scale(1.1);
+}
+h1
+{
+    font-family: 'Secular One', sans-serif;
+    font-size: 4vw;
+    color: #00c9c6;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+h2
+{
+    font-family: 'Secular One', sans-serif;
+    color: #00c9c6;
+    text-align: center;
+    font-size: 2.5vw;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+header
+{
+    color: #00c9c6;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    grid-row: 1/2;
+    grid-column: 1/2;
+    background-color: #706563;
+    border-bottom: 15px solid #001121;
+}
+header img
+{
+    width: 25%;
+    height: auto;
+    border: solid 0.5rem #00c9c6;
+}
+
+#aboutme
+{
+    color: #00c9c6;
+    text-align: center;
+    grid-row: 2/3;
+    grid-column: 1/2;
+    border-top: 15px solid #001121;
+    border-bottom: 15px solid #001121;
+    background-color: #706563;
+}
+hr
+{
+    border: 3px solid #00A8E8; 
+}
+p
+{
+    color: #001121;
+    background-color: #00c9c6;
+    text-align: center;
+    padding: 20px 40px;
+    font-size: 24px;
+    font-family: 'Fjalla One', sans-serif;
+    overflow: scroll;
+}
+
+#gallery
+{
+    text-align: center;
+    grid-row: 3/4;
+    grid-column: 1/2;
+    border-top: 15px solid #001121;
+    border-bottom: 15px solid #001121;
+    background-color: #706563;
+}
+
+#gallery img
+{
+    width: 40%;
+    height: auto;
+    border: 1vw solid #090C9B;
+}
+
+#resume
+{
+    text-align: center;
+    grid-row: 4/5;
+    grid-column: 1/2;
+    border-top: 15px solid #001121;
+    background-color: #706563;
+}
+#resume a
+{
+    font-size: 1.5vw;
+}
+
+#gallery a
+{
+    display: block;
+    background: #3D52D5;
+    padding: 1vw;
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Secular One', sans-serif;
+    font-size: 20px;
+    transition: 1s ease;
+    margin-bottom: 15vw;
+}
+
+#gallery a:hover 
+{
+	background: #00A8E8;
+    color: #001121;
+    transform:scale(1.1);
+}
+
+footer
+{
+    border-top: solid 10px #3D52D5;
+    width: 100%;
+    background-color: #706563;
+}
+
+@media (max-width: 550px) 
+{
+	p
+    {
+        color: #001121;
+        background-color: #00c9c6;
+        text-align: center;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    nav li a
+    {
+        display: block;
+        background: #00c9c7;
+        padding: 1rem;
+        color: #001121;
+        text-decoration: none;
+        text-align: center;
+        font-family: 'Secular One', sans-serif;
+        font-size: 1rem;
+        transition: 1s ease;
+    }
+    .grid
+    {
+        width: 100%;
+        grid-template-rows: 65vw 72vw 1fr 30vw;
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+    #resume a
+    {
+        font-size: 3vw;
+    }
+}
+@media (max-width: 1080px)
+{
+    p
+    {
+        color: #001121;
+        background-color: #00c9c6;
+        text-align: center;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+}
