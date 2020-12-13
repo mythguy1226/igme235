@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles/about.css"> 
+    <title>Project 3 Proposal</title>
+</head>
+<body>
+    <header>
+        <h1>Project 3 Proposal</h1>
+    </header>
+    <div class="wrapper">
+        <main>
+            <h1>Mutation Genesis</h1>
+            <h2>I. High Concept</h2>
+            <p>
+                Similar to that of a zombie apocalypse game, but with a twist!
+                The player has special powers rather than a simple gun, it's like
+                an apocalyptic game met a magic dungeon crawler and came out with this.
+            </p>
+            <hr>
+            <h2>II. Genre</h2>
+            <p>
+                Gameplay Genre: Top-down Shooter<br>
+                IGN Genre: Action<br>
+            </p>
+            <hr>
+            <h2>III. Platform</h2>
+            <p>
+                Will be friendly with most screen-sizes but will mostly
+                be available across different desktops.
+            </p>
+            <hr>
+            <h2>IV. Story</h2>
+            <p>
+                It all started when a group of scientists were trying to find ways to force evolution on the human race
+                and enhance their natural abilities. They made a scientific breakthrough and it worked on their first patient,
+                but soon after they became deathly ill and mutated into the first zombie, along with it the beginning of something else.
+                In the outbreak of a Zombie Apocalypse you (the player) are a survivor who was experimented on before
+                the sudden outbreak of the virus. The effects of the virus on you had a rather unique effect mutating
+                you to have special abilities many would consider to be unnatural, but you seemed to have some 
+                natural immunity to the ill effects of the virus and you didnt deform. While the virus was able to mutate you
+                enhancing your biology, it deformed the rest of humanity leaving them as blood thirsty, and extremely contagious
+                zombies who's goal is to infect all survivors and bring an end to humanity. The mood of this game will be darker
+                and should really give off the impression that an apocalypse would to whoever is playing. The goal of the game
+                is to survive as long as possible without getting killed by the hordes of zombies coming for you. Progression in 
+                this game will be wave based where more zombies will spawn upon each wave.
+            </p>
+            <hr>
+            <h2>V. Esthetics</h2>
+            <p>
+                The overall look of this game will use simple 2D Pixel Graphics that will be
+                similar to an arcade style game.<br>
+                The sounds in this game will be simple, most likely some 8-bit and techno, and possibly
+                some ambient sounds to help set the mood even further. <br>
+                Types of sounds will include, sounds made by the player, some background sounds, sounds made
+                by the zombies, and perhaps some UI sounds.
+            </p>
+            <hr>
+            <h2>VI. Gameplay</h2>
+            <p>
+                <b>Mechanics:</b><br>
+                - Exploring the Map<br>
+                - Shooting Zombies<br>
+                - Unlocking Doors to other parts/sections of the map<br>
+                - Unlocking new Abilities: Accessed through shop which can be found through pause menu<br>
+                - Upgrading Abilities: Accessed through shop which can be found through pause menu<br>
+                <br>
+                <b>Controls:</b> <br>
+                - Movement: WASD<br>
+                - Using Selected Ability: Space Bar<br>
+                - Interacting with UI and Ability Selection: Mouse<br>
+                - Unlocks: Mouse<br>
+                - Pause Screen: P<br>
+                <br>
+                <b>Teaching the Game:</b><br>
+                The player will be introduced with an instructions screen when they click
+                on the start button which will force them to basically read it or acknowledge it
+                before playing the game.<br>
+                <br>
+                <b>Learning the Game:</b><br>
+                As the player goes throughout the game they will learn that they will need to keep their distance
+                to the enemies so that they don't get easily overwhelmed. As time goes on the waves will get harder
+                so the player is going to need to learn to upgrade their abilities or unlock new ones to develop their
+                own play style for surviving the longest. 
+            </p>
+            <hr>
+            <h2>VII. Screenshots/Mockups</h2>
+            <div class="screenshots">
+                <img alt="Gameplay" src="media/Gameplay_Mockup.JPG">
+                <img alt="Shop" src="media/Shop_Mockup.JPG">
+            </div>
+            <hr>
+            <h2>VIII. Other</h2>
+            <p>
+                I feel I discussed all the information needed in the other tabs
+            </p>
+            <hr>
+            <h2>IX. About the Developer</h2>
+            <p>
+                <b>Name:</b> Robert Reddick<br>
+                <b>Major:</b> Game Design and Development<br>
+                <b>Interests:</b> Programming, Level Design, and Game Mechanics<br>
+                <b>Skills:</b> Visual Studio, Visual Studio Code, Github, Photoshop, Maya, Monogame, and Unity<br>
+                <b>Languages:</b> C#, Java, Javascript, some Python, and HTML/CSS
+            </p>
+            <hr>
+            <br>
+            <h1>Documentation</h1>
+            <h2>Process</h2>
+            <h3>Creating Main Screens</h3>
+            <p>
+                I started this project off by creating the 4 main screens for the game 
+                which include, the main menu, instructions screen, gameplay screen, and the game over menu.
+                The Main Menu is just a hub to start at before going into the game to play, once the Player
+                clicks the button they are brought to the Instructions screen where the main objective and 
+                controls of the game are stated. The player can then start the game when they are done reading
+                by pressing the button. While in the game the user can see their current score, wave, health, and 
+                zombie count. The game over screen is not yet achievable because the player isnt made yet.
+            </p>
+            <br>
+            <h3>Creating Spritesheets</h3>
+            <p>
+                Now that screens are made, what needs to be created is the Spritesheets. I started with the player's 
+                Spritesheet because my next step is setting up the basic controls for the player. Using some free Assets
+                I used Photoshop to put together the spritesheet for the Player and the 4 different rotations/directions he can 
+                face. I did the same for the Zombie Spritesheet which also utilized free assets I found online. Lastly I had to create 
+                the Spell Spritesheet which I made completely on my own using Photoshop. I then exported the Spritesheets and loaded them
+                into the game.
+            </p>
+            <br>
+            <h3>Setting up Player Movement</h3>
+            <p>
+                Using the Player Spritesheet I set up in the previous step, I set up the different frames for the different
+                player animations. Once those were created I put player input responses into the game loop. Each time the player
+                switches directions they will face the direction they are moving and their direction variable will be updated. The different 
+                inputs used to make the player move are WASD.
+            </p>
+            <br>
+            <h3>Setting up Zombies</h3>
+            <p>
+                Using the Zombie Spritesheet, I set up the different frames for each direction the zombie faces when moving. In the game loop
+                I made the zombies move in response to the location of the player, and they will change directions based on the direction they
+                happen to be facing when seeking the player. When the zombie is created certain fields such as their health and location are 
+                stored in the object and then the zombie is pushed to an array storing all zombies.
+            </p>
+            <br>
+            <h3>Setting up Player Abilities</h3>
+            <p>
+                Now that both the Player and Zombie can move, the next step is making each Ability. There are 6 abilities with their own unique 
+                effect on zombies. The spell that will come out depends on the value of the variable holding the active spell. The default is 
+                bio-electric blast, which does normal damage to zombies. The other abilities are Heat Wave which damages zombies and sets them on
+                fire, Force Push which damages and knocks the zombies back a bit, Fireball which deals massive damage and sets the zombie on fire,
+                freeze which damages and slows zombie movement, and finally Acid Shot which melts the zombie over time. To achieve the burning effect
+                and freezing effect I set different timers using delta time and as long as the timer is running the corresponding effect will stay active 
+                on the zombie. I also used timers to make different cooldowns for each spell to prevent spell spam.
+            </p>
+            <br>
+            <h3>Collision Detection</h3>
+            <p>
+                At first I was using AABB Collision Detection but found it wasnt as accurate as I wanted it to be. To improve collisions I 
+                implemented my own method for Bounding Circle Collision Detection which takes a radius and if the two bounding circles 
+                overlap then a collison is present. This takes out the inaccuracies that came with two corners of the boxes touching because 
+                it didnt even look like the two were touching and it would have frustrated many players.
+            </p>
+            <br>
+            <h3>Implementing Ability Switch</h3>
+            <p>
+                Next step was making the mechanic for switching between abilities. I added a button to the top right of
+                the screen which is used to activate the ability switch and below it displays the current active ability. 
+                Using an array to hold all unlocked spells I got the current index of the active spell in the array and then moved to the 
+                next index in the array and set it as the new active ability. If the index went out of bounds then I set the index to 0 so 
+                it goes to the beginning of the array.
+            </p>
+            <br>
+            <h3>Creating Barriers</h3>
+            <p>
+                Using a Sprite I created in Photoshop I made a class for spawning Barriers in different locations on the map. 
+                There are 3 barriers which are all stored in an array for further use when Wave Progression is implemented. These
+                basically server as a spawn point for new zombies that come in during each wave. 
+            </p>
+            <br>
+            <h3>Implementing Wave Progression</h3>
+            <p>
+                First what I did for this step was I put a tracker in the game loop that constantly checks how many zombies are currently in the 
+                game. If there are none left meaning the zombies array is empty, then a new wave is ready to begin. 
+                Once the condition is met a method will activate which increases the zombie count and wave number. 
+                When the new wave starts the amount of zombies present that wave will be randomly spread among the 3 
+                barriers. To prevent a drop in FPS from too many zombies I capped the zombie count to 40 zombies but to keep up the challenge 
+                If the zombie cap is reached then every wave the zombies will begin to get faster.
+            </p>
+            <br>
+            <h3>Creating Pause Menu</h3>
+            <p>
+                Now that the main functions of the game are made the pause menu is ready to be made. This menu involves
+                a label that tells the player their current score which also tells them how much money they can use. It also 
+                includes a list of abilities they can upgrade and buy. By default all spells except bio-electric blast are locked 
+                so they are grayed out to indicate that. This menu can be activated using the Q key (Originally it was P but for more 
+                ease for the player I made it Q since their fingers are already close to that key)
+            </p>
+            <br>
+            <h3>Implementing Upgrade/Buy Shop</h3>
+            <p>
+                Now that the menu is set up the functions needed to upgrade and buy abilities are ready to be made. First the player is 
+                going to need to be able to buy new abilities. Each button in the list will buy the corresponding ability depending on its 
+                price. Once the ability is bought it will be pushed to the unlocked abilities array where the player can now access it through
+                switching abilities. Now that all abilities can be achieved they must be upgradable. Each button will upgrade it's corresponding 
+                Ability progessively getting more expensive and all abilities max out at 10. Bio-electric blast upgrades include damage increase, 
+                Heat wave upgrades include a damage increase as well as a burn timer increase, Force push upgrades include a damage increase as well 
+                as a knockback distance increase, Fireball upgrades increase damage, Freeze upgrades increase damage and it's freeze timer, and finally 
+                the Acid Shot upgrades increase damage as well as the acid burn timer.
+            </p>
+            <br>
+            <h3>Adding Sound</h3>
+            <p>
+                Now that the game is fully functional with wave based combat and a shop to buy/upgrade new abilities it's time to 
+                add in sound assets. Using free sound assets I found online I was able to link unique sounds to each spell, zombie moans, hurt sounds,
+                and a death sound, a player death sound, and finally some sounds that play when buttons are activated. These are all meant to further 
+                enhance the experience brought by the game.
+            </p>
+            <br>
+            <h3>Final Touches</h3>
+            <p>
+                After taking critiques from the game Prototype some final touches were implemented to the game. Player movement is now less delayed 
+                and you no longer have to wrestle with the controls to shoot in the right direction. The colors on the screens are now changed to make text easier to 
+                read, before they didnt really blend well and it was hard for some people to read. I also added an option for players to
+                use the E key for switching Abilities as well as using the button. Lastly, I added damage indicators for the zombies 
+                when they are hit by a spell, and I did some final balancing to make sure the game is not too easy and not too hard.
+            </p>
+            <br>
+            <h2>Gameplay Screenshot</h2>
+            <img src="media/mutationGenesis.PNG">
+            <h2>Sources</h2>
+            <p>
+                Human and Zombie Assets: <a href="https://tokkatrain.itch.io/top-down-basic-set">https://tokkatrain.itch.io/top-down-basic-set</a> <br>
+                Spell Assets: Created by me <br>
+                Cursor Asset: <a href="http://www.cursors-4u.com/cursor/2011/11/20/the-elders-scroll-skyrim-precision.html">http://www.cursors-4u.com/cursor/2011/11/20/the-elders-scroll-skyrim-precision.html</a> <br>
+                Barrier Asset: Created by me <br>
+                Title Screen Image: Created by me <br>
+                Zombie Font: <a href="https://www.fontfreak.com/font_Zombie.htm">https://www.fontfreak.com/font_Zombie.htm</a><br>
+                This Asset can no longer be found besides on bing or google but this links to the Artist's page<br>
+                Stone brick floor Asset: <a href="https://sergiumatei.artstation.com/">https://sergiumatei.artstation.com/</a><br>
+            </p>
+            <h2>Requirements</h2>
+            <h3>Functional</h3>
+            <p>
+                The game is very easy to use and it's functionality goes beyond what we learned
+                in class with the Ball Blast HW. I added many features such as different spell types,
+                keyboard input, wave based combat, and a shop for upgrading/buying abilities. I used the 
+                Javascript and PixiJS tech stack mainly because after doing the HW I already had a good feel of
+                what types of projects I could make with it, and I knew I was going to have good resources for any
+                trouble I ran into due to Prof. Chin's tutorials posted on youtube.
+            </p>
+            <br>
+            <h3>Deign and Interaction</h3>
+            <p>
+                Layout of the game is fairly simple and instructions are given
+                to the player before they can even jump into gameplay. This forces the user
+                to at least acknowledge that help is given in learning how to play. Controls are 
+                also very commonly used such as WASD for movement and Space to activate an attack so 
+                if the player had skipped over the instructions it shouldnt take them long to figure out how to use 
+                the main gameplay controls. It is also responsive enough to fit onto screens with a width of 600px, not 
+                too great for mobile but for most laptops and PCs it should work fine.
+            </p>
+            <br>
+            <h3>Media</h3>
+            <p>
+                I used many different Spritesheets and sounds to enhance the experience of the game all which were
+                either pulled from an online source or were created by me. The images and sounds used are meant to 
+                further give off the zombie apocalypse theme.
+            </p>
+            <br>
+            <h3>HTML/CSS</h3>
+            <p>
+                HTML and CSS Validates, Semantic elements are used, and most CSS is external
+            </p>
+            <br>
+            <h3>Code Conventions</h3>
+            <p>
+                I utilized one ES6 class in this project and it was used for creating the Barriers.
+                I used it to better hold the barrier's location so it could be accessed when I went to go 
+                spawn zombies for future waves. The rest of my code follows the other coding conventions and is 
+                well commented throughout each file.
+            </p>
+            <br>
+        </main>
+    </div>
+</body>
+</html>
