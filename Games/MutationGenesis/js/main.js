@@ -1410,7 +1410,7 @@ function createLabelsAndButtons()
     controlsButtons.y = 280;
     instructionScene.addChild(controlsButtons);
 
-    controlsPause = new PIXI.Text("Controls to Pause: Q");
+    controlsPause = new PIXI.Text("Pause/Shop Menu: Q");
     controlsPause.style = instructionsStyle;
     controlsPause.x = 100;
     controlsPause.y = 340;

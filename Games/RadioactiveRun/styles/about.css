@@ -1,0 +1,55 @@
+main
+{
+    background-color: #dddddd;
+    width: 80%;
+    margin: 1rem;
+    color: #06240c;
+}
+
+body
+{
+    background-color: #333333;
+}
+
+.wrapper
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header
+{
+    text-align: center;
+    color: #22ff33;
+}
+
+p
+{
+    font-size: 25px;
+}
+h3
+{
+    font-size: 30px;
+}
+h2
+{
+    font-size: 35px;
+}
+a
+{
+    font-size: 30px;
+    color: #06550c;
+}
+h1
+{
+    font-size: 45px;
+}
+img
+{
+    width: 49%;
+}
+.screenshots
+{
+    display: flex;
+    justify-content: space-evenly;
+}
