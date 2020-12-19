@@ -1,0 +1,21 @@
+body
+{
+    text-align: center;
+    background-color: #004d11;
+}
+
+h1
+{
+    text-align: center;
+    color: #8affa3;
+    font-size: 45px;
+}
+@font-face {
+    font-family: "Zombie";
+    src: url("../fonts/ZOMBIE.woff");
+}
+#useFont
+{
+    font-family: "Zombie";
+    font-size: 0px;
+}
