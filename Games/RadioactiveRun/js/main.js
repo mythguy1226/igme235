@@ -76,62 +76,27 @@ function createPlayerSheet()
 {
     let sheet = new PIXI.BaseTexture.from(app.loader.resources["human"].url);
     let w = 80;
-    let h = 64;
+    let h = 80;
     
-    playerSheet["standEast"] = [
+    playerSheet["stand"] = [
         new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
     ];
-    playerSheet["standSouth"] = [
-        new PIXI.Texture(sheet, new PIXI.Rectangle(0, h * 1, w, h))
-    ];
-    playerSheet["standWest"] = [
-        new PIXI.Texture(sheet, new PIXI.Rectangle(0, h * 2, w, h))
-    ];
-    playerSheet["standNorth"] = [
-        new PIXI.Texture(sheet, new PIXI.Rectangle(0, h * 3, w, h))
-    ];
 
-    playerSheet["walkEast"] = [
-        new PIXI.Texture(sheet, new PIXI.Rectangle(0 * w, 0, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(1 * w, 0, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(2 * w, 0, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(3 * w, 0, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(4 * w, 0, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, 0, w, h))
-    ];
-
-    playerSheet["walkSouth"] = [
+    playerSheet["walk"] = [
         new PIXI.Texture(sheet, new PIXI.Rectangle(0 * w, h, w, h)),
         new PIXI.Texture(sheet, new PIXI.Rectangle(1 * w, h, w, h)),
         new PIXI.Texture(sheet, new PIXI.Rectangle(2 * w, h, w, h)),
         new PIXI.Texture(sheet, new PIXI.Rectangle(3 * w, h, w, h)),
         new PIXI.Texture(sheet, new PIXI.Rectangle(4 * w, h, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, h, w, h))
-    ];
-
-    playerSheet["walkWest"] = [
-        new PIXI.Texture(sheet, new PIXI.Rectangle(0 * w, h * 2, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(1 * w, h * 2, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(2 * w, h * 2, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(3 * w, h * 2, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(4 * w, h * 2, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, h * 2, w, h))
-    ];
-
-    playerSheet["walkNorth"] = [
-        new PIXI.Texture(sheet, new PIXI.Rectangle(0 * w, h * 3, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(1 * w, h * 3, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(2 * w, h * 3, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(3 * w, h * 3, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(4 * w, h * 3, w, h)),
-        new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, h * 3, w, h))
+        new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, h, w, h)),
+        new PIXI.Texture(sheet, new PIXI.Rectangle(6 * w, h, w, h))
     ];
 }
 
 // Creates the player
 function createPlayer()
 {
-    player = new PIXI.AnimatedSprite(playerSheet.standSouth);
+    player = new PIXI.AnimatedSprite(playerSheet.stand);
     player.anchor.set(0.5);
     player.animationSpeed = 0.1;
     player.loop = false;
@@ -173,49 +138,35 @@ function gameLoop()
     if (paused) return;
 
     // *** User Input *** 
-    // W
-    if(keys["87"])
-    {
-        if(!player.playing)
-        {
-            player.textures = playerSheet.walkNorth;
-            player.play();
-        }
-        direction = "north";
-        player.y -= speed;
-    }
 
     // A
     if(keys["65"])
     {
         if(!player.playing)
         {
-            player.textures = playerSheet.walkWest;
+            player.textures = playerSheet.walk;
             player.play();
         }
         direction = "west";
+        if(player.scale.x > 0)
+        {
+            player.scale.x *= -1;
+        }
         player.x -= speed;
     }
 
-    // S
-    if(keys["83"])
-    {
-        if(!player.playing)
-        {
-            player.textures = playerSheet.walkSouth;
-            player.play();
-        }
-        direction = "south";
-        player.y += speed;
-    }
 
     // D
     if(keys["68"])
     {
         if(!player.playing)
         {
-            player.textures = playerSheet.walkEast;
+            player.textures = playerSheet.walk;
             player.play();
+        }
+        if(player.scale.x < 0)
+        {
+            player.scale.x *= -1;
         }
         direction = "east";
         player.x += speed;
@@ -233,41 +184,23 @@ function gameLoop()
     }
 
     // *** Idle Animations ***
-    // North
-    if(!keys["87"] && direction == "north")
-    {
-        if(!player.playing)
-        {
-            player.textures = playerSheet.standNorth;
-            player.play();
-        }
-    }
     // West
     if(!keys["65"] && direction == "west")
     {
         if(!player.playing)
         {
-            player.textures = playerSheet.standWest;
+            player.textures = playerSheet.stand;
             player.play();
         }
     }
 
-    // South
-    if(!keys["83"] && direction == "south")
-    {
-        if(!player.playing)
-        {
-            player.textures = playerSheet.standSouth;
-            player.play();
-        }
-    }
 
     // East
     if(!keys["68"] && direction == "east")
     {
         if(!player.playing)
         {
-            player.textures = playerSheet.standEast;
+            player.textures = playerSheet.stand;
             player.play();
         }
     }
