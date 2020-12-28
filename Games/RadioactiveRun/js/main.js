@@ -14,9 +14,7 @@ const sceneHeight = app.view.height;
 
 // pre-load the images
 app.loader.add("human", "media/playerSpriteSheet.png");
-app.loader.add("zombie", "media/zombieSpriteSheet.png");
-app.loader.add("spells", "media/spellSpriteSheet.png");
-app.loader.add("barrier", "media/barrier.png");
+app.loader.add("tiles", "media/platform.png");
 app.loader.onComplete.add(setup);
 app.loader.load(doneLoading);
 
@@ -36,12 +34,18 @@ let cashLabel;
 
 let paused = true;
 let playerSheet = {};
-let zombieSheet = {};
-let spellSheet = {};
+let tileSheet = {};
 let zombies = [];
 let keys = {};
 let barriers = [];
 let player;
+let canJump = false;
+let falling = true;
+let jumping = false;
+let jumpSpeed = 13;
+let fallSpeed = 1;
+let gravity = 0.5;
+let tiles = [];
 let speed = 2;
 let spells = [];
 let direction = "east";
@@ -65,8 +69,12 @@ function doneLoading(e)
 {
     // Create all sprite sheets and player
     createPlayerSheet();
+    createTileSheet();
     createPlayer();
-
+    for(let i = 0; i < 8; i++)
+    {
+        createTile(i * 80, app.view.height - 80);
+    }
     // Start the game loop
     app.ticker.add(gameLoop);
 }
@@ -91,6 +99,22 @@ function createPlayerSheet()
         new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, h, w, h)),
         new PIXI.Texture(sheet, new PIXI.Rectangle(6 * w, h, w, h))
     ];
+    playerSheet["jump"] = [
+        new PIXI.Texture(sheet, new PIXI.Rectangle(1 * w, h, w, h)),
+    ];
+}
+
+// Function that creates the different tiles
+function createTileSheet()
+{
+    let sheet = new PIXI.BaseTexture.from(app.loader.resources["tiles"].url);
+    let w = 80;
+    let h = 80;
+    
+    tileSheet["platform"] = [
+        new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
+    ];
+
 }
 
 // Creates the player
@@ -104,6 +128,19 @@ function createPlayer()
     player.y = app.view.height / 2;
     gameScene.addChild(player);
     player.play();
+}
+// Creates the player
+function createTile(x, y)
+{
+    let tile = new PIXI.AnimatedSprite(tileSheet.platform);
+    tile.anchor.set(0);
+    tile.animationSpeed = 0.1;
+    tile.loop = false;
+    tile.x = x;
+    tile.y = y;
+    gameScene.addChild(tile);
+    tile.play();
+    tiles.push(tile);
 }
 
 
@@ -142,7 +179,7 @@ function gameLoop()
     // A
     if(keys["65"])
     {
-        if(!player.playing)
+        if(!player.playing && canJump)
         {
             player.textures = playerSheet.walk;
             player.play();
@@ -159,7 +196,7 @@ function gameLoop()
     // D
     if(keys["68"])
     {
-        if(!player.playing)
+        if(!player.playing && canJump)
         {
             player.textures = playerSheet.walk;
             player.play();
@@ -187,7 +224,7 @@ function gameLoop()
     // West
     if(!keys["65"] && direction == "west")
     {
-        if(!player.playing)
+        if(!player.playing && canJump)
         {
             player.textures = playerSheet.stand;
             player.play();
@@ -198,10 +235,61 @@ function gameLoop()
     // East
     if(!keys["68"] && direction == "east")
     {
-        if(!player.playing)
+        if(!player.playing && canJump)
         {
             player.textures = playerSheet.stand;
             player.play();
+        }
+    }
+
+    // Jump
+    if(keys["32"] && canJump)
+    {
+        jumping = true;
+        canJump = false;
+        player.textures = playerSheet.jump;
+        player.play();
+    }
+    // *** User Gravity and Jumping ***
+    if(!canJump)
+    {
+        player.y += 2;
+    }
+    if(!jumping && !canJump)
+    {   
+        fallSpeed += gravity;
+        player.y += fallSpeed;
+    }
+    if(jumping)
+    {
+        canJump = false;
+        jumpSpeed -= gravity;
+        player.y -= jumpSpeed;
+    }
+    if(jumpSpeed <= 0)
+    {
+        jumping = false;
+        jumpSpeed = 13;
+    }
+
+    // *** Collisions ***
+    for(let tile of tiles)
+    {
+        if(tile != null)
+        {
+            if(rectsIntersect(tile, player))
+            {
+                // Top of Tile
+                if(player.x + 40 > tile.x
+                    && player.x < tile.x + 80
+                    && player.y + 40 > tile.y
+                    && player.y < tile.y)
+                {
+                    canJump = true;
+                    falling = false;
+                    fallSpeed = 1;
+                }
+            }
         }
     }
 }
@@ -340,25 +428,6 @@ function createLabelsAndButtons()
     gameScene.addChild(lifeLabel);
     decreaseLifeBy(0);
 
-    // Make Zombie Count Label
-    zombieCountLabel = new PIXI.Text("Zombie Count : 1");
-    zombieCountLabel.style = textStyle;
-    zombieCountLabel.x = 5;
-    zombieCountLabel.y = 68;
-    gameScene.addChild(zombieCountLabel);
-
-    // Make Ability Label
-    abilityLabel = new PIXI.Text("Bio-Electric Blast");
-    abilityLabel.style = new PIXI.TextStyle({
-        fill: 0xFFFFFF,
-        fontSize: 18,
-        fontFamily: 'Futura',
-        stroke: 0x00aaaa,
-        strokeThickness: 4
-    });
-    abilityLabel.x = sceneWidth - 180;
-    abilityLabel.y = 55;
-    gameScene.addChild(abilityLabel);
 
     // 3 - set up `gameOverScene`
     // 3A - make game over text
