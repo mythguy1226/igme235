@@ -75,6 +75,7 @@ function doneLoading(e)
     {
         createTile(i * 80, app.view.height - 80);
     }
+    createTile(6 * 80, app.view.height - 160);
     // Start the game loop
     app.ticker.add(gameLoop);
 }
@@ -282,12 +283,19 @@ function gameLoop()
                 // Top of Tile
                 if(player.x + 40 > tile.x
                     && player.x < tile.x + 80
-                    && player.y + 40 > tile.y
+                    && player.y + 40 > tile.y - 7
                     && player.y < tile.y)
                 {
                     canJump = true;
                     falling = false;
                     fallSpeed = 1;
+                }
+            }
+            else
+            {
+                if(canJump)
+                {
+                    falling = true;
                 }
             }
         }
