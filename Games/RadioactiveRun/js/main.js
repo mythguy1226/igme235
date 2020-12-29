@@ -252,14 +252,13 @@ function gameLoop()
         player.play();
     }
     // *** User Gravity and Jumping ***
-    if(!canJump)
-    {
-        player.y += 2;
-    }
+    
     if(!jumping && !canJump)
     {   
+        falling = true;
         fallSpeed += gravity;
         player.y += fallSpeed;
+        player.y += 2;
     }
     if(jumping)
     {
@@ -274,28 +273,31 @@ function gameLoop()
     }
 
     // *** Collisions ***
-    for(let tile of tiles)
+    for(let i = 0; i < tiles.length; i++)
     {
-        if(tile != null)
+        let hitFloor = 0;
+        if(tiles[i] != null)
         {
-            if(rectsIntersect(tile, player))
+            if(rectsIntersect(tiles[i], player))
             {
                 // Top of Tile
-                if(player.x + 40 > tile.x
-                    && player.x < tile.x + 80
-                    && player.y + 40 > tile.y - 7
-                    && player.y < tile.y)
+                if(player.x + 40 > tiles[i].x
+                    && player.x < tiles[i].x + 80
+                    && player.y + 40 > tiles[i].y - 9
+                    && player.y < tiles[i].y)
                 {
                     canJump = true;
                     falling = false;
                     fallSpeed = 1;
+                    hitFloor += 1;
                 }
-            }
-            else
-            {
-                if(canJump)
+
+                // Right of Tile
+                if(player.x + 40 > tiles[i].x
+                    && player.x < tiles[i].x + 80
+                    && !(player.y + 40 > tiles[i].y))
                 {
-                    falling = true;
+                    player.x = tiles[i].x - 80;
                 }
             }
         }
