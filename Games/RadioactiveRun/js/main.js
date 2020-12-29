@@ -15,6 +15,8 @@ const sceneHeight = app.view.height;
 // pre-load the images
 app.loader.add("human", "media/playerSpriteSheet.png");
 app.loader.add("tiles", "media/platform.png");
+app.loader.add("wave", "media/radioactiveWave.png");
+app.loader.add("door", "media/finishDoor.png");
 app.loader.onComplete.add(setup);
 app.loader.load(doneLoading);
 
@@ -36,6 +38,10 @@ let paused = true;
 let playerSheet = {};
 let tileSheet = {};
 let zombies = [];
+let waveSheet = {};
+let wave;
+let doorSheet = {};
+let door;
 let keys = {};
 let barriers = [];
 let player;
@@ -46,11 +52,12 @@ let jumpSpeed = 13;
 let fallSpeed = 1;
 let gravity = 0.5;
 let tiles = [];
-let speed = 2;
+let speed = 3;
 let spells = [];
 let direction = "east";
 let life = 100;
 let score = 0;
+let totalDistance = 0;
 
 // Function that stores keydown inputs
 function keysDown(e)
@@ -70,14 +77,21 @@ function doneLoading(e)
     // Create all sprite sheets and player
     createPlayerSheet();
     createTileSheet();
+    createWaveSheet();
+    createDoorSheet();
+    createDoor(50 * 80, app.view.height - 160);
     createPlayer();
-    for(let i = 0; i < 8; i++)
+    
+    for(let i = 0; i < 51; i++)
     {
         createTile(i * 80, app.view.height - 80);
     }
     createTile(6 * 80, app.view.height - 160);
+    createTile(2 * 80, app.view.height - 160);
+    createWave();
     // Start the game loop
     app.ticker.add(gameLoop);
+    
 }
 
 // Function that creates the different animations for player
@@ -115,7 +129,30 @@ function createTileSheet()
     tileSheet["platform"] = [
         new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
     ];
+}
 
+// Function that creates the wave sheet
+function createWaveSheet()
+{
+    let sheet = new PIXI.BaseTexture.from(app.loader.resources["wave"].url);
+    let w = 160;
+    let h = 600;
+    
+    waveSheet["wave"] = [
+        new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
+    ];
+}
+
+// Function that creates the door sheet
+function createDoorSheet()
+{
+    let sheet = new PIXI.BaseTexture.from(app.loader.resources["door"].url);
+    let w = 80;
+    let h = 80;
+    
+    doorSheet["door"] = [
+        new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
+    ];
 }
 
 // Creates the player
@@ -130,7 +167,7 @@ function createPlayer()
     gameScene.addChild(player);
     player.play();
 }
-// Creates the player
+// Creates a tile
 function createTile(x, y)
 {
     let tile = new PIXI.AnimatedSprite(tileSheet.platform);
@@ -143,7 +180,31 @@ function createTile(x, y)
     tile.play();
     tiles.push(tile);
 }
+// Creates the wave
+function createWave()
+{
+    wave = new PIXI.AnimatedSprite(waveSheet.wave);
+    wave.anchor.set(0);
+    wave.animationSpeed = 0.1;
+    wave.loop = false;
+    wave.x = 0;
+    wave.y = 0;
+    gameScene.addChild(wave);
+    wave.play();
+}
 
+// Creates the door finish
+function createDoor(x, y)
+{
+    door = new PIXI.AnimatedSprite(doorSheet.door);
+    door.anchor.set(0);
+    door.animationSpeed = 0.1;
+    door.loop = false;
+    door.x = x;
+    door.y = y;
+    gameScene.addChild(door);
+    door.play();
+}
 
 // Reset required fields and begin the game
 function startGame()
@@ -158,7 +219,18 @@ function startGame()
     player.y = app.view.height / 2;
     decreaseLifeBy(0);
     increaseScoreBy(0);
-
+    life = 100;
+    for(let i = 0; i < tiles.length; i++)
+    {
+        tiles[i].x += totalDistance;
+    }
+    door.x += totalDistance;
+    totalDistance = 0;
+    canJump = false;
+    falling = true;
+    jumping = false;
+    jumpSpeed = 13;
+    fallSpeed = 1;
 }
 
 // Go back to start screen
@@ -252,13 +324,11 @@ function gameLoop()
         player.play();
     }
     // *** User Gravity and Jumping ***
-    
     if(!jumping && !canJump)
     {   
         falling = true;
         fallSpeed += gravity;
         player.y += fallSpeed;
-        player.y += 2;
     }
     if(jumping)
     {
@@ -275,7 +345,6 @@ function gameLoop()
     // *** Collisions ***
     for(let i = 0; i < tiles.length; i++)
     {
-        let hitFloor = 0;
         if(tiles[i] != null)
         {
             if(rectsIntersect(tiles[i], player))
@@ -283,25 +352,55 @@ function gameLoop()
                 // Top of Tile
                 if(player.x + 40 > tiles[i].x
                     && player.x < tiles[i].x + 80
-                    && player.y + 40 > tiles[i].y - 9
+                    && player.y + 40 > tiles[i].y - 10
                     && player.y < tiles[i].y)
                 {
                     canJump = true;
                     falling = false;
                     fallSpeed = 1;
-                    hitFloor += 1;
+                }
+                else
+                {
+                    canJump = false;
                 }
 
                 // Right of Tile
                 if(player.x + 40 > tiles[i].x
                     && player.x < tiles[i].x + 80
-                    && !(player.y + 40 > tiles[i].y))
+                    && !(player.y + 40 > tiles[i].y - 15))
                 {
                     player.x = tiles[i].x - 80;
                 }
             }
         }
     }
+    // *** Wave hits player ***
+    if(rectsIntersect(wave, player))
+    {
+        decreaseLifeBy(1);
+    }
+
+    // *** Player Reaches end ***
+    if(rectsIntersect(door, player))
+    {
+        end();
+    }
+
+    // Tile Movement
+    for(let i = 0; i < tiles.length; i++)
+    {
+        if(tiles[i] != null)
+        {
+            tiles[i].x -= 2;
+        }
+    }
+
+    if(life <= 0)
+    {
+        end();
+    }
+    door.x -= 2;
+    totalDistance += 2;
 }
 
 // Initial game setup
@@ -349,17 +448,17 @@ function end()
     paused = true;
 
     // clear out level
+    /*
     zombies.forEach(z=>gameScene.removeChild(z)); // concise arrow function with no brackets and no return
     zombies = [];
 
     spells.forEach(s=>gameScene.removeChild(s)); // ditto
     spells = [];
-
+    */
     gameOverScene.visible = true;
     gameScene.visible = false;
 
     gameOverScoreLabel.text = `Your final score: ${score}`;
-    gameOverWaveLabel.text = `You survived to wave: ${wave}`;
 }
 
 // Create GUI labels and buttons
@@ -425,7 +524,7 @@ function createLabelsAndButtons()
     // Make score label
     scoreLabel = new PIXI.Text();
     scoreLabel.style = textStyle;
-    scoreLabel.x = 5;
+    scoreLabel.x = 500;
     scoreLabel.y = 5;
     gameScene.addChild(scoreLabel);
     increaseScoreBy(0);
@@ -433,7 +532,7 @@ function createLabelsAndButtons()
     // Make life label
     lifeLabel = new PIXI.Text();
     lifeLabel.style = textStyle;
-    lifeLabel.x = 5;
+    lifeLabel.x = 500;
     lifeLabel.y = 26;
     gameScene.addChild(lifeLabel);
     decreaseLifeBy(0);
