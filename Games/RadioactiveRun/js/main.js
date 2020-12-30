@@ -474,7 +474,7 @@ function createLabelsAndButtons()
 
     // 1 - set up 'startScene'
     // 1A - make the top start label
-    let startLabel1 = new PIXI.Text("Mutation Genesis");
+    let startLabel1 = new PIXI.Text("Radioactive Run");
     startLabel1.style = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 60,
@@ -487,7 +487,7 @@ function createLabelsAndButtons()
     startScene.addChild(startLabel1);
 
     // 1B - make the middle start label
-    let startLabel2 = new PIXI.Text("Can you Survive\nthe Apocalypse?");
+    let startLabel2 = new PIXI.Text("Can you outrun\nthe Wave?");
     startLabel2.style = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 40,
@@ -501,7 +501,7 @@ function createLabelsAndButtons()
     startScene.addChild(startLabel2);
 
     // 1C - make the start game button
-    let instructionButton = new PIXI.Text("Begin the Carnage");
+    let instructionButton = new PIXI.Text("Begin the Run");
     instructionButton.style = buttonStyle;
     instructionButton.x = 80;
     instructionButton.y = sceneHeight - 120;
@@ -599,38 +599,21 @@ function createLabelsAndButtons()
         strokeThickness: 3
     });
     instructions = new PIXI.Text("Objective: The point of the game is to\n"
-                               + "survive as long as possible in the zombie\n"
-                               + "apocalypse. Buy and Upgrade Abilities to aid\n"
-                               + "in facing endless waves of the undead");
+                               + "get to the end of the level while\n"
+                               + "avoiding obstacles. You will face constant action\n"
+                               + "as you try to escape the wave of radiation.");
     instructions.style = instructionsStyle;
     instructions.x = 100;
     instructions.y = 40;
     instructionScene.addChild(instructions);
 
     // *** Labels for Controls ***
-    controlsMovement = new PIXI.Text("Movement Controls: WASD");
+    controlsMovement = new PIXI.Text("Movement Controls: A and D\n"
+                                    +"Jump Controls: Space");
     controlsMovement.style = instructionsStyle;
     controlsMovement.x = 100;
     controlsMovement.y = 220;
     instructionScene.addChild(controlsMovement);
-
-    controlsButtons= new PIXI.Text("Switch Ability: E (Or Use Button)");
-    controlsButtons.style = instructionsStyle;
-    controlsButtons.x = 100;
-    controlsButtons.y = 280;
-    instructionScene.addChild(controlsButtons);
-
-    controlsPause = new PIXI.Text("Pause/Shop Menu: Q");
-    controlsPause.style = instructionsStyle;
-    controlsPause.x = 100;
-    controlsPause.y = 340;
-    instructionScene.addChild(controlsPause);
-
-    controlsSpell= new PIXI.Text("Activate Ability: Space");
-    controlsSpell.style = instructionsStyle;
-    controlsSpell.x = 100;
-    controlsSpell.y = 400;
-    instructionScene.addChild(controlsSpell);
 
     // 1C - make the start game button
     let startButton = new PIXI.Text("Start Game");
