@@ -367,10 +367,29 @@ function gameLoop()
                 // Right of Tile
                 if(player.x + 40 > tiles[i].x
                     && player.x < tiles[i].x + 80
-                    && !(player.y + 40 > tiles[i].y - 15))
-                {
-                    player.x = tiles[i].x - 80;
+                    && player.y > tiles[i].y
+                    && player.y < tiles[i].y + 80)
+                {   
+                    player.x = tiles[i].x - 30;
+                    if(!canJump)
+                    {
+                        canJump = true;
+                    }
                 }
+                
+                // Left of Tile
+                if(player.x > tiles[i].x
+                    && player.x + 40 > tiles[i].x + 80
+                    && player.y > tiles[i].y
+                    && player.y < tiles[i].y + 80)
+                {
+                    player.x = tiles[i].x + 110;
+                    if(!canJump)
+                    {
+                        canJump = true;
+                    }
+                }
+                
             }
         }
     }
