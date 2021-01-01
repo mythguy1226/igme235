@@ -17,6 +17,7 @@ app.loader.add("human", "media/playerSpriteSheet.png");
 app.loader.add("tiles", "media/platform.png");
 app.loader.add("wave", "media/radioactiveWave.png");
 app.loader.add("door", "media/finishDoor.png");
+app.loader.add("background", "media/backgroundLab.png");
 app.loader.onComplete.add(setup);
 app.loader.load(doneLoading);
 
@@ -40,6 +41,8 @@ let tileSheet = {};
 let zombies = [];
 let waveSheet = {};
 let wave;
+let backgroundSheet = {};
+let backgrounds = [];
 let doorSheet = {};
 let door;
 let keys = {};
@@ -74,21 +77,63 @@ function keysUp(e)
 // Function ran when loading is done
 function doneLoading(e)
 {
-    // Create all sprite sheets and player
+    // Create all sprite sheets
     createPlayerSheet();
+    createBackgroundSheet()
     createTileSheet();
     createWaveSheet();
     createDoorSheet();
+
+    // Place the background
+    for(let i = 0; i < 8; i++)
+    {
+        createBackground(i * 600, 0);
+    }
+
+    // Place door and player
     createDoor(50 * 80, app.view.height - 160);
     createPlayer();
     
-    for(let i = 0; i < 51; i++)
+    // Place the tiles
+    for(let i = 0; i < 55; i++)
     {
         createTile(i * 80, app.view.height - 80);
     }
+
+    // Obstacle 1
     createTile(6 * 80, app.view.height - 160);
-    createTile(2 * 80, app.view.height - 160);
+    createTile(8 * 80, app.view.height - 160);
+    createTile(8 * 80, app.view.height - 240);
+    createTile(10 * 80, app.view.height - 160);
+    createTile(10 * 80, app.view.height - 240);
+
+    // Obstacle 2
+    createTile(17 * 80, app.view.height - 160);
+    createTile(19 * 80, app.view.height - 160);
+    createTile(19 * 80, app.view.height - 240);
+    createTile(21 * 80, app.view.height - 160);
+    createTile(21 * 80, app.view.height - 240);
+    createTile(21 * 80, app.view.height - 320);
+    createTile(23 * 80, app.view.height - 160);
+    createTile(23 * 80, app.view.height - 240);
+    createTile(25 * 80, app.view.height - 160);
+
+    // Obstacle 3
+    createTile(30 * 80, app.view.height - 160);
+    createTile(32 * 80, app.view.height - 160);
+    createTile(32 * 80, app.view.height - 240);
+    createTile(34 * 80, app.view.height - 160);
+    createTile(34 * 80, app.view.height - 240);
+    createTile(34 * 80, app.view.height - 320);
+    createTile(36 * 80, app.view.height - 160);
+    createTile(36 * 80, app.view.height - 240);
+    createTile(38 * 80, app.view.height - 160);
+    createTile(40 * 80, app.view.height - 160);
+    createTile(40 * 80, app.view.height - 240);
+
+    // Place the wave
     createWave();
+
     // Start the game loop
     app.ticker.add(gameLoop);
     
@@ -139,6 +184,18 @@ function createWaveSheet()
     let h = 600;
     
     waveSheet["wave"] = [
+        new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
+    ];
+}
+
+// Function that creates the nackground sheet
+function createBackgroundSheet()
+{
+    let sheet = new PIXI.BaseTexture.from(app.loader.resources["background"].url);
+    let w = 600;
+    let h = 600;
+    
+    backgroundSheet["background"] = [
         new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
     ];
 }
@@ -206,6 +263,20 @@ function createDoor(x, y)
     door.play();
 }
 
+// Creates the background
+function createBackground(x, y)
+{
+    let background = new PIXI.AnimatedSprite(backgroundSheet.background);
+    background.anchor.set(0);
+    background.animationSpeed = 0.1;
+    background.loop = false;
+    background.x = x;
+    background.y = y;
+    gameScene.addChild(background);
+    background.play();
+    backgrounds.push(background);
+}
+
 // Reset required fields and begin the game
 function startGame()
 {
@@ -223,6 +294,10 @@ function startGame()
     for(let i = 0; i < tiles.length; i++)
     {
         tiles[i].x += totalDistance;
+    }
+    for(let i = 0; i < backgrounds.length; i++)
+    {
+        backgrounds[i].x += totalDistance;
     }
     door.x += totalDistance;
     totalDistance = 0;
@@ -411,6 +486,13 @@ function gameLoop()
         if(tiles[i] != null)
         {
             tiles[i].x -= 2;
+        }
+    }
+    for(let i = 0; i < backgrounds.length; i++)
+    {
+        if(backgrounds[i] != null)
+        {
+            backgrounds[i].x -= 2;
         }
     }
 
