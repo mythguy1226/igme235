@@ -61,6 +61,7 @@ let direction = "east";
 let life = 100;
 let score = 0;
 let totalDistance = 0;
+let level = 1;
 
 // Function that stores keydown inputs
 function keysDown(e)
@@ -90,53 +91,117 @@ function doneLoading(e)
         createBackground(i * 600, 0);
     }
 
-    // Place door and player
-    createDoor(50 * 80, app.view.height - 160);
-    createPlayer();
-    
-    // Place the tiles
-    for(let i = 0; i < 55; i++)
-    {
-        createTile(i * 80, app.view.height - 80);
-    }
+    // Load in the level
+    loadLevel();
 
-    // Obstacle 1
-    createTile(6 * 80, app.view.height - 160);
-    createTile(8 * 80, app.view.height - 160);
-    createTile(8 * 80, app.view.height - 240);
-    createTile(10 * 80, app.view.height - 160);
-    createTile(10 * 80, app.view.height - 240);
 
-    // Obstacle 2
-    createTile(17 * 80, app.view.height - 160);
-    createTile(19 * 80, app.view.height - 160);
-    createTile(19 * 80, app.view.height - 240);
-    createTile(21 * 80, app.view.height - 160);
-    createTile(21 * 80, app.view.height - 240);
-    createTile(21 * 80, app.view.height - 320);
-    createTile(23 * 80, app.view.height - 160);
-    createTile(23 * 80, app.view.height - 240);
-    createTile(25 * 80, app.view.height - 160);
-
-    // Obstacle 3
-    createTile(30 * 80, app.view.height - 160);
-    createTile(32 * 80, app.view.height - 160);
-    createTile(32 * 80, app.view.height - 240);
-    createTile(34 * 80, app.view.height - 160);
-    createTile(34 * 80, app.view.height - 240);
-    createTile(34 * 80, app.view.height - 320);
-    createTile(36 * 80, app.view.height - 160);
-    createTile(36 * 80, app.view.height - 240);
-    createTile(38 * 80, app.view.height - 160);
-    createTile(40 * 80, app.view.height - 160);
-    createTile(40 * 80, app.view.height - 240);
-
-    // Place the wave
-    createWave();
 
     // Start the game loop
     app.ticker.add(gameLoop);
     
+}
+
+// Function for loading levels
+function loadLevel()
+{
+    // Remove past scene elements
+    gameScene.removeChild(door);
+    door = null;
+
+    gameScene.removeChild(wave);
+    wave = null;
+
+    gameScene.removeChild(player);
+    player = null;
+
+    for(let tile of tiles)
+    {
+        gameScene.removeChild(tile);
+    }
+    for(let i = tiles.length - 1; i >= 0; i--)
+    {
+        tiles.pop();
+    }
+
+    // Move player
+    if(player != null)
+    {
+        player.x = app.view.width / 2;
+        player.y = app.view.height / 2;
+    }
+
+    // Logic for loading different levels
+    switch(level)
+    {
+        case 1:
+            // Place door 
+            createDoor(50 * 80, app.view.height - 160);
+
+            // Place the tiles
+            for(let i = 0; i < 55; i++)
+            {
+                createTile(i * 80, app.view.height - 80);
+            }
+
+            // Obstacle 1
+            createTile(6 * 80, app.view.height - 160);
+            createTile(8 * 80, app.view.height - 160);
+            createTile(8 * 80, app.view.height - 240);
+            createTile(10 * 80, app.view.height - 160);
+            createTile(10 * 80, app.view.height - 240);
+
+            // Obstacle 2
+            createTile(17 * 80, app.view.height - 160);
+            createTile(19 * 80, app.view.height - 160);
+            createTile(19 * 80, app.view.height - 240);
+            createTile(21 * 80, app.view.height - 160);
+            createTile(21 * 80, app.view.height - 240);
+            createTile(21 * 80, app.view.height - 320);
+            createTile(23 * 80, app.view.height - 160);
+            createTile(23 * 80, app.view.height - 240);
+            createTile(25 * 80, app.view.height - 160);
+
+            // Obstacle 3
+            createTile(30 * 80, app.view.height - 160);
+            createTile(32 * 80, app.view.height - 160);
+            createTile(32 * 80, app.view.height - 240);
+            createTile(34 * 80, app.view.height - 160);
+            createTile(34 * 80, app.view.height - 240);
+            createTile(34 * 80, app.view.height - 320);
+            createTile(36 * 80, app.view.height - 160);
+            createTile(36 * 80, app.view.height - 240);
+            createTile(38 * 80, app.view.height - 160);
+            createTile(40 * 80, app.view.height - 160);
+            createTile(40 * 80, app.view.height - 240);
+
+            if(player == null)
+            {
+                createPlayer();
+            }
+            // Place the wave
+            createWave();
+            break;
+        case 2:
+            // Place door 
+            createDoor(50 * 80, app.view.height - 160);
+
+            // Place the tiles
+            for(let i = 0; i < 55; i++)
+            {
+                createTile(i * 80, app.view.height - 80);
+            }
+
+            // Obstacle 1
+            createTile(6 * 80, app.view.height - 160);
+            createTile(8 * 80, app.view.height - 160);
+            createTile(8 * 80, app.view.height - 240);
+            createTile(10 * 80, app.view.height - 160);
+            createTile(10 * 80, app.view.height - 240);
+
+            // Place the wave
+            createWave();
+            break;
+    }
 }
 
 // Function that creates the different animations for player
@@ -286,20 +351,12 @@ function startGame()
     gameScene.visible = true;
     pauseMenu.visible = false;
     paused = false;
-    player.x = app.view.width / 2;
-    player.y = app.view.height / 2;
+    loadLevel();
     decreaseLifeBy(0);
     increaseScoreBy(0);
     life = 100;
-    for(let i = 0; i < tiles.length; i++)
-    {
-        tiles[i].x += totalDistance;
-    }
-    for(let i = 0; i < backgrounds.length; i++)
-    {
-        backgrounds[i].x += totalDistance;
-    }
-    door.x += totalDistance;
+
+
     totalDistance = 0;
     canJump = false;
     falling = true;
@@ -427,7 +484,7 @@ function gameLoop()
                 // Top of Tile
                 if(player.x + 40 > tiles[i].x
                     && player.x < tiles[i].x + 80
-                    && player.y + 40 > tiles[i].y - 10
+                    && player.y + 40 > tiles[i].y - 15
                     && player.y < tiles[i].y)
                 {
                     canJump = true;
@@ -474,7 +531,7 @@ function gameLoop()
         decreaseLifeBy(1);
     }
 
-    // *** Player Reaches end ***
+    // *** Player Reaches door ***
     if(rectsIntersect(door, player))
     {
         end();
