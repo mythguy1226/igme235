@@ -18,6 +18,7 @@ app.loader.add("tiles", "media/platform.png");
 app.loader.add("wave", "media/radioactiveWave.png");
 app.loader.add("door", "media/finishDoor.png");
 app.loader.add("background", "media/backgroundLab.png");
+app.loader.add("bullet", "media/bullet.png");
 app.loader.onComplete.add(setup);
 app.loader.load(doneLoading);
 
@@ -38,15 +39,15 @@ let cashLabel;
 let paused = true;
 let playerSheet = {};
 let tileSheet = {};
-let zombies = [];
 let waveSheet = {};
 let wave;
+let bulletSheet = {};
+let bullets = [];
 let backgroundSheet = {};
 let backgrounds = [];
 let doorSheet = {};
 let door;
 let keys = {};
-let barriers = [];
 let player;
 let canJump = false;
 let falling = true;
@@ -61,7 +62,8 @@ let direction = "east";
 let life = 100;
 let score = 0;
 let totalDistance = 0;
-let level = 1;
+let level = 2;
+let bulletTimer = 0;
 
 // Function that stores keydown inputs
 function keysDown(e)
@@ -84,6 +86,7 @@ function doneLoading(e)
     createTileSheet();
     createWaveSheet();
     createDoorSheet();
+    createBulletSheet();
 
     // Place the background
     for(let i = 0; i < 8; i++)
@@ -198,6 +201,11 @@ function loadLevel()
             createTile(10 * 80, app.view.height - 160);
             createTile(10 * 80, app.view.height - 240);
 
+            if(player == null)
+            {
+                createPlayer();
+            }
+
             // Place the wave
             createWave();
             break;
@@ -223,6 +231,15 @@ function createPlayerSheet()
         new PIXI.Texture(sheet, new PIXI.Rectangle(4 * w, h, w, h)),
         new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, h, w, h)),
         new PIXI.Texture(sheet, new PIXI.Rectangle(6 * w, h, w, h))
+    ];
+    playerSheet["shoot"] = [
+        new PIXI.Texture(sheet, new PIXI.Rectangle(0 * w, h * 2, w, h)),
+        new PIXI.Texture(sheet, new PIXI.Rectangle(1 * w, h * 2, w, h)),
+        new PIXI.Texture(sheet, new PIXI.Rectangle(2 * w, h * 2, w, h)),
+        new PIXI.Texture(sheet, new PIXI.Rectangle(3 * w, h * 2, w, h)),
+        new PIXI.Texture(sheet, new PIXI.Rectangle(4 * w, h * 2, w, h)),
+        new PIXI.Texture(sheet, new PIXI.Rectangle(5 * w, h * 2, w, h)),
+        new PIXI.Texture(sheet, new PIXI.Rectangle(6 * w, h * 2, w, h))
     ];
     playerSheet["jump"] = [
         new PIXI.Texture(sheet, new PIXI.Rectangle(1 * w, h, w, h)),
@@ -277,6 +294,18 @@ function createDoorSheet()
     ];
 }
 
+// Function that creates the bullet sheet
+function createBulletSheet()
+{
+    let sheet = new PIXI.BaseTexture.from(app.loader.resources["bullet"].url);
+    let w = 25;
+    let h = 25;
+    
+    bulletSheet["bullet"] = [
+        new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
+    ];
+}
+
 // Creates the player
 function createPlayer()
 {
@@ -301,6 +330,26 @@ function createTile(x, y)
     gameScene.addChild(tile);
     tile.play();
     tiles.push(tile);
+}
+
+// Creates a bullet
+function createBullet(x, y)
+{
+    let bullet = new PIXI.AnimatedSprite(bulletSheet.bullet);
+    bullet.anchor.set(0.5);
+    bullet.animationSpeed = 0.1;
+    bullet.loop = false;
+    bullet.x = x;
+    bullet.y = y;
+    if(direction == "east")
+    {
+        bullet.fwd = 1;
+    }
+    bullet.speed = 400;
+    bullet.isAlive = true;
+    gameScene.addChild(bullet);
+    bullet.play();
+    bullets.push(bullet);
 }
 // Creates the wave
 function createWave()
@@ -386,6 +435,7 @@ function gameLoop()
     {
         if(!player.playing && canJump)
         {
+            player.animationSpeed = 0.1;
             player.textures = playerSheet.walk;
             player.play();
         }
@@ -403,6 +453,7 @@ function gameLoop()
     {
         if(!player.playing && canJump)
         {
+            player.animationSpeed = 0.1;
             player.textures = playerSheet.walk;
             player.play();
         }
@@ -412,6 +463,32 @@ function gameLoop()
         }
         direction = "east";
         player.x += speed;
+    }
+
+    // Cooldown timer
+    if(bulletTimer > 0)
+    {
+        bulletTimer -= (1/app.ticker.FPS);
+    }
+
+    // Space - Shoot
+    if(keys["32"])
+    {
+        if(!player.playing)
+        {
+            player.animationSpeed = 0.5;
+            player.textures = playerSheet.shoot;
+            player.play();
+        }
+        if(player.scale.x < 0)
+        {
+            player.scale.x *= -1;
+        }
+        if(bulletTimer <= 0)
+        {
+            createBullet(player.x + 45, player.y);
+            bulletTimer = 0.5;
+        }
     }
 
     // Pause
@@ -448,7 +525,7 @@ function gameLoop()
     }
 
     // Jump
-    if(keys["32"] && canJump)
+    if(keys["87"] && canJump)
     {
         jumping = true;
         canJump = false;
@@ -472,6 +549,12 @@ function gameLoop()
     {
         jumping = false;
         jumpSpeed = 13;
+    }
+
+    // *** Bullet Movement ***
+    for (let b of bullets)
+    {
+		b.x += b.fwd * b.speed * (1/60);
     }
 
     // *** Collisions ***
@@ -553,12 +636,17 @@ function gameLoop()
         }
     }
 
+    // *** Clean up Dead Sprites ***
+    // get rid of dead spells
+    bullets = bullets.filter(b => b.isAlive);
+
     if(life <= 0)
     {
         end();
     }
     door.x -= 2;
     totalDistance += 2;
+
 }
 
 // Initial game setup
