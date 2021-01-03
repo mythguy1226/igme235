@@ -15,6 +15,7 @@ const sceneHeight = app.view.height;
 // pre-load the images
 app.loader.add("human", "media/playerSpriteSheet.png");
 app.loader.add("tiles", "media/platform.png");
+app.loader.add("crate", "media/crate.png");
 app.loader.add("wave", "media/radioactiveWave.png");
 app.loader.add("door", "media/finishDoor.png");
 app.loader.add("background", "media/backgroundLab.png");
@@ -143,39 +144,39 @@ function loadLevel()
             // Place the tiles
             for(let i = 0; i < 55; i++)
             {
-                createTile(i * 80, app.view.height - 80);
+                createTile(i * 80, app.view.height - 80, "platform");
             }
 
             // Obstacle 1
-            createTile(6 * 80, app.view.height - 160);
-            createTile(8 * 80, app.view.height - 160);
-            createTile(8 * 80, app.view.height - 240);
-            createTile(10 * 80, app.view.height - 160);
-            createTile(10 * 80, app.view.height - 240);
+            createTile(6 * 80, app.view.height - 160, "platform");
+            createTile(8 * 80, app.view.height - 160, "platform");
+            createTile(8 * 80, app.view.height - 240, "platform");
+            createTile(10 * 80, app.view.height - 160, "platform");
+            createTile(10 * 80, app.view.height - 240, "platform");
 
             // Obstacle 2
-            createTile(17 * 80, app.view.height - 160);
-            createTile(19 * 80, app.view.height - 160);
-            createTile(19 * 80, app.view.height - 240);
-            createTile(21 * 80, app.view.height - 160);
-            createTile(21 * 80, app.view.height - 240);
-            createTile(21 * 80, app.view.height - 320);
-            createTile(23 * 80, app.view.height - 160);
-            createTile(23 * 80, app.view.height - 240);
-            createTile(25 * 80, app.view.height - 160);
+            createTile(17 * 80, app.view.height - 160, "platform");
+            createTile(19 * 80, app.view.height - 160, "platform");
+            createTile(19 * 80, app.view.height - 240, "platform");
+            createTile(21 * 80, app.view.height - 160, "platform");
+            createTile(21 * 80, app.view.height - 240, "platform");
+            createTile(21 * 80, app.view.height - 320, "platform");
+            createTile(23 * 80, app.view.height - 160, "platform");
+            createTile(23 * 80, app.view.height - 240, "platform");
+            createTile(25 * 80, app.view.height - 160, "platform");
 
             // Obstacle 3
-            createTile(30 * 80, app.view.height - 160);
-            createTile(32 * 80, app.view.height - 160);
-            createTile(32 * 80, app.view.height - 240);
-            createTile(34 * 80, app.view.height - 160);
-            createTile(34 * 80, app.view.height - 240);
-            createTile(34 * 80, app.view.height - 320);
-            createTile(36 * 80, app.view.height - 160);
-            createTile(36 * 80, app.view.height - 240);
-            createTile(38 * 80, app.view.height - 160);
-            createTile(40 * 80, app.view.height - 160);
-            createTile(40 * 80, app.view.height - 240);
+            createTile(30 * 80, app.view.height - 160, "platform");
+            createTile(32 * 80, app.view.height - 160, "platform");
+            createTile(32 * 80, app.view.height - 240, "platform");
+            createTile(34 * 80, app.view.height - 160, "platform");
+            createTile(34 * 80, app.view.height - 240, "platform");
+            createTile(34 * 80, app.view.height - 320, "platform");
+            createTile(36 * 80, app.view.height - 160, "platform");
+            createTile(36 * 80, app.view.height - 240, "platform");
+            createTile(38 * 80, app.view.height - 160, "platform");
+            createTile(40 * 80, app.view.height - 160, "platform");
+            createTile(40 * 80, app.view.height - 240, "platform");
 
             if(player == null)
             {
@@ -191,15 +192,21 @@ function loadLevel()
             // Place the tiles
             for(let i = 0; i < 55; i++)
             {
-                createTile(i * 80, app.view.height - 80);
+                createTile(i * 80, app.view.height - 80, "platform");
             }
 
             // Obstacle 1
-            createTile(6 * 80, app.view.height - 160);
-            createTile(8 * 80, app.view.height - 160);
-            createTile(8 * 80, app.view.height - 240);
-            createTile(10 * 80, app.view.height - 160);
-            createTile(10 * 80, app.view.height - 240);
+            createTile(6 * 80, app.view.height - 160, "platform");
+            createTile(8 * 80, app.view.height - 160, "platform");
+            createTile(8 * 80, app.view.height - 240, "platform");
+            createTile(10 * 80, app.view.height - 160, "platform");
+            createTile(10 * 80, app.view.height - 240, "platform");
+
+            // Crate Wall
+            for(let i = 2; i < 10; i++)
+            {
+                createTile(20 * 80, app.view.height - (i * 80), "crate");
+            }
 
             if(player == null)
             {
@@ -250,11 +257,15 @@ function createPlayerSheet()
 function createTileSheet()
 {
     let sheet = new PIXI.BaseTexture.from(app.loader.resources["tiles"].url);
+    let crateSheet = new PIXI.BaseTexture.from(app.loader.resources["crate"].url);
     let w = 80;
     let h = 80;
     
     tileSheet["platform"] = [
         new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
+    ];
+    tileSheet["crate"] = [
+        new PIXI.Texture(crateSheet, new PIXI.Rectangle(0, 0, w, h))
     ];
 }
 
@@ -319,9 +330,17 @@ function createPlayer()
     player.play();
 }
 // Creates a tile
-function createTile(x, y)
+function createTile(x, y, type)
 {
     let tile = new PIXI.AnimatedSprite(tileSheet.platform);
+    if(type == "crate")
+    {
+        tile.textures = tileSheet.crate;
+    }
+    else
+    {
+        tile.textures = tileSheet.platform;
+    }
     tile.anchor.set(0);
     tile.animationSpeed = 0.1;
     tile.loop = false;
@@ -579,17 +598,15 @@ function gameLoop()
                     canJump = false;
                 }
 
+
                 // Right of Tile
                 if(player.x + 40 > tiles[i].x
                     && player.x < tiles[i].x + 80
                     && player.y > tiles[i].y
                     && player.y < tiles[i].y + 80)
                 {   
-                    player.x = tiles[i].x - 30;
-                    if(!canJump)
-                    {
-                        canJump = true;
-                    }
+                    player.x = tiles[i].x - 45;
+                    player.y -= 5;
                 }
                 
                 // Left of Tile
@@ -598,13 +615,9 @@ function gameLoop()
                     && player.y > tiles[i].y
                     && player.y < tiles[i].y + 80)
                 {
-                    player.x = tiles[i].x + 110;
-                    if(!canJump)
-                    {
-                        canJump = true;
-                    }
+                    player.x = tiles[i].x + 120;
+                    player.y -= 5;
                 }
-                
             }
         }
     }
