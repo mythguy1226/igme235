@@ -36,6 +36,7 @@ let gameOverScene,gameOverScoreLabel,gameOverWaveLabel;
 let pauseMenu,bioElectricBlastUpgrade,heatWaveUpgrade,heatWaveBuy,forcePushUpgrade,forcePushBuy,fireBallUpgrade,fireBallBuy,freezeUpgrade,freezeBuy,acidShotUpgrade,acidShotBuy;
 let instructionScene,instructions,controlsMovement,controlsButtons,controlsPause,controlsSpell;
 let cashLabel;
+let nextLevel,nextLevelButton;
 
 let paused = true;
 let playerSheet = {};
@@ -63,7 +64,7 @@ let direction = "east";
 let life = 100;
 let score = 0;
 let totalDistance = 0;
-let level = 2;
+let level = 1;
 let bulletTimer = 0;
 
 // Function that stores keydown inputs
@@ -421,12 +422,20 @@ function startGame()
     instructionScene.visible = false;
     gameScene.visible = true;
     pauseMenu.visible = false;
+    nextLevel.visible = false;
     paused = false;
+    if(level > 2)
+    {
+        end();
+    }
     loadLevel();
     decreaseLifeBy(0);
     increaseScoreBy(0);
     life = 100;
-
+    for(let background of backgrounds)
+    {
+        background.x += totalDistance;
+    }
 
     totalDistance = 0;
     canJump = false;
@@ -443,6 +452,7 @@ function restartGame()
     gameOverScene.visible = false;
     gameScene.visible = false;
     pauseMenu.visible = false;
+    level = 1;
 }
 
 // Update function
@@ -633,7 +643,7 @@ function gameLoop()
     // *** Player Reaches door ***
     if(rectsIntersect(door, player))
     {
-        end();
+        completeLevel();
     }
 
     // *** Bullet hits crate ***
@@ -710,6 +720,11 @@ function setup() {
     pauseMenu.visible = false;
     stage.addChild(pauseMenu);
 
+    // Create Next Level Menu
+    nextLevel = new PIXI.Container();
+    nextLevel.visible = false;
+    stage.addChild(nextLevel);
+
     // Create Instructions Scene
     instructionScene = new PIXI.Container();
     instructionScene.visible = false;
@@ -730,18 +745,21 @@ function end()
 {
     paused = true;
 
-    // clear out level
-    /*
-    zombies.forEach(z=>gameScene.removeChild(z)); // concise arrow function with no brackets and no return
-    zombies = [];
-
-    spells.forEach(s=>gameScene.removeChild(s)); // ditto
-    spells = [];
-    */
+    
     gameOverScene.visible = true;
     gameScene.visible = false;
-
+    nextLevel.visible = false;
     gameOverScoreLabel.text = `Your final score: ${score}`;
+}
+
+// Function for when the game ends
+function completeLevel()
+{
+    paused = true;
+    gameOverScene.visible = false;
+    gameScene.visible = false;
+    nextLevel.visible = true;
+    level++;
 }
 
 // Create GUI labels and buttons
@@ -909,6 +927,19 @@ function createLabelsAndButtons()
     startButton.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
     startButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     instructionScene.addChild(startButton);
+
+    // Set up Level Completion Menu
+    // Next Level Button
+    nextLevelButton = new PIXI.Text("Next Level");
+    nextLevelButton.style = buttonStyle;
+    nextLevelButton.x = 180;
+    nextLevelButton.y = sceneHeight - 120;
+    nextLevelButton.interactive = true;
+    nextLevelButton.buttonMode = true;
+    nextLevelButton.on("pointerup", startGame); // startGame is a function reference
+    nextLevelButton.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    nextLevelButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    nextLevel.addChild(nextLevelButton);
 
     // Set up the Pause menu
     // Resume Button
