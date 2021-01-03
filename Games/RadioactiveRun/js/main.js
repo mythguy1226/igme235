@@ -336,16 +336,19 @@ function createTile(x, y, type)
     if(type == "crate")
     {
         tile.textures = tileSheet.crate;
+        tile.type = "crate";
     }
     else
     {
         tile.textures = tileSheet.platform;
+        tile.type = "platform";
     }
     tile.anchor.set(0);
     tile.animationSpeed = 0.1;
     tile.loop = false;
     tile.x = x;
     tile.y = y;
+    tile.isAlive = true;
     gameScene.addChild(tile);
     tile.play();
     tiles.push(tile);
@@ -633,6 +636,24 @@ function gameLoop()
         end();
     }
 
+    // *** Bullet hits crate ***
+    for(let b of bullets)
+    {
+        for(let t of tiles)
+        {
+            if(rectsIntersect(b, t))
+            {
+                b.isAlive = false;
+                gameScene.removeChild(b);
+                if(t.type == "crate")
+                {
+                    t.isAlive = false;
+                    gameScene.removeChild(t);
+                }
+            }
+        }
+    }
+
     // Tile Movement
     for(let i = 0; i < tiles.length; i++)
     {
@@ -650,8 +671,11 @@ function gameLoop()
     }
 
     // *** Clean up Dead Sprites ***
-    // get rid of dead spells
+    // get rid of dead bullets
     bullets = bullets.filter(b => b.isAlive);
+
+    // get rid of dead crates
+    tiles = tiles.filter(t => t.isAlive);
 
     if(life <= 0)
     {
