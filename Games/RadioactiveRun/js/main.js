@@ -20,6 +20,7 @@ app.loader.add("wave", "media/radioactiveWave.png");
 app.loader.add("door", "media/finishDoor.png");
 app.loader.add("background", "media/backgroundLab.png");
 app.loader.add("bullet", "media/bullet.png");
+app.loader.add("enemy", "media/enemyScientist.png");
 app.loader.onComplete.add(setup);
 app.loader.load(doneLoading);
 
@@ -42,9 +43,12 @@ let paused = true;
 let playerSheet = {};
 let tileSheet = {};
 let waveSheet = {};
+let enemySheet = {};
+let enemies = [];
 let wave;
 let bulletSheet = {};
 let bullets = [];
+let enemyBullets = [];
 let backgroundSheet = {};
 let backgrounds = [];
 let doorSheet = {};
@@ -67,6 +71,7 @@ let score = 0;
 let totalDistance = 0;
 let level = 1;
 let bulletTimer = 0;
+let enemyTimer = 0;
 
 // Function that stores keydown inputs
 function keysDown(e)
@@ -85,6 +90,7 @@ function doneLoading(e)
 {
     // Create all sprite sheets
     createPlayerSheet();
+    createEnemySheet();
     createBackgroundSheet()
     createTileSheet();
     createWaveSheet();
@@ -124,10 +130,25 @@ function loadLevel()
     {
         gameScene.removeChild(tile);
     }
-    for(let i = tiles.length - 1; i >= 0; i--)
+    tiles = [];
+
+    for(let e of enemies)
     {
-        tiles.pop();
+        gameScene.removeChild(e);
     }
+    enemies = [];
+
+    for(let b of bullets)
+    {
+        gameScene.removeChild(b);
+    }
+    bullets = [];
+
+    for(let b of enemyBullets)
+    {
+        gameScene.removeChild(b);
+    }
+    enemyBullets = [];
 
     // Move player
     if(player != null)
@@ -330,6 +351,58 @@ function loadLevel()
             // Place the wave
             createWave();
             break;
+        case 4:
+            // Place door 
+            createDoor(50 * 80, app.view.height - 160);
+            createTile(50 * 80, app.view.height - 240, "platform");
+            createTile(50 * 80, app.view.height - 320, "platform");
+            createTile(50 * 80, app.view.height - 400, "platform");
+            createTile(50 * 80, app.view.height - 480, "platform");
+            createTile(50 * 80, app.view.height - 560, "platform");
+
+            // Place the tiles
+            for(let i = 0; i < 55; i++)
+            {
+                createTile(i * 80, app.view.height - 80, "platform");
+            }
+
+            // Obstacle 1
+            createTile(6 * 80, app.view.height - 160, "platform");
+            createTile(9 * 80, app.view.height - 160, "platform");
+            createTile(9 * 80, app.view.height - 240, "platform");
+            
+            // Enemies 1
+            createEnemy(16 * 80, app.view.height - 160);
+            createEnemy(20 * 80, app.view.height - 160);
+
+            // Obstacle 2
+            createTile(25 * 80, app.view.height - 160, "crate");
+            createTile(25 * 80, app.view.height - 240, "platform");
+            createTile(25 * 80, app.view.height - 320, "platform");
+
+            // Obstacle 3
+            createTile(28 * 80, app.view.height - 160, "platform");
+            createTile(31 * 80, app.view.height - 160, "platform");
+            createTile(31 * 80, app.view.height - 240, "platform");
+            createTile(34 * 80, app.view.height - 160, "platform");
+            createTile(34 * 80, app.view.height - 240, "platform");
+            createTile(34 * 80, app.view.height - 320, "platform");
+            createTile(37 * 80, app.view.height - 160, "platform");
+            createTile(40 * 80, app.view.height - 160, "platform");
+            createTile(40 * 80, app.view.height - 240, "platform");
+
+            // Enemies 2
+            createEnemy(43 * 80, app.view.height - 160);
+            createEnemy(47 * 80, app.view.height - 160);
+
+            if(player == null)
+            {
+                createPlayer();
+            }
+
+            // Place the wave
+            createWave();
+            break;
     }
 }
 
@@ -391,6 +464,18 @@ function createWaveSheet()
     let h = 600;
     
     waveSheet["wave"] = [
+        new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
+    ];
+}
+
+// Function that creates the enemy sheet
+function createEnemySheet()
+{
+    let sheet = new PIXI.BaseTexture.from(app.loader.resources["enemy"].url);
+    let w = 80;
+    let h = 80;
+    
+    enemySheet["shoot"] = [
         new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h))
     ];
 }
@@ -484,6 +569,41 @@ function createBullet(x, y)
     bullet.play();
     bullets.push(bullet);
 }
+
+// Creates an enemy bullet
+function createEnemyBullet(x, y)
+{
+    let bullet = new PIXI.AnimatedSprite(bulletSheet.bullet);
+    bullet.anchor.set(0.5);
+    bullet.animationSpeed = 0.1;
+    bullet.loop = false;
+    bullet.x = x;
+    bullet.y = y;
+    bullet.fwd = -1;
+    bullet.speed = 400;
+    bullet.isAlive = true;
+    bullet.scale.x *= -1;
+    gameScene.addChild(bullet);
+    bullet.play();
+    enemyBullets.push(bullet);
+}
+
+// Creates an enemy
+function createEnemy(x, y)
+{
+    let enemy = new PIXI.AnimatedSprite(enemySheet.shoot);
+    enemy.anchor.set(0);
+    enemy.animationSpeed = 0.1;
+    enemy.loop = false;
+    enemy.x = x;
+    enemy.y = y + 7;
+    enemy.scale.x *= -1;
+    enemy.isAlive = true
+    gameScene.addChild(enemy);
+    enemy.play();
+    enemies.push(enemy);
+}
+
 // Creates the wave
 function createWave()
 {
@@ -534,7 +654,7 @@ function startGame()
     pauseMenu.visible = false;
     nextLevel.visible = false;
     paused = false;
-    if(level > 3)
+    if(level > 4)
     {
         end();
     }
@@ -698,6 +818,24 @@ function gameLoop()
     {
 		b.x += b.fwd * b.speed * (1/60);
     }
+    for (let b of enemyBullets)
+    {
+		b.x += b.fwd * b.speed * (1/60);
+    }
+
+    // *** Enemy Bullets ***
+    if(enemyTimer > 0)
+    {
+        enemyTimer -= (1/app.ticker.FPS);
+    }
+    else
+    {
+        enemyTimer = 4;
+        for(let e of enemies)
+        {
+            createEnemyBullet(e.x - 80, e.y + 40);
+        }
+    }
 
     // *** Collisions ***
     for(let i = 0; i < tiles.length; i++)
@@ -775,9 +913,10 @@ function gameLoop()
         completeLevel();
     }
 
-    // *** Bullet hits crate ***
+    // *** Bullet Collisions ***
     for(let b of bullets)
     {
+        // *** Bullet hits crate ***
         for(let t of tiles)
         {
             if(rectsIntersect(b, t))
@@ -791,7 +930,42 @@ function gameLoop()
                 }
             }
         }
+
+        // *** Bullet hits Enemy
+        for(let e of enemies)
+        {
+            if(rectsIntersect(b, e))
+            {
+                b.isAlive = false;
+                gameScene.removeChild(b);
+                e.isAlive = false;
+                gameScene.removeChild(e);
+            }
+        }
     }
+
+    // *** Enemy Bullet Collisions ***
+    for(let b of enemyBullets)
+    {
+        // *** Bullet hits Tile ***
+        for(let t of tiles)
+        {
+            if(rectsIntersect(b, t))
+            {
+                b.isAlive = false;
+                gameScene.removeChild(b);
+            }
+        }
+
+        // *** Bullet hits Player ***
+        if(rectsIntersect(player, b))
+        {
+            b.isAlive = false;
+            gameScene.removeChild(b);
+            end();
+        }
+    }
+
 
     // Tile Movement
     for(let i = 0; i < tiles.length; i++)
@@ -809,9 +983,22 @@ function gameLoop()
         }
     }
 
+    // Enemy Movement
+    for(let i = 0; i < enemies.length; i++)
+    {
+        if(enemies[i] != null)
+        {
+            enemies[i].x -= 2;
+        }
+    }
+
     // *** Clean up Dead Sprites ***
     // get rid of dead bullets
     bullets = bullets.filter(b => b.isAlive);
+    enemyBullets = enemyBullets.filter(b => b.isAlive);
+
+    // get rid of dead enemies
+    enemies = enemies.filter(e => e.isAlive);
 
     // get rid of dead crates
     tiles = tiles.filter(t => t.isAlive);
@@ -1038,8 +1225,8 @@ function createLabelsAndButtons()
     instructionScene.addChild(instructions);
 
     // *** Labels for Controls ***
-    controlsMovement = new PIXI.Text("Movement Controls: A and D\n"
-                                    +"Jump Controls: Space");
+    controlsMovement = new PIXI.Text("Movement Controls: W, A, D\n"
+                                    +"Shoot: Space");
     controlsMovement.style = instructionsStyle;
     controlsMovement.x = 100;
     controlsMovement.y = 220;
