@@ -58,13 +58,14 @@ let jumpSpeed = 13;
 let fallSpeed = 1;
 let gravity = 0.5;
 let tiles = [];
+let hitCeiling = false;
 let speed = 3;
 let spells = [];
 let direction = "east";
 let life = 100;
 let score = 0;
 let totalDistance = 0;
-let level = 2;
+let level = 1;
 let bulletTimer = 0;
 
 // Function that stores keydown inputs
@@ -141,6 +142,11 @@ function loadLevel()
         case 1:
             // Place door 
             createDoor(50 * 80, app.view.height - 160);
+            createTile(50 * 80, app.view.height - 240, "platform");
+            createTile(50 * 80, app.view.height - 320, "platform");
+            createTile(50 * 80, app.view.height - 400, "platform");
+            createTile(50 * 80, app.view.height - 480, "platform");
+            createTile(50 * 80, app.view.height - 560, "platform");
 
             // Place the tiles
             for(let i = 0; i < 55; i++)
@@ -189,6 +195,11 @@ function loadLevel()
         case 2:
             // Place door 
             createDoor(50 * 80, app.view.height - 160);
+            createTile(50 * 80, app.view.height - 240, "platform");
+            createTile(50 * 80, app.view.height - 320, "platform");
+            createTile(50 * 80, app.view.height - 400, "platform");
+            createTile(50 * 80, app.view.height - 480, "platform");
+            createTile(50 * 80, app.view.height - 560, "platform");
 
             // Place the tiles
             for(let i = 0; i < 55; i++)
@@ -229,6 +240,87 @@ function loadLevel()
             createTile(43 * 80, app.view.height - 160, "platform");
             createTile(43 * 80, app.view.height - 240, "platform");
             createTile(46 * 80, app.view.height - 160, "platform");
+
+            if(player == null)
+            {
+                createPlayer();
+            }
+
+            // Place the wave
+            createWave();
+            break;
+        case 3:
+            // Place door 
+            createDoor(50 * 80, app.view.height - 160);
+            createTile(50 * 80, app.view.height - 240, "platform");
+            createTile(50 * 80, app.view.height - 320, "platform");
+            createTile(50 * 80, app.view.height - 400, "platform");
+            createTile(50 * 80, app.view.height - 480, "platform");
+            createTile(50 * 80, app.view.height - 560, "platform");
+
+            // Place the tiles
+            for(let i = 0; i < 55; i++)
+            {
+                createTile(i * 80, app.view.height - 80, "platform");
+            }
+
+            // Obstacle 1
+            createTile(6 * 80, app.view.height - 160, "platform");
+            createTile(9 * 80, app.view.height - 160, "platform");
+            createTile(9 * 80, app.view.height - 240, "platform");
+
+            // Obstacle 2
+            createTile(12 * 80, app.view.height - 160, "platform");
+            createTile(12 * 80, app.view.height - 240, "crate");
+            createTile(12 * 80, app.view.height - 320, "crate");
+            createTile(12 * 80, app.view.height - 400, "platform");
+            createTile(12 * 80, app.view.height - 480, "platform");
+            createTile(12 * 80, app.view.height - 560, "platform");
+
+            // Obstacle 3
+            createTile(15 * 80, app.view.height - 160, "crate");
+            createTile(15 * 80, app.view.height - 240, "platform");
+            createTile(15 * 80, app.view.height - 320, "platform");
+            createTile(15 * 80, app.view.height - 400, "platform");
+            createTile(15 * 80, app.view.height - 480, "platform");
+            createTile(15 * 80, app.view.height - 560, "platform");
+
+            // Obstacle 4
+            createTile(17 * 80, app.view.height - 160, "platform");
+            createTile(20 * 80, app.view.height - 160, "platform");
+            createTile(20 * 80, app.view.height - 240, "platform");
+            createTile(20 * 80, app.view.height - 320, "crate");
+            createTile(20 * 80, app.view.height - 400, "crate");
+            createTile(20 * 80, app.view.height - 480, "platform");
+            createTile(20 * 80, app.view.height - 560, "platform");
+
+            // Obstacle 5
+            createTile(25 * 80, app.view.height - 160, "crate");
+            createTile(28 * 80, app.view.height - 160, "crate");
+            createTile(28 * 80, app.view.height - 240, "crate");
+            createTile(31 * 80, app.view.height - 160, "crate");
+            createTile(31 * 80, app.view.height - 240, "crate");
+            createTile(31 * 80, app.view.height - 320, "crate");
+            createTile(34 * 80, app.view.height - 160, "platform");
+            createTile(34 * 80, app.view.height - 240, "platform");
+            createTile(34 * 80, app.view.height - 320, "platform");
+            createTile(34 * 80, app.view.height - 400, "platform");
+
+            // Obstacle 6
+            createTile(40 * 80, app.view.height - 160, "crate");
+            createTile(40 * 80, app.view.height - 240, "platform");
+            createTile(40 * 80, app.view.height - 320, "platform");
+            createTile(40 * 80, app.view.height - 400, "platform");
+            createTile(40 * 80, app.view.height - 480, "platform");
+            createTile(40 * 80, app.view.height - 560, "platform");
+
+            // Obstacle 7
+            createTile(45 * 80, app.view.height - 160, "platform");
+            createTile(45 * 80, app.view.height - 240, "crate");
+            createTile(45 * 80, app.view.height - 320, "crate");
+            createTile(45 * 80, app.view.height - 400, "platform");
+            createTile(45 * 80, app.view.height - 480, "platform");
+            createTile(45 * 80, app.view.height - 560, "platform");
 
             if(player == null)
             {
@@ -385,10 +477,7 @@ function createBullet(x, y)
     bullet.loop = false;
     bullet.x = x;
     bullet.y = y;
-    if(direction == "east")
-    {
-        bullet.fwd = 1;
-    }
+    bullet.fwd = 1;
     bullet.speed = 400;
     bullet.isAlive = true;
     gameScene.addChild(bullet);
@@ -445,7 +534,7 @@ function startGame()
     pauseMenu.visible = false;
     nextLevel.visible = false;
     paused = false;
-    if(level > 2)
+    if(level > 3)
     {
         end();
     }
@@ -641,28 +730,35 @@ function gameLoop()
                     player.y = tiles[i].y + 80;
                     canJump = false;
                     jumping = false;
+                    hitCeiling = true;
                 }
-
-                // Right of Tile
-                if(player.x + 40 > tiles[i].x
-                    && player.x < tiles[i].x + 80
-                    && player.y > tiles[i].y
-                    && player.y < tiles[i].y + 80)
-                {   
-                    player.x = tiles[i].x - 40;
-                    player.y -= 5;
-                    jumping = false;
-                }
-                
-                // Left of Tile
-                if(player.x > tiles[i].x
-                    && player.x + 40 > tiles[i].x + 80
-                    && player.y > tiles[i].y
-                    && player.y < tiles[i].y + 80)
+                else
                 {
-                    player.x = tiles[i].x + 120;
-                    player.y -= 5;
-                    jumping = false;
+                    hitCeiling = false;
+                }
+                if(!hitCeiling)
+                {
+                    // Right of Tile
+                    if(player.x + 40 > tiles[i].x
+                        && player.x < tiles[i].x + 80
+                        && player.y > tiles[i].y
+                        && player.y < tiles[i].y + 80)
+                    {   
+                        player.x = tiles[i].x - 40;
+                        player.y -= fallSpeed;
+                        jumping = false;
+                    }
+                    
+                    // Left of Tile
+                    if(player.x > tiles[i].x
+                        && player.x + 40 > tiles[i].x + 80
+                        && player.y > tiles[i].y
+                        && player.y < tiles[i].y + 80)
+                    {
+                        player.x = tiles[i].x + 120;
+                        player.y -= 5;
+                        jumping = false;
+                    }
                 }
             }
         }
