@@ -64,7 +64,7 @@ let direction = "east";
 let life = 100;
 let score = 0;
 let totalDistance = 0;
-let level = 1;
+let level = 2;
 let bulletTimer = 0;
 
 // Function that stores keydown inputs
@@ -203,11 +203,32 @@ function loadLevel()
             createTile(10 * 80, app.view.height - 160, "platform");
             createTile(10 * 80, app.view.height - 240, "platform");
 
+            // Obstacle 2
+            createTile(13 * 80, app.view.height - 160, "platform");
+            createTile(16 * 80, app.view.height - 160, "platform");
+            createTile(16 * 80, app.view.height - 240, "platform");
+
             // Crate Wall
             for(let i = 2; i < 10; i++)
             {
                 createTile(20 * 80, app.view.height - (i * 80), "crate");
             }
+
+            // Obstacle 3
+            createTile(25 * 80, app.view.height - 160, "platform");
+            createTile(28 * 80, app.view.height - 160, "platform");
+            createTile(28 * 80, app.view.height - 240, "platform");
+            createTile(31 * 80, app.view.height - 160, "platform");
+            createTile(31 * 80, app.view.height - 240, "platform");
+            createTile(34 * 80, app.view.height - 160, "platform");
+            createTile(34 * 80, app.view.height - 240, "platform");
+            createTile(34 * 80, app.view.height - 320, "platform");
+
+            // Obstacle 4
+            createTile(40 * 80, app.view.height - 160, "platform");
+            createTile(43 * 80, app.view.height - 160, "platform");
+            createTile(43 * 80, app.view.height - 240, "platform");
+            createTile(46 * 80, app.view.height - 160, "platform");
 
             if(player == null)
             {
@@ -600,7 +621,7 @@ function gameLoop()
                 if(player.x + 40 > tiles[i].x
                     && player.x < tiles[i].x + 80
                     && player.y + 40 > tiles[i].y - 15
-                    && player.y < tiles[i].y)
+                    && player.y - 40 < tiles[i].y)
                 {
                     canJump = true;
                     falling = false;
@@ -611,6 +632,16 @@ function gameLoop()
                     canJump = false;
                 }
 
+                // Bottom of Tile
+                if(player.x + 40 > tiles[i].x
+                    && player.x < tiles[i].x + 80
+                    && player.y + 40 < tiles[i].y - 15
+                    && player.y - 40 > tiles[i].y + 80)
+                {
+                    player.y = tiles[i].y + 80;
+                    canJump = false;
+                    jumping = false;
+                }
 
                 // Right of Tile
                 if(player.x + 40 > tiles[i].x
@@ -618,8 +649,9 @@ function gameLoop()
                     && player.y > tiles[i].y
                     && player.y < tiles[i].y + 80)
                 {   
-                    player.x = tiles[i].x - 45;
+                    player.x = tiles[i].x - 40;
                     player.y -= 5;
+                    jumping = false;
                 }
                 
                 // Left of Tile
@@ -630,6 +662,7 @@ function gameLoop()
                 {
                     player.x = tiles[i].x + 120;
                     player.y -= 5;
+                    jumping = false;
                 }
             }
         }
