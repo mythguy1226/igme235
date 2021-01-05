@@ -33,11 +33,12 @@ let stage;
 // Game variables
 let startScene;
 let gameScene,human,scoreLabel,lifeLabel,waveLabel,abilityLabel,zombieCountLabel;
-let gameOverScene,gameOverScoreLabel,gameOverWaveLabel;
+let gameOverScene,gameOverScoreLabel,gameOverWaveLabel,gameOverText;
 let pauseMenu,bioElectricBlastUpgrade,heatWaveUpgrade,heatWaveBuy,forcePushUpgrade,forcePushBuy,fireBallUpgrade,fireBallBuy,freezeUpgrade,freezeBuy,acidShotUpgrade,acidShotBuy;
 let instructionScene,instructions,controlsMovement,controlsButtons,controlsPause,controlsSpell;
 let cashLabel;
 let nextLevel,nextLevelButton;
+let gunShotSound,bulletHitSound,buttonSound,playerDeathSound,enemyDeathSound;
 
 let paused = true;
 let playerSheet = {};
@@ -69,7 +70,7 @@ let direction = "east";
 let life = 100;
 let score = 0;
 let totalDistance = 0;
-let level = 1;
+let level = 4;
 let bulletTimer = 0;
 let enemyTimer = 0;
 
@@ -673,6 +674,7 @@ function startGame()
     jumping = false;
     jumpSpeed = 13;
     fallSpeed = 1;
+    buttonSound.play();
 }
 
 // Go back to start screen
@@ -683,6 +685,7 @@ function restartGame()
     gameScene.visible = false;
     pauseMenu.visible = false;
     level = 1;
+    buttonSound.play();
 }
 
 // Update function
@@ -750,6 +753,7 @@ function gameLoop()
         {
             createBullet(player.x + 45, player.y);
             bulletTimer = 0.5;
+            gunShotSound.play();
         }
     }
 
@@ -761,7 +765,6 @@ function gameLoop()
         pauseMenu.visible = true;
         gameOverScene.visible = false;
         paused = true;
-        cashLabel.text = `Available Cash: ${score}`;
     }
 
     // *** Idle Animations ***
@@ -834,6 +837,7 @@ function gameLoop()
         for(let e of enemies)
         {
             createEnemyBullet(e.x - 80, e.y + 40);
+            gunShotSound.play();
         }
     }
 
@@ -932,6 +936,7 @@ function gameLoop()
                     t.isAlive = false;
                     gameScene.removeChild(t);
                 }
+                bulletHitSound.play();
             }
         }
 
@@ -944,6 +949,7 @@ function gameLoop()
                 gameScene.removeChild(b);
                 e.isAlive = false;
                 gameScene.removeChild(e);
+                enemyDeathSound.play();
             }
         }
     }
@@ -958,6 +964,7 @@ function gameLoop()
             {
                 b.isAlive = false;
                 gameScene.removeChild(b);
+                bulletHitSound.play();
             }
         }
 
@@ -966,6 +973,7 @@ function gameLoop()
         {
             b.isAlive = false;
             gameScene.removeChild(b);
+            playerDeathSound.play();
             end();
         }
     }
@@ -1014,6 +1022,7 @@ function gameLoop()
     // *** Player Death ***
     if(life <= 0)
     {
+        playerDeathSound.play();
         end();
     }
 }
@@ -1055,11 +1064,26 @@ function setup() {
     // Create labels for all scenes
     createLabelsAndButtons();
 
-    // Set the barriers
-
-    
 	// Load Sounds
+    gunShotSound = new Howl({
+        src: ['sounds/gunshot.mp3']
+    });
 
+    bulletHitSound = new Howl({
+        src: ['sounds/bulletHit.mp3']
+    });
+
+    buttonSound = new Howl({
+        src: ['sounds/button.mp3']
+    });
+    
+    playerDeathSound = new Howl({
+        src: ['sounds/playerDeath.mp3']
+    });
+
+    enemyDeathSound = new Howl({
+        src: ['sounds/enemyDeath.mp3']
+    });
 }
 
 // Function for when the game ends
@@ -1071,7 +1095,15 @@ function end()
     gameOverScene.visible = true;
     gameScene.visible = false;
     nextLevel.visible = false;
+    pauseMenu.visible = false;
     gameOverScoreLabel.text = `Your final score: ${score}`;
+
+    // Win condition
+    if(level > 4)
+    {
+        gameOverText.text = "You outran the wave!"
+        gameOverText.x -= 120;
+    }
 }
 
 // Function for when the game ends
@@ -1164,7 +1196,7 @@ function createLabelsAndButtons()
 
     // 3 - set up `gameOverScene`
     // 3A - make game over text
-    let gameOverText = new PIXI.Text("Game Over");
+    gameOverText = new PIXI.Text("Game Over");
     textStyle = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 64,
@@ -1282,14 +1314,14 @@ function createLabelsAndButtons()
     let resumeButton = new PIXI.Text("Resume Game");
     resumeButton.style = new PIXI.TextStyle({
         fill: 0xffffff,
-        fontSize: 30,
+        fontSize: 50,
         fontFamily: 'Futura',
         fontStyle: 'italic',
         stroke: 0x00aa00,
         strokeThickness: 6
     });
-    resumeButton.x = sceneWidth - 200;
-    resumeButton.y = 20;
+    resumeButton.x = 160;
+    resumeButton.y = 250;
     resumeButton.interactive = true;
     resumeButton.buttonMode = true;
     resumeButton.on("pointerup", resumeGame);
@@ -1297,18 +1329,23 @@ function createLabelsAndButtons()
     resumeButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     pauseMenu.addChild(resumeButton);
 
-    // Cash Tracker
-    cashLabel = new PIXI.Text(`Available Cash: ${score}`);
-    cashLabel.style = new PIXI.TextStyle({
+    let quitButton = new PIXI.Text("Quit Game");
+    quitButton.style = new PIXI.TextStyle({
         fill: 0xffffff,
-        fontSize: 30,
+        fontSize: 50,
         fontFamily: 'Futura',
+        fontStyle: 'italic',
         stroke: 0x00aa00,
         strokeThickness: 6
     });
-    cashLabel.x = 20;
-    cashLabel.y = 20;
-    pauseMenu.addChild(cashLabel);
+    quitButton.x = 180;
+    quitButton.y = 350;
+    quitButton.interactive = true;
+    quitButton.buttonMode = true;
+    quitButton.on("pointerup", end);
+    quitButton.on("pointerover", e=>e.target.aplha = 0.7); // consice arrow function with no brackets
+    quitButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
+    pauseMenu.addChild(quitButton);
 }
 
 // Function for resuming the game
@@ -1319,6 +1356,7 @@ function resumeGame()
     pauseMenu.visible = false;
     gameOverScene.visible = false;
     paused = false;
+    buttonSound.play();
 }
 
 // Function for giving instructions before game
@@ -1329,6 +1367,7 @@ function giveInstructions()
     gameScene.visible = false;
     pauseMenu.visible = false;
     gameOverScene.visible = false;
+    buttonSound.play();
 }
 // Function for increasing score
 function increaseScoreBy(value)
