@@ -906,6 +906,10 @@ function gameLoop()
     {
         decreaseLifeBy(1);
     }
+    if(player.x < 0)
+    {
+        decreaseLifeBy(1);
+    }
 
     // *** Player Reaches door ***
     if(rectsIntersect(door, player))
@@ -1003,13 +1007,15 @@ function gameLoop()
     // get rid of dead crates
     tiles = tiles.filter(t => t.isAlive);
 
+    door.x -= 2;
+    totalDistance += 2;
+    increaseScoreBy(1);
+
+    // *** Player Death ***
     if(life <= 0)
     {
         end();
     }
-    door.x -= 2;
-    totalDistance += 2;
-
 }
 
 // Initial game setup
@@ -1076,6 +1082,7 @@ function completeLevel()
     gameScene.visible = false;
     nextLevel.visible = true;
     level++;
+    increaseScoreBy(1000);
 }
 
 // Create GUI labels and buttons
@@ -1084,7 +1091,7 @@ function createLabelsAndButtons()
     let buttonStyle = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 48,
-        fontFamily: "Zombie",
+        fontFamily: "Future",
         stroke: 0x00aa00,
         strokeThickness: 6
     });
@@ -1095,7 +1102,7 @@ function createLabelsAndButtons()
     startLabel1.style = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 60,
-        fontFamily: 'Zombie',
+        fontFamily: 'Future',
         stroke: 0x00aa00,
         strokeThickness: 6
     });
@@ -1108,7 +1115,7 @@ function createLabelsAndButtons()
     startLabel2.style = new PIXI.TextStyle({
         fill: 0xffffff,
         fontSize: 40,
-        fontFamily: 'Zombie',
+        fontFamily: 'Future',
         fontStyle: 'italic',
         stroke: 0x00aa00,
         strokeThickness: 6
@@ -1120,7 +1127,7 @@ function createLabelsAndButtons()
     // 1C - make the start game button
     let instructionButton = new PIXI.Text("Begin the Run");
     instructionButton.style = buttonStyle;
-    instructionButton.x = 80;
+    instructionButton.x = 120;
     instructionButton.y = sceneHeight - 120;
     instructionButton.interactive = true;
     instructionButton.buttonMode = true;
@@ -1235,7 +1242,7 @@ function createLabelsAndButtons()
     // 1C - make the start game button
     let startButton = new PIXI.Text("Start Game");
     startButton.style = buttonStyle;
-    startButton.x = 180;
+    startButton.x = 160;
     startButton.y = sceneHeight - 120;
     startButton.interactive = true;
     startButton.buttonMode = true;
@@ -1245,10 +1252,23 @@ function createLabelsAndButtons()
     instructionScene.addChild(startButton);
 
     // Set up Level Completion Menu
+    // Completion Label
+    let levelCompleteLabel = new PIXI.Text("Level Complete");
+    levelCompleteLabel.style = new PIXI.TextStyle({
+        fill: 0xffffff,
+        fontSize: 52,
+        fontFamily: "Futura",
+        stroke: 0x00aa00,
+        strokeThickness: 6
+    });
+    levelCompleteLabel.x = 140;
+    levelCompleteLabel.y = 220;
+    nextLevel.addChild(levelCompleteLabel);
+
     // Next Level Button
     nextLevelButton = new PIXI.Text("Next Level");
     nextLevelButton.style = buttonStyle;
-    nextLevelButton.x = 180;
+    nextLevelButton.x = 160;
     nextLevelButton.y = sceneHeight - 120;
     nextLevelButton.interactive = true;
     nextLevelButton.buttonMode = true;

@@ -11,11 +11,11 @@ h1
     font-size: 45px;
 }
 @font-face {
-    font-family: "Zombie";
-    src: url("../fonts/ZOMBIE.woff");
+    font-family: "Future";
+    src: url("../fonts/futureforces.woff");
 }
 #useFont
 {
-    font-family: "Zombie";
+    font-family: "Future";
     font-size: 0px;
 }
