@@ -21,6 +21,7 @@ app.loader.add("door", "media/finishDoor.png");
 app.loader.add("background", "media/backgroundLab.png");
 app.loader.add("bullet", "media/bullet.png");
 app.loader.add("enemy", "media/enemyScientist.png");
+app.loader.add("spikes", "media/spikes.png");
 app.loader.onComplete.add(setup);
 app.loader.load(doneLoading);
 
@@ -70,7 +71,7 @@ let direction = "east";
 let life = 100;
 let score = 0;
 let totalDistance = 0;
-let level = 4;
+let level = 1;
 let bulletTimer = 0;
 let enemyTimer = 0;
 
@@ -404,6 +405,215 @@ function loadLevel()
             // Place the wave
             createWave();
             break;
+        case 5:
+            // Place door 
+            createDoor(50 * 80, app.view.height - 160);
+            createTile(50 * 80, app.view.height - 240, "platform");
+            createTile(50 * 80, app.view.height - 320, "platform");
+            createTile(50 * 80, app.view.height - 400, "platform");
+            createTile(50 * 80, app.view.height - 480, "platform");
+            createTile(50 * 80, app.view.height - 560, "platform");
+
+            // Place the tiles
+            for(let i = 0; i < 55; i++)
+            {
+                createTile(i * 80, app.view.height - 80, "platform");
+            }
+
+            // Obstacle 1
+            createTile(6 * 80, app.view.height - 160, "platform");
+            createTile(10 * 80, app.view.height - 160, "crate");
+            createTile(10 * 80, app.view.height - 240, "platform");
+            createTile(10 * 80, app.view.height - 320, "platform");
+            createTile(10 * 80, app.view.height - 400, "platform");
+            createTile(10 * 80, app.view.height - 480, "platform");
+            createTile(10 * 80, app.view.height - 560, "platform");
+            createEnemy(13 * 80, app.view.height - 160);
+
+            // Obstacle 2
+            createTile(15 * 80, app.view.height - 100, "spikes");
+            createTile(16 * 80, app.view.height - 100, "spikes");
+            createTile(17 * 80, app.view.height - 160, "platform");
+            createTile(21 * 80, app.view.height - 160, "platform");
+            createTile(22 * 80, app.view.height - 100, "spikes");
+            createTile(23 * 80, app.view.height - 100, "spikes");
+            createTile(24 * 80, app.view.height - 160, "platform");
+            createTile(24 * 80, app.view.height - 240, "platform");
+            createTile(25 * 80, app.view.height - 100, "spikes");
+            createTile(26 * 80, app.view.height - 100, "spikes");
+            createTile(27 * 80, app.view.height - 160, "platform");
+            createTile(27 * 80, app.view.height - 240, "platform");
+            createTile(27 * 80, app.view.height - 320, "platform");
+            createTile(28 * 80, app.view.height - 100, "spikes");
+            createTile(29 * 80, app.view.height - 100, "spikes");
+            createTile(30 * 80, app.view.height - 160, "platform");
+            createTile(30 * 80, app.view.height - 240, "platform");
+            createTile(31 * 80, app.view.height - 100, "spikes");
+            createTile(32 * 80, app.view.height - 100, "spikes");
+            createTile(33 * 80, app.view.height - 160, "platform");
+            createTile(33 * 80, app.view.height - 240, "platform");
+            createTile(33 * 80, app.view.height - 320, "platform");
+
+            // Obstacle 3
+            createTile(34 * 80, app.view.height - 100, "spikes");
+            createTile(35 * 80, app.view.height - 100, "spikes");
+            createTile(36 * 80, app.view.height - 160, "crate");
+            createTile(36 * 80, app.view.height - 240, "crate");
+            createTile(36 * 80, app.view.height - 320, "crate");
+            createTile(36 * 80, app.view.height - 400, "crate");
+            createTile(36 * 80, app.view.height - 480, "crate");
+            createTile(36 * 80, app.view.height - 560, "crate");
+
+            // Obstacle 4
+            createTile(41 * 80, app.view.height - 160, "platform");
+            createTile(42 * 80, app.view.height - 100, "spikes");
+            createTile(43 * 80, app.view.height - 100, "spikes");
+            createTile(44 * 80, app.view.height - 160, "platform");
+            createTile(44 * 80, app.view.height - 240, "platform");
+            createEnemy((44 * 80) + 40, app.view.height - 320);
+
+            if(player == null)
+            {
+                createPlayer();
+            }
+
+            // Place the wave
+            createWave();
+            break;
+        case 6:
+            // Place door 
+            createDoor(50 * 80, app.view.height - 160);
+            createTile(50 * 80, app.view.height - 240, "platform");
+            createTile(50 * 80, app.view.height - 320, "platform");
+            createTile(50 * 80, app.view.height - 400, "platform");
+            createTile(50 * 80, app.view.height - 480, "platform");
+            createTile(50 * 80, app.view.height - 560, "platform");
+
+            // Place the tiles
+            for(let i = 0; i < 55; i++)
+            {
+                createTile(i * 80, app.view.height - 80, "platform");
+            }
+
+            // Obstacle 1
+            createTile(6 * 80, app.view.height - 160, "platform");
+            createTile(7 * 80, app.view.height - 100, "spikes");
+            createTile(8 * 80, app.view.height - 100, "spikes");
+            createTile(9 * 80, app.view.height - 160, "platform");
+            createTile(9 * 80, app.view.height - 240, "platform");
+            createTile(10 * 80, app.view.height - 100, "spikes");
+            createTile(11 * 80, app.view.height - 100, "spikes");
+            createTile(12 * 80, app.view.height - 160, "platform");
+            createTile(12 * 80, app.view.height - 240, "platform");
+            createTile(12 * 80, app.view.height - 320, "platform");
+            createTile(13 * 80, app.view.height - 100, "spikes");
+            createTile(14 * 80, app.view.height - 100, "spikes");
+            createTile(15 * 80, app.view.height - 100, "spikes");
+            createTile(16 * 80, app.view.height - 100, "spikes");
+            createTile(17 * 80, app.view.height - 160, "platform");
+            createEnemy(20 * 80, app.view.height - 160);
+
+            // Obstacle 2
+            createTile(22 * 80, app.view.height - 100, "spikes");
+            createTile(23 * 80, app.view.height - 100, "spikes");
+            createTile(24 * 80, app.view.height - 160, "platform");
+            createEnemy((24 * 80) + 40, app.view.height - 240);
+            createTile(25 * 80, app.view.height - 100, "spikes");
+            createTile(26 * 80, app.view.height - 100, "spikes");
+            createTile(27 * 80, app.view.height - 160, "platform");
+            createTile(27 * 80, app.view.height - 240, "platform");
+            createTile(28 * 80, app.view.height - 100, "spikes");
+            createTile(29 * 80, app.view.height - 100, "spikes");
+            createTile(30 * 80, app.view.height - 160, "platform");
+            createTile(31 * 80, app.view.height - 100, "spikes");
+            createTile(32 * 80, app.view.height - 100, "spikes");
+            createTile(33 * 80, app.view.height - 160, "platform");
+            createTile(33 * 80, app.view.height - 240, "platform");
+            createTile(34 * 80, app.view.height - 100, "spikes");
+            createTile(35 * 80, app.view.height - 100, "spikes");
+            createTile(36 * 80, app.view.height - 160, "platform");
+            createTile(36 * 80, app.view.height - 240, "platform");
+            createTile(36 * 80, app.view.height - 320, "platform");
+
+            // Obstacle 3
+            createTile(42 * 80, app.view.height - 160, "crate");
+            createTile(42 * 80, app.view.height - 240, "crate");
+            createTile(42 * 80, app.view.height - 320, "crate");
+            createTile(42 * 80, app.view.height - 400, "crate");
+            createTile(42 * 80, app.view.height - 480, "crate");
+            createTile(42 * 80, app.view.height - 560, "crate");
+            createEnemy(44 * 80, app.view.height - 160);
+
+
+            if(player == null)
+            {
+                createPlayer();
+            }
+
+            // Place the wave
+            createWave();
+            break;
+        case 7:
+            // Place door 
+            createDoor(50 * 80, app.view.height - 160);
+            createTile(50 * 80, app.view.height - 240, "platform");
+            createTile(50 * 80, app.view.height - 320, "platform");
+            createTile(50 * 80, app.view.height - 400, "platform");
+            createTile(50 * 80, app.view.height - 480, "platform");
+            createTile(50 * 80, app.view.height - 560, "platform");
+
+            // Place the tiles
+            for(let i = 0; i < 55; i++)
+            {
+                createTile(i * 80, app.view.height - 80, "platform");
+            }
+
+            // Obstacle 1
+            createTile(6 * 80, app.view.height - 160, "platform");
+            createTile(9 * 80, app.view.height - 160, "platform");
+            createTile(9 * 80, app.view.height - 240, "platform");
+            createEnemy((9 * 80) + 40, app.view.height - 320);
+
+            // Obstacle 2
+            createEnemy(15 * 80, app.view.height - 160);
+            createTile(16 * 80, app.view.height - 100, "spikes");
+            createTile(17 * 80, app.view.height - 100, "spikes");
+            createTile(18 * 80, app.view.height - 160, "platform");
+            createEnemy((18 * 80) + 40, app.view.height - 240);
+            createTile(19 * 80, app.view.height - 100, "spikes");
+            createTile(20 * 80, app.view.height - 100, "spikes");
+            createTile(21 * 80, app.view.height - 160, "platform");
+            createTile(22 * 80, app.view.height - 100, "spikes");
+            createTile(23 * 80, app.view.height - 100, "spikes");
+            createTile(24 * 80, app.view.height - 160, "platform");
+            createTile(24 * 80, app.view.height - 240, "platform");
+            createTile(25 * 80, app.view.height - 100, "spikes");
+            createTile(26 * 80, app.view.height - 100, "spikes");
+            createTile(27 * 80, app.view.height - 160, "platform");
+            createTile(27 * 80, app.view.height - 240, "platform");
+            createTile(27 * 80, app.view.height - 320, "platform");
+
+            // Obstacle 3
+            createEnemy(31 * 80, app.view.height - 160);
+            createEnemy(35 * 80, app.view.height - 160);
+            createTile(36 * 80, app.view.height - 160, "platform");
+            createTile(37 * 80, app.view.height - 100, "spikes");
+            createTile(38 * 80, app.view.height - 100, "spikes");
+            createTile(39 * 80, app.view.height - 160, "platform");
+            createTile(39 * 80, app.view.height - 240, "platform");
+            createTile(40 * 80, app.view.height - 100, "spikes");
+            createTile(41 * 80, app.view.height - 100, "spikes");
+            createEnemy(45 * 80, app.view.height - 160);
+            createEnemy(48 * 80, app.view.height - 160);
+
+            if(player == null)
+            {
+                createPlayer();
+            }
+
+            // Place the wave
+            createWave();
+            break;
     }
 }
 
@@ -446,6 +656,7 @@ function createTileSheet()
 {
     let sheet = new PIXI.BaseTexture.from(app.loader.resources["tiles"].url);
     let crateSheet = new PIXI.BaseTexture.from(app.loader.resources["crate"].url);
+    let spikeSheet = new PIXI.BaseTexture.from(app.loader.resources["spikes"].url);
     let w = 80;
     let h = 80;
     
@@ -454,6 +665,10 @@ function createTileSheet()
     ];
     tileSheet["crate"] = [
         new PIXI.Texture(crateSheet, new PIXI.Rectangle(0, 0, w, h))
+    ];
+
+    tileSheet["spikes"] = [
+        new PIXI.Texture(spikeSheet, new PIXI.Rectangle(0, 0, w, 20))
     ];
 }
 
@@ -538,10 +753,15 @@ function createTile(x, y, type)
         tile.textures = tileSheet.crate;
         tile.type = "crate";
     }
-    else
+    else if(type == "platform")
     {
         tile.textures = tileSheet.platform;
         tile.type = "platform";
+    }
+    else
+    {
+        tile.textures = tileSheet.spikes;
+        tile.type = "spikes";
     }
     tile.anchor.set(0);
     tile.animationSpeed = 0.1;
@@ -655,7 +875,7 @@ function startGame()
     pauseMenu.visible = false;
     nextLevel.visible = false;
     paused = false;
-    if(level > 4)
+    if(level > 7)
     {
         end();
     }
@@ -902,6 +1122,12 @@ function gameLoop()
                         jumping = false;
                     }
                 }
+
+                // Any type of harmful tile
+                if(tiles[i].type == "spikes")
+                {
+                    decreaseLifeBy(1);
+                }
             }
         }
     }
@@ -1099,7 +1325,7 @@ function end()
     gameOverScoreLabel.text = `Your final score: ${score}`;
 
     // Win condition
-    if(level > 4)
+    if(level > 7)
     {
         gameOverText.text = "You outran the wave!"
         gameOverText.x -= 120;
