@@ -748,17 +748,19 @@ function createPlayer()
 function createTile(x, y, type)
 {
     let tile = new PIXI.AnimatedSprite(tileSheet.platform);
-    if(type == "crate")
+
+    // Check for tile types
+    if(type == "crate") // Breakable
     {
         tile.textures = tileSheet.crate;
         tile.type = "crate";
     }
-    else if(type == "platform")
+    else if(type == "platform") // Static
     {
         tile.textures = tileSheet.platform;
         tile.type = "platform";
     }
-    else
+    else // Harmful
     {
         tile.textures = tileSheet.spikes;
         tile.type = "spikes";
@@ -875,10 +877,13 @@ function startGame()
     pauseMenu.visible = false;
     nextLevel.visible = false;
     paused = false;
+
+    // Level cap
     if(level > 7)
     {
         end();
     }
+
     loadLevel();
     decreaseLifeBy(0);
     increaseScoreBy(0);
@@ -905,6 +910,7 @@ function restartGame()
     gameScene.visible = false;
     pauseMenu.visible = false;
     level = 1;
+    score = 0;
     buttonSound.play();
 }
 
@@ -1241,6 +1247,7 @@ function gameLoop()
     // get rid of dead crates
     tiles = tiles.filter(t => t.isAlive);
 
+    // Tracked Variables
     door.x -= 2;
     totalDistance += 2;
     increaseScoreBy(1);
@@ -1555,6 +1562,7 @@ function createLabelsAndButtons()
     resumeButton.on("pointerout", e=>e.currentTarget.aplha = 1.0); // ditto
     pauseMenu.addChild(resumeButton);
 
+    // Quit Button
     let quitButton = new PIXI.Text("Quit Game");
     quitButton.style = new PIXI.TextStyle({
         fill: 0xffffff,
