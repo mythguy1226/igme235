@@ -1,13 +1,13 @@
 body
 {
     text-align: center;
-    background-color: #004d11;
+    background-color: #333333;
 }
 
 h1
 {
     text-align: center;
-    color: #8affa3;
+    color: #22ff33;
     font-size: 45px;
 }
 @font-face {
