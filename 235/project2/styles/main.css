@@ -186,6 +186,18 @@ button:focus {outline:0;}
     font-family: "Goldman";
     font-size: 20px;
 }
+
+#generalControls
+{
+    border-radius: 10px;
+    border: solid black 2px;
+}
+#specificControls
+{
+    border-radius: 10px;
+    border: solid black 2px;
+}
+
 @media (max-width: 550px) 
 {
     .grid

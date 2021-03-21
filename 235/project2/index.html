@@ -19,20 +19,24 @@
 	<section class="grid">
 		<section class= "inputs">
 			<section class="widgets">
-				<input id="searchterm" type="text" size="30" maxlength="30"/>
-				<p>Limit</p>
-				<select id="limit">
-					<option value="5">5</option>
-					<option value="10" selected>10</option>
-					<option value="25">25</option>
-					<option value="50">50</option>
-				</select>
-				<p>Show Comics</p>
-				<input id="comicsfilter" type="checkbox"/>
-				<p>Show Events</p>
-				<input id="eventsfilter" type="checkbox"/>
-				<p>Search by what name starts with</p>
-				<input id="searchbybeginswith" type="checkbox"/>
+				<div id="specificControls">
+					<input id="searchterm" type="text" size="30" maxlength="30"/>
+					<p>Show Comics</p>
+					<input id="comicsfilter" type="checkbox"/>
+					<p>Show Events</p>
+					<input id="eventsfilter" type="checkbox"/>
+				</div>
+				<div id="generalControls">
+					<p>General Search</p>
+					<input id="searchbybeginswith" type="checkbox"/>
+					<p>Limit</p>
+					<select id="limit">
+						<option value="5">5</option>
+						<option value="10" selected>10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+					</select>
+				</div>
 			</section>
 
 			<section class="widgets">

@@ -35,7 +35,7 @@ let instructionScene,instructions,controlsMovement,controlsButtons,controlsPause
 let cashLabel;
 let bioElectricBlastSound,heatWaveSound,forcePushSound,fireBallSound,freezeSound,acidShotSound;
 let zombieMoan1Sound,zombieMoan2Sound,zombieMoan3Sound,zombieHurtSound,playerDeathSound;
-let screenButtonSound,shopButtonSound;
+let screenButtonSound,shopButtonSound,errorSound;
 
 let paused = true;
 let playerSheet = {};
@@ -1184,6 +1184,10 @@ function setup() {
     shopButtonSound = new Howl({
         src: ['sounds/shopButton.mp3']
     });
+
+    errorSound = new Howl({
+        src: ['sounds/errorSound.mp3']
+    });
 }
 
 // Function for when the game ends
@@ -1807,7 +1811,14 @@ function upgradeAbility(ability)
     }
     scoreLabel.text = `Score: ${score}`;
     cashLabel.text = `Available Cash: ${score}`;
-    shopButtonSound.play();
+    if(unlockedSpells.includes(ability))
+    {
+        shopButtonSound.play();
+    }
+    else
+    {
+        errorSound.play();
+    }
 }
 
 // Function for Buying new Abilities
